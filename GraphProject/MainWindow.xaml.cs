@@ -20,8 +20,11 @@ namespace GraphProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ViewModel vm;
         public MainWindow()
         {
+            vm = new ViewModel();
+            DataContext = vm;
             InitializeComponent();
         }
     }
