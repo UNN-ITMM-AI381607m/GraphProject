@@ -12,7 +12,7 @@ namespace GraphProject
     {
         private string layoutAlgorithmType;
         private CustomGraph graph;
-        private List<String> layoutAlgorithmTypes = new List<string>();
+        private List<string> layoutAlgorithmTypes = new List<string>();
 
         public int ID_counter
         {

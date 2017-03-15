@@ -32,11 +32,14 @@ namespace GraphProject
 
         private void Label_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            CustomVertex chosen = ((sender as Label).Content as CustomVertex);
-            Point cursor = e.GetPosition(this);
-            CustomVertex newOne = new CustomVertex(vm.ID_counter);
-            vm.AddNewVertex(newOne);
-            vm.AddNewGraphEdge(chosen, newOne);
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                CustomVertex chosen = ((sender as Label).Content as CustomVertex);
+                Point cursor = e.GetPosition(this);
+                CustomVertex newOne = new CustomVertex(vm.ID_counter);
+                vm.AddNewVertex(newOne);
+                vm.AddNewGraphEdge(chosen, newOne);
+            }
         }
 
         private void Label_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
