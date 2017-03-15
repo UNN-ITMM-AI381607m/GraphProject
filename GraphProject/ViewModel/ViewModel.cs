@@ -14,14 +14,21 @@ namespace GraphProject
         private CustomGraph graph;
         private List<String> layoutAlgorithmTypes = new List<string>();
 
+        public int ID_counter
+        {
+            get;
+            private set;
+        }
+
         public ViewModel()
         {
+            ID_counter = 0;
             graph = new CustomGraph(true);
 
             List<CustomVertex> vertices = new List<CustomVertex>();
-            for (int i = 0; i < 5; i++)
+            for (ID_counter = 0; ID_counter < 5; ID_counter++)
             {
-                vertices.Add(new CustomVertex(i));
+                vertices.Add(new CustomVertex(ID_counter));
             }
 
             foreach (CustomVertex vertex in vertices)
@@ -64,14 +71,24 @@ namespace GraphProject
             }
         }
 
+        public void AddNewVertex(CustomVertex vertex)
+        {
+            ID_counter++;
+            graph.AddVertex(vertex);
+        }
 
-        private CustomEdge AddNewGraphEdge(CustomVertex from, CustomVertex to)
+        public CustomEdge AddNewGraphEdge(CustomVertex from, CustomVertex to)
         {
             string edgeString = string.Format("{0}-{1} Connected", from.ID, to.ID);
-
+            
             CustomEdge newEdge = new CustomEdge(edgeString, from, to);
-            graph.AddEdge(newEdge);
-            return newEdge;
+            if (!graph.Edges.Any(item => item.ID == newEdge.ID))
+            {
+
+                graph.AddEdge(newEdge);
+                return newEdge;
+            }
+            return null;
         }
         public CustomGraph Graph
         {

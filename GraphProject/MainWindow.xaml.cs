@@ -21,11 +21,41 @@ namespace GraphProject
     public partial class MainWindow : Window
     {
         private ViewModel vm;
+        private CustomVertex firstChosen;
         public MainWindow()
         {
+            firstChosen = null;
             vm = new ViewModel();
             DataContext = vm;
             InitializeComponent();
+        }
+
+        private void Label_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            CustomVertex chosen = ((sender as Label).Content as CustomVertex);
+            Point cursor = e.GetPosition(this);
+            CustomVertex newOne = new CustomVertex(vm.ID_counter);
+            vm.AddNewVertex(newOne);
+            vm.AddNewGraphEdge(chosen, newOne);
+        }
+
+        private void Label_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (firstChosen == null)
+            {
+                firstChosen = (sender as Label).Content as CustomVertex;
+                firstChosen.Color = "Blue";
+            }
+            else
+            {
+                CustomVertex second = ((sender as Label).Content as CustomVertex);
+                if (second != firstChosen)
+                {
+                    vm.AddNewGraphEdge(firstChosen, second);
+                }
+                firstChosen.Color = "Black";
+                firstChosen = null;
+            }
         }
     }
 }

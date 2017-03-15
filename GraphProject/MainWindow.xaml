@@ -7,9 +7,9 @@
     <Window.Resources>
 
         <DataTemplate x:Key="template" DataType="{x:Type local:CustomVertex}">
-            <Viewbox Width="100" Height="100">
+            <Viewbox Width="50" Height="50">
                 <Grid Width="20" Height="20">
-                    <Ellipse Stroke="Black"/>
+                    <Ellipse Stroke="{Binding Path=Color}"/>
                     <TextBlock HorizontalAlignment="Center" Text="{Binding Path=ID}" TextAlignment="Center" VerticalAlignment="Center"/>
                 </Grid>
             </Viewbox>
@@ -20,7 +20,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type graphsharp:VertexControl}">
 
-                        <Label Content="{TemplateBinding Vertex}" ContentTemplate="{StaticResource template}" />
+                        <Label Content="{TemplateBinding Vertex}" ContentTemplate="{StaticResource template}" MouseDoubleClick="Label_MouseLeftButtonUp" MouseRightButtonUp="Label_MouseRightButtonUp"/>
 
                     </ControlTemplate>
                 </Setter.Value>
