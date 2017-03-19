@@ -8,11 +8,11 @@ namespace GraphProject.GraphBuilder
 {
     static class GraphBuilderStrategy
     {
-        static public CustomGraph CodeToGraph1(string code)
-        {
-            List<int> code_list = code.Split(' ').Select(Int32.Parse).ToList();
-            return CodeToGraph(code_list);
-        }
+        //static public CustomGraph CodeToGraph1(string code)
+        //{
+        //    List<int> code_list = code.Split(' ').Select(int.Parse).ToList();
+        //    return CodeToGraph(code_list);
+        //}
 
         static public CustomGraph CodeToGraph (List<int> code)
         {
@@ -45,7 +45,6 @@ namespace GraphProject.GraphBuilder
             List<CustomVertex> Verticies = Graph.Vertices.ToList();
             List<CustomEdge> Edges = Graph.Edges.ToList();
             List<int[]> ListEdges = new List<int[]>();
-            //List<List<int>> Vertis = new List<List<int>>();
             for (int i = 0; i < Edges.Count(); i++)
             {
                 int[] current_edge = new int[2] { Edges[i].Source.ID, Edges[i].Target.ID };

@@ -26,22 +26,6 @@ namespace GraphProject
             ID_counter = 0;
             graph = new CustomGraph(true);
 
-            List<CustomVertex> vertices = new List<CustomVertex>();
-            for (ID_counter = 0; ID_counter < 5; ID_counter++)
-            {
-                vertices.Add(new CustomVertex(ID_counter));
-            }
-
-            foreach (CustomVertex vertex in vertices)
-            {
-                graph.AddVertex(vertex);
-            }
-
-            AddNewGraphEdge(vertices[0], vertices[1]);
-            AddNewGraphEdge(vertices[0], vertices[4]);
-            AddNewGraphEdge(vertices[2], vertices[1]);
-            AddNewGraphEdge(vertices[3], vertices[0]);
-
             //Add Layout Algorithm Types
             layoutAlgorithmTypes.Add("None");
             layoutAlgorithmTypes.Add("BoundedFR");
@@ -55,10 +39,6 @@ namespace GraphProject
             layoutAlgorithmTypes.Add("Tree");
 
             LayoutAlgorithmType = "LinLog";
-
-            graph = GraphBuilderStrategy.CodeToGraph1("6 1 6 1");
-
-            List<int> i = GraphBuilderStrategy.GraphToCode(graph);
         }
 
         public List<string> LayoutAlgorithmTypes

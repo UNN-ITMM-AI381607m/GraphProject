@@ -53,29 +53,45 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <StackPanel Orientation="Vertical" Grid.Row="0" >
-            <StackPanel Orientation="Horizontal" Background="White"
-                        HorizontalAlignment="Center" Margin="0">
-                <Border BorderBrush="BlueViolet" BorderThickness="2">
-                    <Grid Width="374">
-                        <Label VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="Black"
+        <StackPanel Orientation="Vertical" Grid.Row="0">
+                <Grid>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Button x:Name="openFile" Content="Open" Click="openFile_Click" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="64" Margin="5"/>
+                        <Button x:Name="saveFile" Content="Save" Click="saveFile_Click" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="64" Margin="5"/>
+                </StackPanel>
+                    <StackPanel Orientation="Horizontal" Background="White"
+                        HorizontalAlignment="Right" Margin="0,0,10,0" Width="435">
+                        <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="Black"
                         FontSize="10" FontFamily="Verdana" FontWeight="Bold" Margin="0,0,0,0"  
                         Content="Pick Layout Type"/>
-                        <ComboBox ItemsSource="{Binding LayoutAlgorithmTypes}"
-                          SelectedItem="{Binding Path=LayoutAlgorithmType, Mode=TwoWay}"
-                          Width="150" Height="25" Margin="5" />
-                    </Grid>
-                </Border>
-            </StackPanel>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding LayoutAlgorithmTypes}"
+                          SelectedItem="{Binding LayoutAlgorithmType, Mode=TwoWay}"
+                          Width="150" Height="25" Margin="5" HorizontalAlignment="Right" />
+                    </StackPanel>
+            </Grid>
         </StackPanel>
+
+        <!--<StackPanel Orientation="Vertical" Grid.Row="0">
+            <Border BorderBrush="BlueViolet" BorderThickness="2">
+                <StackPanel Orientation="Horizontal" Background="White"
+                        HorizontalAlignment="Center" Margin="10,0" Width="722">
+                    <Button x:Name="button" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0"/>
+                    <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="Black"
+                        FontSize="10" FontFamily="Verdana" FontWeight="Bold" Margin="0,0,0,0"  
+                        Content="Pick Layout Type"/>
+                    <ComboBox Grid.Column="1" ItemsSource="{Binding LayoutAlgorithmTypes}"
+                          SelectedItem="{Binding LayoutAlgorithmType, Mode=TwoWay}"
+                          Width="150" Height="25" Margin="5" HorizontalAlignment="Right" />
+                </StackPanel>
+            </Border>
+        </StackPanel>-->
         <!--<zoom:ZoomControl Grid.Row="1"  Zoom="0.2" ZoomBoxOpacity="0.5" Background="White">-->
-            <local:CustomGraphLayout Grid.Row="1" x:Name="graphLayout" Margin="10"
+        <local:CustomGraphLayout Grid.Row="1" x:Name="graphLayout" Margin="10"
                         Graph="{Binding Path=Graph}"
                         LayoutAlgorithmType="{Binding Path=LayoutAlgorithmType, Mode=OneWay}"
                         OverlapRemovalAlgorithmType="FSA"
-                        HighlightAlgorithmType="Simple">
-            </local:CustomGraphLayout>
+                        HighlightAlgorithmType="Simple"/>
+
         <!--</zoom:ZoomControl>-->
     </Grid>
 </Window>

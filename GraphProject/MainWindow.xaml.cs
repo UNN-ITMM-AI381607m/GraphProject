@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.IO;
+using Microsoft.Win32;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace GraphProject
 {
@@ -59,6 +52,48 @@ namespace GraphProject
                 }
                 selectedVertex.Color = "Black";
                 selectedVertex = null;
+            }
+        }
+
+        private void openFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    List<int> pruferCode = File.ReadAllText(openFileDialog.FileName).Split(' ', ',', ';').Select(int.Parse).ToList();
+                    vm.Graph = GraphBuilder.GraphBuilderStrategy.CodeToGraph(pruferCode);
+                }
+                catch
+                {
+                    MessageBox.Show(this, "File not found or has invalid format", "Error");
+                    return;
+                }
+            }
+        }
+
+        private void saveFile_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveDialogFile = new SaveFileDialog();
+            if (saveDialogFile.ShowDialog() == true)
+            {
+                string a = string.Join(" ", GraphBuilder.GraphBuilderStrategy.GraphToCode(vm.Graph).ToArray());
+                if (a.Length == 0)
+                {
+                    MessageBox.Show(this, "Nothing to save", "Error");
+                    return;
+                }
+                try
+                {
+                    StreamWriter file = new StreamWriter(saveDialogFile.FileName);
+                    file.WriteLine(a);
+                    file.Close();
+                }
+                catch
+                {
+                    MessageBox.Show(this, "Can not save graph to file: \n" + saveDialogFile.FileName, "Error");
+                }
             }
         }
     }
