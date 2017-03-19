@@ -21,10 +21,10 @@ namespace GraphProject
     public partial class MainWindow : Window
     {
         private ViewModel vm;
-        private CustomVertex firstChosen;
+        private CustomVertex selectedVertex;
         public MainWindow()
         {
-            firstChosen = null;
+            selectedVertex = null;
             vm = new ViewModel();
             DataContext = vm;
             InitializeComponent();
@@ -32,32 +32,33 @@ namespace GraphProject
 
         private void Label_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (e.RightButton == MouseButtonState.Pressed)
-            {
-                CustomVertex chosen = ((sender as Label).Content as CustomVertex);
-                Point cursor = e.GetPosition(this);
-                CustomVertex newOne = new CustomVertex(vm.ID_counter);
-                vm.AddNewVertex(newOne);
-                vm.AddNewGraphEdge(chosen, newOne);
-            }
+            //TODO: move to context menu (maybe)
+            //if (e.RightButton == MouseButtonState.Pressed)
+            //{
+            //    CustomVertex chosen = ((sender as Label).Content as CustomVertex);
+            //    Point cursor = e.GetPosition(this);
+            //    CustomVertex newOne = new CustomVertex(vm.ID_counter);
+            //    vm.AddNewVertex(newOne);
+            //    vm.AddNewGraphEdge(chosen, newOne);
+            //}
         }
 
         private void Label_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (firstChosen == null)
+            if (selectedVertex == null)
             {
-                firstChosen = (sender as Label).Content as CustomVertex;
-                firstChosen.Color = "Blue";
+                selectedVertex = (sender as Label).Content as CustomVertex;
+                selectedVertex.Color = "Blue";
             }
             else
             {
                 CustomVertex second = ((sender as Label).Content as CustomVertex);
-                if (second != firstChosen)
+                if (second != selectedVertex)
                 {
-                    vm.AddNewGraphEdge(firstChosen, second);
+                    vm.AddNewGraphEdge(selectedVertex, second);
                 }
-                firstChosen.Color = "Black";
-                firstChosen = null;
+                selectedVertex.Color = "Black";
+                selectedVertex = null;
             }
         }
     }

@@ -4,7 +4,7 @@
         xmlns:graphsharp="clr-namespace:GraphSharp.Controls;assembly=GraphSharp.Controls"
         xmlns:local="clr-namespace:GraphProject"
         xmlns:zoom ="clr-namespace:WPFExtensions.Controls;assembly=WPFExtensions"
-        Title="MainWindow" Height="476.364" Width="753.636">
+        Title="MainWindow" Height="500" Width="750">
     <Window.Resources>
 
         <DataTemplate x:Key="template" DataType="{x:Type local:CustomVertex}">
@@ -21,7 +21,15 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type graphsharp:VertexControl}">
 
-                        <Label Content="{TemplateBinding Vertex}" ContentTemplate="{StaticResource template}" MouseDoubleClick="Label_MouseLeftButtonUp" Mouse.PreviewMouseDown="Label_MouseRightButtonUp"/>
+                        <Label Content="{TemplateBinding Vertex}" ContentTemplate="{StaticResource template}" MouseDoubleClick="Label_MouseLeftButtonUp">
+                            <Label.ContextMenu>
+                                <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                                    <MenuItem Header="Change number" Command="{ Binding ChangeID, ElementName=MainWindow }" />
+                                    <MenuItem Header="Menu Placeholder 2" />
+                                    <MenuItem Header="Menu Placeholder 3" />
+                                </ContextMenu>
+                            </Label.ContextMenu>
+                        </Label>
 
                     </ControlTemplate>
                 </Setter.Value>
@@ -61,13 +69,13 @@
                 </Border>
             </StackPanel>
         </StackPanel>
-        <zoom:ZoomControl Grid.Row="1"  Zoom="0.2" 
-        ZoomBoxOpacity="0.5" Background="White" MaxZoom="1" Margin="10" >
-            <local:CustomGraphLayout x:Name="graphLayout"
+        <!--<zoom:ZoomControl Grid.Row="1"  Zoom="0.2" ZoomBoxOpacity="0.5" Background="White">-->
+            <local:CustomGraphLayout Grid.Row="1" x:Name="graphLayout" Margin="10"
                         Graph="{Binding Path=Graph}"
                         LayoutAlgorithmType="{Binding Path=LayoutAlgorithmType, Mode=OneWay}"
                         OverlapRemovalAlgorithmType="FSA"
-                        HighlightAlgorithmType="Simple" />
-        </zoom:ZoomControl>
+                        HighlightAlgorithmType="Simple">
+            </local:CustomGraphLayout>
+        <!--</zoom:ZoomControl>-->
     </Grid>
 </Window>
