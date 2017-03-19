@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GraphSharp.Controls;
 using System.ComponentModel;
+using GraphProject.PrufCode;
 
 namespace GraphProject
 {
@@ -55,6 +56,16 @@ namespace GraphProject
 
             LayoutAlgorithmType = "LinLog";
 
+            PrufCodes A = new PrufCodes();
+            List<int> B = new List<int>();
+            B.Add(6);
+            B.Add(1);
+            B.Add(6);
+            B.Add(1);
+            B.Add(1);
+            graph = A.CodeToGraph(B);
+
+            List<int> i = A.GraphToCode(graph);
         }
 
         public List<string> LayoutAlgorithmTypes
