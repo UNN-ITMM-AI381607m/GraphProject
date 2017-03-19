@@ -4,11 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraphProject.PrufCode
+namespace GraphProject.GraphBuilder
 {
-    class PrufCodes
+    static class GraphBuilderStrategy
     {
-        public CustomGraph CodeToGraph (List<int> code)
+        static public CustomGraph CodeToGraph1(string code)
+        {
+            List<int> code_list = code.Split(' ').Select(Int32.Parse).ToList();
+            return CodeToGraph(code_list);
+        }
+
+        static public CustomGraph CodeToGraph (List<int> code)
         {
             CustomGraph NewGraph = new CustomGraph();
             List<CustomVertex> Vertices = new List<CustomVertex>();
@@ -34,33 +40,37 @@ namespace GraphProject.PrufCode
             return NewGraph;
         }
 
-        public List<int> GraphToCode(CustomGraph Graph)
+        static public List<int> GraphToCode(CustomGraph Graph)
         {
             List<CustomVertex> Verticies = Graph.Vertices.ToList();
             List<CustomEdge> Edges = Graph.Edges.ToList();
-            List<List<int>> Vertis = new List<List<int>>();
+            List<int[]> ListEdges = new List<int[]>();
+            //List<List<int>> Vertis = new List<List<int>>();
             for (int i = 0; i < Edges.Count(); i++)
-                Vertis.Add(new List<int>() { Edges[i].Source.ID, Edges[i].Target.ID });
+            {
+                int[] current_edge = new int[2] { Edges[i].Source.ID, Edges[i].Target.ID };
+                ListEdges.Add(current_edge);
+        }
             List<int> Answer = new List<int>();
 
             while (Verticies.Count()>2)
             {
-                int min = 99999;
-                int min_ref = 99999;
-                int for_remove_vert = -1;
-                int for_remove_edge = -1;
+                int min = int.MaxValue;
+                int min_ref = int.MaxValue;
+                int for_remove_vert = int.MaxValue;
+                int for_remove_edge = int.MaxValue;
                 for (int k = 0; k < Verticies.Count(); k++)
                 {
-                    int maybe_ref = 0;
+                    int maybe_ref = int.MaxValue;
                     int counter = 0;
                     int id = Verticies[k].ID;
-                    int may_rem = -1;
-                    for (int i = 0; i < Vertis.Count(); i++)
-                        for (int j = 0; j < Vertis[i].Count; j++)
-                            if (id == Vertis[i][j])
+                    int may_rem = int.MaxValue;
+                    for (int i = 0; i < ListEdges.Count(); i++)
+                        for (int j = 0; j < 2; j++)
+                            if (id == ListEdges[i][j])
                             {
                                 counter++;
-                                maybe_ref = Vertis[i][(j+1) % 2];
+                                maybe_ref = ListEdges[i][(j+1) % 2];
                                 may_rem = i;
                             }
                     if ((counter == 1) && (min > id))
@@ -74,7 +84,7 @@ namespace GraphProject.PrufCode
                 }
                 Answer.Add(min_ref);
                 Verticies.Remove(Verticies[for_remove_vert]);
-                Vertis.Remove(Vertis[for_remove_edge]);
+                ListEdges.RemoveAt(for_remove_edge);
             }
 
             return Answer;
