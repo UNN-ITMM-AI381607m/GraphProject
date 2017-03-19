@@ -42,6 +42,7 @@ namespace GraphProject
             AddNewGraphEdge(vertices[3], vertices[0]);
 
             //Add Layout Algorithm Types
+            layoutAlgorithmTypes.Add("None");
             layoutAlgorithmTypes.Add("BoundedFR");
             layoutAlgorithmTypes.Add("Circular");
             layoutAlgorithmTypes.Add("CompoundFDP");
@@ -56,7 +57,7 @@ namespace GraphProject
 
         }
 
-        public List<String> LayoutAlgorithmTypes
+        public List<string> LayoutAlgorithmTypes
         {
             get { return layoutAlgorithmTypes; }
         }
@@ -103,12 +104,7 @@ namespace GraphProject
 
         private void NotifyPropertyChanged(String info)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
         }
-
-
     }
 }

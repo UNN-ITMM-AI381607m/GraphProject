@@ -10,8 +10,20 @@ namespace GraphProject
 {
     public class CustomVertex : INotifyPropertyChanged
     {
-        public int ID { get; private set; }
+        public int ID
+        {
+            get
+            {
+                return id;
+            }
+            set
+            {
+                id = value;
+                NotifyPropertyChanged("ID");
+            }
+        }
         private string color;
+        private int id;
         public string Color
         {
             get
@@ -42,10 +54,7 @@ namespace GraphProject
 
         private void NotifyPropertyChanged(string info)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
         }
     }
 }
