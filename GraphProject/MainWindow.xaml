@@ -6,6 +6,12 @@
         xmlns:zoom ="clr-namespace:WPFExtensions.Controls;assembly=WPFExtensions"
         Title="MainWindow" Height="500" Width="750">
     <Window.Resources>
+        <ContextMenu x:Key="cmVertex">
+            <MenuItem Header="Change number" Click="MenuItem_ChangeID_Click"
+                      CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+            <MenuItem Header="Menu Placeholder 2" />
+            <MenuItem Header="Menu Placeholder 3" />
+        </ContextMenu>
 
         <DataTemplate x:Key="template" DataType="{x:Type local:CustomVertex}">
             <Viewbox Width="50" Height="50">
@@ -21,15 +27,8 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type graphsharp:VertexControl}">
 
-                        <Label Content="{TemplateBinding Vertex}" ContentTemplate="{StaticResource template}" MouseDoubleClick="Label_MouseLeftButtonUp">
-                            <Label.ContextMenu>
-                                <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-                                    <MenuItem Header="Change number" Command="{ Binding ChangeID, ElementName=MainWindow }" />
-                                    <MenuItem Header="Menu Placeholder 2" />
-                                    <MenuItem Header="Menu Placeholder 3" />
-                                </ContextMenu>
-                            </Label.ContextMenu>
-                        </Label>
+                        <Label  Content="{TemplateBinding Vertex}" ContentTemplate="{StaticResource template}" MouseDoubleClick="Label_MouseLeftButtonUp" MouseRightButtonDown="Label_MouseRightButtonDown"/>
+
 
                     </ControlTemplate>
                 </Setter.Value>
@@ -53,23 +52,11 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical" Grid.Row="0">
-                <Grid>
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Button x:Name="openFile" Content="Open" Click="openFile_Click" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="64" Margin="5"/>
-                        <Button x:Name="saveFile" Content="Save" Click="saveFile_Click" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="64" Margin="5"/>
-                </StackPanel>
-                    <StackPanel Orientation="Horizontal" Background="White"
-                        HorizontalAlignment="Right" Margin="0,0,10,0" Width="435">
-                        <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="Black"
-                        FontSize="10" FontFamily="Verdana" FontWeight="Bold" Margin="0,0,0,0"  
-                        Content="Pick Layout Type"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding LayoutAlgorithmTypes}"
-                          SelectedItem="{Binding LayoutAlgorithmType, Mode=TwoWay}"
-                          Width="150" Height="25" Margin="5" HorizontalAlignment="Right" />
-                    </StackPanel>
-            </Grid>
-        </StackPanel>
+        <Menu Grid.Row="0">
+            <MenuItem Header="Open" Click="openFile_Click"/>
+            <MenuItem Header="Save" Click="saveFile_Click"/>
+            <MenuItem Header="Close" Click="closeFile_Click"/>
+        </Menu>
 
         <!--<StackPanel Orientation="Vertical" Grid.Row="0">
             <Border BorderBrush="BlueViolet" BorderThickness="2">

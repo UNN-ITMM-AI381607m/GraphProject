@@ -5,6 +5,7 @@ using System.IO;
 using Microsoft.Win32;
 using System.Linq;
 using System.Collections.Generic;
+using GraphProject.SettingWindow;
 
 namespace GraphProject
 {
@@ -15,25 +16,13 @@ namespace GraphProject
     {
         private ViewModel vm;
         private CustomVertex selectedVertex;
+
         public MainWindow()
         {
             selectedVertex = null;
             vm = new ViewModel();
             DataContext = vm;
             InitializeComponent();
-        }
-
-        private void Label_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            //TODO: move to context menu (maybe)
-            //if (e.RightButton == MouseButtonState.Pressed)
-            //{
-            //    CustomVertex chosen = ((sender as Label).Content as CustomVertex);
-            //    Point cursor = e.GetPosition(this);
-            //    CustomVertex newOne = new CustomVertex(vm.ID_counter);
-            //    vm.AddNewVertex(newOne);
-            //    vm.AddNewGraphEdge(chosen, newOne);
-            //}
         }
 
         private void Label_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -95,6 +84,32 @@ namespace GraphProject
                     MessageBox.Show(this, "Can not save graph to file: \n" + saveDialogFile.FileName, "Error");
                 }
             }
+        }
+
+        private void MenuItem_ChangeID_Click(object sender, RoutedEventArgs e)
+        {
+            PopupWindow popup = new PopupWindow();
+            popup.ShowDialog();
+            int result = popup.NewID;
+            if (result == -1)
+            {
+                return;
+            }
+            
+            //WTFF
+            ((((sender as MenuItem).Parent as ContextMenu).PlacementTarget as Label).Content as CustomVertex).ID = result;
+        }
+
+        private void Label_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ContextMenu cm = this.FindResource("cmVertex") as ContextMenu;
+            cm.PlacementTarget = sender as Label;
+            cm.IsOpen = true;
+        }
+
+        private void closeFile_Click(object sender, RoutedEventArgs e)
+        {
+            vm.Graph = new CustomGraph();
         }
     }
 }
