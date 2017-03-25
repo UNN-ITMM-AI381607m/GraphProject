@@ -89,6 +89,7 @@ namespace GraphProject
         private void MenuItem_ChangeID_Click(object sender, RoutedEventArgs e)
         {
             PopupWindow popup = new PopupWindow();
+            popup.Owner = this;
             popup.ShowDialog();
             int result = popup.NewID;
             if (result == -1)
@@ -115,6 +116,7 @@ namespace GraphProject
         private void MenuItem_NewVertex_Click(object sender, RoutedEventArgs e)
         {
             PopupWindow popup = new PopupWindow();
+            popup.Owner = this;
             popup.ShowDialog();
             int result = popup.NewID;
             if (result == -1)

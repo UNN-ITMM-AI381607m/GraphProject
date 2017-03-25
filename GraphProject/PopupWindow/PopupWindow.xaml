@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphProject.SettingWindow"
         mc:Ignorable="d"
-        Title="PopupWindow" Height="140" Width="300">
+        Title="PopupWindow" Height="140" Width="300" WindowStartupLocation="CenterOwner">
     <Grid>
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10
                     ">
