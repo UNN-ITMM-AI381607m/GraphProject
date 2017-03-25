@@ -54,8 +54,8 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="Open" Click="OpenFile_Click"/>
-            <MenuItem Header="Save" Click="saveFile_Click"/>
-            <MenuItem Header="Close" Click="closeFile_Click"/>
+            <MenuItem Header="Save" Click="SaveFile_Click"/>
+            <MenuItem Header="Close" Click="CloseFile_Click"/>
         </Menu>
 
         <!--<StackPanel Orientation="Vertical" Grid.Row="0">
