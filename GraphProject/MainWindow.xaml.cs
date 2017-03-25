@@ -44,7 +44,7 @@ namespace GraphProject
             }
         }
 
-        private void openFile_Click(object sender, RoutedEventArgs e)
+        private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
@@ -62,7 +62,7 @@ namespace GraphProject
             }
         }
 
-        private void saveFile_Click(object sender, RoutedEventArgs e)
+        private void SaveFile_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveDialogFile = new SaveFileDialog();
             if (saveDialogFile.ShowDialog() == true)
@@ -107,9 +107,22 @@ namespace GraphProject
             cm.IsOpen = true;
         }
 
-        private void closeFile_Click(object sender, RoutedEventArgs e)
+        private void CloseFile_Click(object sender, RoutedEventArgs e)
         {
             vm.Graph = new CustomGraph();
+        }
+
+        private void MenuItem_NewVertex_Click(object sender, RoutedEventArgs e)
+        {
+            PopupWindow popup = new PopupWindow();
+            popup.ShowDialog();
+            int result = popup.NewID;
+            if (result == -1)
+            {
+                return;
+            }
+
+            vm.AddNewVertex(result);
         }
     }
 }

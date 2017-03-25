@@ -15,15 +15,8 @@ namespace GraphProject
         private CustomGraph graph;
         private List<string> layoutAlgorithmTypes = new List<string>();
 
-        public int ID_counter
-        {
-            get;
-            private set;
-        }
-
         public ViewModel()
         {
-            ID_counter = 0;
             graph = new CustomGraph(true);
 
             //Add Layout Algorithm Types
@@ -56,10 +49,9 @@ namespace GraphProject
             }
         }
 
-        public void AddNewVertex(CustomVertex vertex)
+        public void AddNewVertex(int id = 0)
         {
-            ID_counter++;
-            graph.AddVertex(vertex);
+            graph.AddVertex(new CustomVertex(id));
         }
 
         public CustomEdge AddNewGraphEdge(CustomVertex from, CustomVertex to)
@@ -69,7 +61,6 @@ namespace GraphProject
             CustomEdge newEdge = new CustomEdge(edgeString, from, to);
             if (!graph.Edges.Any(item => item.ID == newEdge.ID))
             {
-
                 graph.AddEdge(newEdge);
                 return newEdge;
             }

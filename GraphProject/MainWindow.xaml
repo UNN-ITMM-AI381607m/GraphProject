@@ -9,7 +9,7 @@
         <ContextMenu x:Key="cmVertex">
             <MenuItem Header="Change number" Click="MenuItem_ChangeID_Click"
                       CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-            <MenuItem Header="Menu Placeholder 2" />
+            <MenuItem Header="Add new vertex" Click="MenuItem_NewVertex_Click" />
             <MenuItem Header="Menu Placeholder 3" />
         </ContextMenu>
 
@@ -53,7 +53,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
-            <MenuItem Header="Open" Click="openFile_Click"/>
+            <MenuItem Header="Open" Click="OpenFile_Click"/>
             <MenuItem Header="Save" Click="saveFile_Click"/>
             <MenuItem Header="Close" Click="closeFile_Click"/>
         </Menu>
