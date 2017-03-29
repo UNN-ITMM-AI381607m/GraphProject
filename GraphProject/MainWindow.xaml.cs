@@ -65,6 +65,7 @@ namespace GraphProject
         private void SaveFile_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveDialogFile = new SaveFileDialog();
+            saveDialogFile.Filter = "Text Files | *.txt";
             if (saveDialogFile.ShowDialog() == true)
             {
                 string a = string.Join(" ", GraphBuilder.GraphBuilderStrategy.GraphToCode(vm.Graph).ToArray());
@@ -88,7 +89,7 @@ namespace GraphProject
 
         private void MenuItem_ChangeID_Click(object sender, RoutedEventArgs e)
         {
-            PopupWindow popup = new PopupWindow();
+            PopupWindow popup = new PopupWindow("Change Number", "Enter new number: ", "Save");
             popup.Owner = this;
             popup.ShowDialog();
             int result = popup.NewID;
@@ -115,8 +116,10 @@ namespace GraphProject
 
         private void MenuItem_NewVertex_Click(object sender, RoutedEventArgs e)
         {
-            PopupWindow popup = new PopupWindow();
-            popup.Owner = this;
+            PopupWindow popup = new PopupWindow("Create New Vertex", "Enter number for new vertex: ", "Create")
+            {
+                Owner = this
+            };
             popup.ShowDialog();
             int result = popup.NewID;
             if (result == -1)
