@@ -4,6 +4,7 @@ using System.Windows;
 using System.IO;
 using Microsoft.Win32;
 using GraphComponent.GraphBuilder;
+using GraphComponent.SettingWindow;
 
 namespace GUI
 {
@@ -15,6 +16,10 @@ namespace GUI
         public MainWindow()
         {
             InitializeComponent();
+
+            //GraphPane popupmenu event handlers
+            GraphView.On_MenuItem_ChangeID += MenuItem_ChangeID_Click;
+            GraphView.On_MenuItem_NewVertex += MenuItem_NewVertex_Click;
         }
 
         private void ConstructByPrufer(string str)
@@ -98,6 +103,33 @@ namespace GUI
         private void GraphView_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        //GraphPane SystemWindow handlers
+        private int MenuItem_ChangeID_Click(object sender, RoutedEventArgs e)
+        {
+            PopupWindow popup = new PopupWindow();
+            popup.Owner = this;
+            popup.ShowDialog();
+            int result = popup.NewID;
+            if (result == -1)
+            {
+                return 0;
+            }
+            return result;
+        }
+
+        private int MenuItem_NewVertex_Click(object sender, RoutedEventArgs e)
+        {
+            PopupWindow popup = new PopupWindow();
+            popup.Owner = this;
+            popup.ShowDialog();
+            int result = popup.NewID;
+            if (result == 0)
+            {
+                return 0;
+            }
+            return result;
         }
     }
 }

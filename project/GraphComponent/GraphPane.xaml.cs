@@ -17,6 +17,13 @@ namespace GraphComponent
         private ViewModel vm;
         private CustomVertex selectedVertex;
 
+        public delegate int PopupMenuDelegate(object sender, RoutedEventArgs e);
+
+        //PopupMenuDelegate events
+        public event PopupMenuDelegate On_MenuItem_ChangeID;
+        public event PopupMenuDelegate On_MenuItem_NewVertex;
+
+
         public GraphPane()
         {
             selectedVertex = null;
@@ -53,15 +60,7 @@ namespace GraphComponent
 
         private void MenuItem_ChangeID_Click(object sender, RoutedEventArgs e)
         {
-            PopupWindow popup = new PopupWindow();
-           // popup.Owner = this;
-            popup.ShowDialog();
-            int result = popup.NewID;
-            if (result == -1)
-            {
-                return;
-            }
-
+            var result = On_MenuItem_ChangeID(sender, e);
             //WTFF
             ((((sender as MenuItem).Parent as ContextMenu).PlacementTarget as Label).Content as CustomVertex).ID = result;
         }
@@ -73,23 +72,10 @@ namespace GraphComponent
             cm.IsOpen = true;
         }
 
-        private void CloseFile_Click(object sender, RoutedEventArgs e)
-        {
-            vm.Graph = new CustomGraph();
-        }
-
         private void MenuItem_NewVertex_Click(object sender, RoutedEventArgs e)
         {
-            PopupWindow popup = new PopupWindow();
-           // popup.Owner = this;
-            popup.ShowDialog();
-            int result = popup.NewID;
-            if (result == -1)
-            {
-                return;
-            }
-
-            vm.AddNewVertex(result);
+            var result = On_MenuItem_NewVertex(sender, e);
+            vm.AddNewVertex(result);  //result
         }
     }
 }
