@@ -100,15 +100,10 @@ namespace GUI
 
         }
 
-        private void GraphView_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         //GraphPane SystemWindow handlers
         private int MenuItem_ChangeID_Click(object sender, RoutedEventArgs e)
         {
-            PopupWindow popup = new PopupWindow();
+            PopupWindow popup = new PopupWindow("Change Number", "Enter new number: ", "Save");
             popup.Owner = this;
             popup.ShowDialog();
             int result = popup.NewID;
@@ -121,8 +116,10 @@ namespace GUI
 
         private int MenuItem_NewVertex_Click(object sender, RoutedEventArgs e)
         {
-            PopupWindow popup = new PopupWindow();
-            popup.Owner = this;
+            PopupWindow popup = new PopupWindow("Create New Vertex", "Enter number for new vertex: ", "Create")
+            {
+                Owner = this
+            };
             popup.ShowDialog();
             int result = popup.NewID;
             if (result == 0)

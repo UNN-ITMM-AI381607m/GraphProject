@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace GraphComponent.SettingWindow
 {
@@ -35,9 +23,12 @@ namespace GraphComponent.SettingWindow
                 }
             }
         }
-        public PopupWindow()
+       public PopupWindow(string title, string message, string button)
         {
             InitializeComponent();
+            Title = title;
+            Message.Text = message;
+            ButtonField.Content = button;
         }
 
         private void OnSave(object sender, RoutedEventArgs e)

@@ -9,11 +9,11 @@
     <Grid>
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10
                     ">
-            <TextBlock>Enter New Number:</TextBlock>
+            <TextBlock x:Name="Message"/>
             <Separator/>
             <TextBox x:Name="NameTextBox"/>
             <Separator/>
-            <Button Content="Save" Click="OnSave" />
+            <Button x:Name="ButtonField" Click="OnSave" />
         </StackPanel>
     </Grid>
 </Window>
