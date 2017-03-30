@@ -43,17 +43,18 @@ namespace GUI
 
         private void OpenFile_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
-            PruferResult.Content = "";
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
                 ConstructByPrufer(File.ReadAllText(openFileDialog.FileName));
+                PruferResult.Content = "";
             }
         }
 
         private void SaveFile_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             SaveFileDialog saveDialogFile = new SaveFileDialog();
+            saveDialogFile.Filter = "Text Files | *.txt";
             if (saveDialogFile.ShowDialog() == true)
             {
                 string a = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Graph).ToArray());
@@ -84,8 +85,8 @@ namespace GUI
         //Workflow handlers  
         public void ConstructByPrufer_OnClick(object sender, RoutedEventArgs e)
         {
-            PruferResult.Content = "";
             ConstructByPrufer(PruferTextBox.Text.ToString());
+            PruferResult.Content = "";
         }
 
 
