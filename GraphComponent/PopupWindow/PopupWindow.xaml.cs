@@ -23,7 +23,8 @@ namespace GraphComponent.SettingWindow
                 }
             }
         }
-       public PopupWindow(string title, string message, string button)
+
+        public PopupWindow(string title, string message, string button)
         {
             InitializeComponent();
             Title = title;
