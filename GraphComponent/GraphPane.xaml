@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="GraphComponent.GraphPane"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:graphsharp="clr-namespace:GraphSharp.Controls;assembly=GraphSharp.Controls"
+        xmlns:local="clr-namespace:GraphComponent"
+        xmlns:zoom ="clr-namespace:WPFExtensions.Controls;assembly=WPFExtensions"
+        Height="500" Width="750">
+    <UserControl.Resources>
+        <ContextMenu x:Key="cmVertex">
+            <MenuItem Header="Change number" Click="MenuItem_ChangeID_Click"
+                      CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+            <MenuItem Header="Add new vertex" Click="MenuItem_NewVertex_Click" />
+            <MenuItem Header="Menu Placeholder 3" />
+        </ContextMenu>
+
+        <DataTemplate x:Key="template" DataType="{x:Type local:CustomVertex}">
+            <Viewbox Width="50" Height="50">
+                <Grid Width="20" Height="20">
+                    <Ellipse Stroke="{Binding Path=Color}"/>
+                    <TextBlock HorizontalAlignment="Center" Text="{Binding Path=ID}" TextAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+
+        <Style TargetType="{x:Type graphsharp:VertexControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type graphsharp:VertexControl}">
+
+                        <Label  Content="{TemplateBinding Vertex}" ContentTemplate="{StaticResource template}" MouseDoubleClick="Label_MouseLeftButtonUp" MouseRightButtonDown="Label_MouseRightButtonDown"/>
+
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type graphsharp:EdgeControl}">
+            <Style.Resources>
+                <ToolTip x:Key="ToolTipContent">
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold" Text="Edge Information"/>
+                        <TextBlock Text="{Binding ID}"/>
+                    </StackPanel>
+                </ToolTip>
+            </Style.Resources>
+            <Setter Property="ToolTip" Value="{StaticResource ToolTipContent}"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <local:CustomGraphLayout Grid.Row="1" x:Name="graphLayout" Margin="10"
+                        Graph="{Binding Path=Graph}"
+                        LayoutAlgorithmType="{Binding Path=LayoutAlgorithmType, Mode=OneWay}"
+                        OverlapRemovalAlgorithmType="FSA"
+                        HighlightAlgorithmType="Simple"/>
+
+        <!--</zoom:ZoomControl>-->
+    </Grid>
+</UserControl>
