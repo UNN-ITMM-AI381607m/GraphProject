@@ -162,5 +162,9 @@
       <Name>GraphComponent</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="new_edge.ico" />
+    <Resource Include="new_vertex.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,7 +7,6 @@
         mc:Ignorable="d"
         Title="Graph Constructor" Height="{Binding SystemParameters.PrimaryScreenHeight}" Width="{Binding SystemParameters.PrimaryScreenWidth}">
     <Window.CommandBindings>
-        <CommandBinding Command="New" Executed="NewGraph_OnClick"/>
         <CommandBinding Command="Open" Executed="OpenFile_OnClick"/>
         <CommandBinding Command="Save" Executed="SaveFile_OnClick"/>
         <CommandBinding Command="Close" Executed="Close_OnClick"/>
@@ -32,7 +31,6 @@
         <DockPanel Grid.RowSpan="2">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="File">
-                    <MenuItem Command="New"/>
                     <MenuItem Command="Open"/>
                     <MenuItem Command="Save"/>
                     <Separator />
@@ -71,11 +69,24 @@
                     </TabItem.Background>
                     <StackPanel>
                         <Separator/>
-                        <Label x:Name="PruferResult" Height="30" FontSize="15" HorizontalContentAlignment="Center" Margin="0,0,0,0" Background="{StaticResource GrayGrayGradientBrush}"/>
+                        <StackPanel Margin="0,0,0,0" Background="{StaticResource GrayGrayGradientBrush}">
+                            <ToolBarTray Background="Transparent"  Width="84" HorizontalAlignment="Left">
+                                <ToolBar  Width="106" Background="LightGray">
+                                    <Button Name="NewVertex" ToolTip="Create new vertex." BorderBrush ="Gray" Background="{StaticResource GrayGrayGradientBrush}" Click="NewVertex_OnClick">
+                                        <Image Source="pack://application:,,,/new_vertex.ico" Height="22" Width="23"/>
+                                    </Button>
+                                    <Separator/>
+                                    <Button Name="NewEdge" ToolTip="Create new edge." BorderBrush ="Gray" Background="{StaticResource GrayGrayGradientBrush}"  Click="NewEdge_OnClick">
+                                        <Image Source="pack://application:,,,/new_edge.ico" Height="22" Width="23"/>
+                                    </Button>
+                                </ToolBar>
+                            </ToolBarTray>
+                            <Separator/>
+                            <Label  x:Name="PruferResult"  FontSize="15" HorizontalContentAlignment="Center" Height="36" Margin="89,-40,21,0"/>
+                        </StackPanel>
                         <Separator/>
                         <graph_component:GraphPane x:Name="GraphView" Margin="0,0,-23,0" Width="Auto" Height="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
                     </StackPanel>
-
                 </TabItem>
                 <TabItem Header="Place holder for second tab">
                 </TabItem>

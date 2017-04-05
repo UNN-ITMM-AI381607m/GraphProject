@@ -37,10 +37,6 @@ namespace GUI
         }
 
         //File menu handlers
-        private void NewGraph_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
-        {
-        }
-
         private void OpenFile_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -77,42 +73,51 @@ namespace GUI
         }
 
 
-        public void Close_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        private void Close_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             Close();
         }
 
+        //Toolbar handlers
+        private void NewVertex_OnClick(object sender, RoutedEventArgs e)
+        {
+            GraphView.AddNewVertex(1);
+        }
+
+        private void NewEdge_OnClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         //Workflow handlers  
-        public void ConstructByPrufer_OnClick(object sender, RoutedEventArgs e)
+        private void ConstructByPrufer_OnClick(object sender, RoutedEventArgs e)
         {
             ConstructByPrufer(PruferTextBox.Text.ToString());
             PruferResult.Content = "";
         }
 
 
-        public void GetPrufer_OnClick(object sender, RoutedEventArgs e)
+        private void GetPrufer_OnClick(object sender, RoutedEventArgs e)
         {
             bool isEmpty = GraphView.Graph.IsVerticesEmpty;
             PruferResult.Content = isEmpty ? "" : "Generated Prufer Code: " + string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Graph).ToArray());
         }
 
-        public void Numerate_OnClick(object sender, RoutedEventArgs e)
+        private void Numerate_OnClick(object sender, RoutedEventArgs e)
         {
 
         }
 
-        //GraphPane SystemWindow handlers
+        //GraphPane PopupWindow handlers
         private int MenuItem_ChangeID_Click(object sender, RoutedEventArgs e)
         {
-            PopupWindow popup = new PopupWindow("Change Number", "Enter new number: ", "Save");
-            popup.Owner = this;
-            popup.ShowDialog();
-            int result = popup.NewID;
-            if (result == -1)
+            PopupWindow popup = new PopupWindow("Change Number", "Enter new number: ", "Save")
             {
-                return 0;
-            }
-            return result;
+                Owner = this
+            };
+ 
+            popup.ShowDialog();
+            return popup.NewID == -1 ? 0 : popup.NewID;
         }
 
         private int MenuItem_NewVertex_Click(object sender, RoutedEventArgs e)
@@ -122,12 +127,7 @@ namespace GUI
                 Owner = this
             };
             popup.ShowDialog();
-            int result = popup.NewID;
-            if (result == 0)
-            {
-                return 0;
-            }
-            return result;
+            return popup.NewID;
         }
     }
 }

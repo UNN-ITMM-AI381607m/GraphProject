@@ -75,7 +75,12 @@ namespace GraphComponent
         private void MenuItem_NewVertex_Click(object sender, RoutedEventArgs e)
         {
             var result = On_MenuItem_NewVertex(sender, e);
-            vm.AddNewVertex(result);  //result
+           AddNewVertex(result);
+        }
+
+        public void AddNewVertex(int number)
+        {
+            vm.AddNewVertex(number);
         }
     }
 }
