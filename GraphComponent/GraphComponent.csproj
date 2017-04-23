@@ -85,6 +85,7 @@
     <Compile Include="GraphPane.xaml.cs">
       <DependentUpon>GraphPane.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Numerator.cs" />
     <Compile Include="PopupWindow\PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>

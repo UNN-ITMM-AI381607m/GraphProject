@@ -5,6 +5,7 @@ using System.IO;
 using Microsoft.Win32;
 using GraphComponent.GraphBuilder;
 using GraphComponent.SettingWindow;
+using GraphComponent;
 
 namespace GUI
 {
@@ -105,7 +106,7 @@ namespace GUI
 
         private void Numerate_OnClick(object sender, RoutedEventArgs e)
         {
-
+            Numerator.Renumber(GraphView.Graph);
         }
 
         //GraphPane PopupWindow handlers
