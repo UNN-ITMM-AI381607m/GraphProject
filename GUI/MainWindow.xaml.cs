@@ -17,10 +17,8 @@ namespace GUI
         public MainWindow()
         {
             InitializeComponent();
-
             //GraphPane popupmenu event handlers
             GraphView.On_MenuItem_ChangeID += MenuItem_ChangeID_Click;
-            GraphView.On_MenuItem_NewVertex += MenuItem_NewVertex_Click;
         }
 
         private void ConstructByPrufer(string str)
@@ -32,7 +30,7 @@ namespace GUI
             }
             catch
             {
-                MessageBox.Show(this, "File not found or has invalid format", "Error");
+                MessageBox.Show(this, "Invalid Prufer code", "Error");
                 return;
             }
         }
@@ -40,12 +38,14 @@ namespace GUI
         //File menu handlers
         private void OpenFile_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
+            GraphView.ChangeAlgo("LinLog");
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
                 ConstructByPrufer(File.ReadAllText(openFileDialog.FileName));
                 PruferResult.Content = "";
             }
+            GraphView.ChangeAlgo("None");
         }
 
         private void SaveFile_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
@@ -82,12 +82,16 @@ namespace GUI
         //Toolbar handlers
         private void NewVertex_OnClick(object sender, RoutedEventArgs e)
         {
-            GraphView.AddNewVertex(1);
+            PopupWindow popup = new PopupWindow("Create New Vertex", "Enter number for new vertex: ", "Create")
+            {
+                Owner = this
+            };
+            popup.ShowDialog();
+            GraphView.AddNewVertex(popup.NewID);
         }
 
         private void NewEdge_OnClick(object sender, RoutedEventArgs e)
         {
-
         }
 
         //Workflow handlers  
@@ -117,16 +121,6 @@ namespace GUI
                 Owner = this
             };
  
-            popup.ShowDialog();
-            return popup.NewID == -1 ? 0 : popup.NewID;
-        }
-
-        private int MenuItem_NewVertex_Click(object sender, RoutedEventArgs e)
-        {
-            PopupWindow popup = new PopupWindow("Create New Vertex", "Enter number for new vertex: ", "Create")
-            {
-                Owner = this
-            };
             popup.ShowDialog();
             return popup.NewID;
         }

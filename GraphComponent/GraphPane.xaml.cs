@@ -21,7 +21,6 @@ namespace GraphComponent
 
         //PopupMenuDelegate events
         public event PopupMenuDelegate On_MenuItem_ChangeID;
-        public event PopupMenuDelegate On_MenuItem_NewVertex;
 
 
         public GraphPane()
@@ -62,7 +61,7 @@ namespace GraphComponent
         {
             var result = On_MenuItem_ChangeID(sender, e);
             //WTFF
-            ((((sender as MenuItem).Parent as ContextMenu).PlacementTarget as Label).Content as CustomVertex).ID = result;
+            vm.ChangeId((((sender as MenuItem).Parent as ContextMenu).PlacementTarget as Label).Content as CustomVertex, result);
         }
 
         private void Label_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -72,15 +71,19 @@ namespace GraphComponent
             cm.IsOpen = true;
         }
 
-        private void MenuItem_NewVertex_Click(object sender, RoutedEventArgs e)
-        {
-            var result = On_MenuItem_NewVertex(sender, e);
-           AddNewVertex(result);
-        }
-
         public void AddNewVertex(int number)
         {
             vm.AddNewVertex(number);
+        }
+
+        private void MenuItem_DeleteVertex_Click(object sender, RoutedEventArgs e)
+        {
+            vm.RemoveVertex(((((sender as MenuItem).Parent as ContextMenu).PlacementTarget as Label).Content as CustomVertex));
+        }
+
+        public void ChangeAlgo(string name)
+        {
+            graphLayout.LayoutAlgorithmType = name;
         }
     }
 }

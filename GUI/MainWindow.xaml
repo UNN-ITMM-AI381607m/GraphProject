@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"        
+        xmlns:zoom="clr-namespace:GraphSharp.Controls.Zoom;assembly=GraphSharp.Controls"
         xmlns:graph_component="clr-namespace:GraphComponent;assembly=GraphComponent"
         mc:Ignorable="d"
         Title="Graph Constructor" Height="{Binding SystemParameters.PrimaryScreenHeight}" Width="{Binding SystemParameters.PrimaryScreenWidth}">
@@ -47,7 +48,7 @@
                 </StackPanel.Resources>
                 <Separator />
                 <TextBlock Background="{StaticResource GrayGrayGradientBrush}">
-                <Label Content="Workflow" FontSize="14" Background="Transparent" BorderBrush="Transparent" Width="73" Height="28" Margin="57,0"/>
+                    <Label Content="Workflow" FontSize="14" Background="Transparent" BorderBrush="Transparent" Width="73" Height="28" Margin="57,0"/>
                 </TextBlock>
                 <Separator />
                 <Label Content="1. Construct by Prufer code" Height="28"></Label>
@@ -85,7 +86,9 @@
                             <Label  x:Name="PruferResult"  FontSize="15" HorizontalContentAlignment="Center" Height="36" Margin="89,-40,21,0"/>
                         </StackPanel>
                         <Separator/>
-                        <graph_component:GraphPane x:Name="GraphView" Margin="0,0,-23,0" Width="Auto" Height="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+                        <zoom:ZoomControl Height="400">
+                            <graph_component:GraphPane x:Name="GraphView" />
+                        </zoom:ZoomControl>
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Place holder for second tab">

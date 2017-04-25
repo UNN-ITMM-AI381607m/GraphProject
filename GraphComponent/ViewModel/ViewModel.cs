@@ -49,9 +49,30 @@ namespace GraphComponent
             }
         }
 
-        public void AddNewVertex(int id = 0)
+        public void AddNewVertex(int id)
         {
-            graph.AddVertex(new CustomVertex(id));
+            if (CheckValidId(id))
+                graph.AddVertex(new CustomVertex(id));
+        }
+
+        public void RemoveVertex(CustomVertex vertex)
+        {
+            graph.RemoveVertex(vertex);
+        }
+
+        public void ChangeId(CustomVertex vertex, int newId)
+        {
+            if (CheckValidId(newId))
+                vertex.ID = newId;
+        }
+
+        bool CheckValidId(int id)
+        {
+            if (id < 0 || id > 999)
+                return false;
+            if (graph.Vertices.Any(x => x.ID == id))
+                return false;
+            return true;
         }
 
         public CustomEdge AddNewGraphEdge(CustomVertex from, CustomVertex to)
