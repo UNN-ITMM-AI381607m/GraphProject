@@ -24,23 +24,23 @@
             <Setter Property="Margin" Value="10" />
         </Style>
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="101*"/>
-        </Grid.RowDefinitions>
-        <DockPanel Grid.RowSpan="2">
-            <Menu DockPanel.Dock="Top">
-                <MenuItem Header="File">
-                    <MenuItem Command="Open"/>
-                    <MenuItem Command="Save"/>
-                    <Separator />
-                    <MenuItem Command="Close"/>
-                </MenuItem>
-                <MenuItem Header="Options">
-                </MenuItem>
-            </Menu>
-            <StackPanel HorizontalAlignment="Right" Name="textEditor" Width="187"  Background="#FFF0F0F0">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Command="Open"/>
+                <MenuItem Command="Save"/>
+                <Separator />
+                <MenuItem Command="Close"/>
+            </MenuItem>
+            <MenuItem Header="Options">
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="186"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" HorizontalAlignment="Right" Name="textEditor" Width="187"  Background="#FFF0F0F0" Margin="-1,0,0,0">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type Label}">
                         <Setter Property="Margin" Value="0,5,0,0"/>
@@ -60,7 +60,7 @@
                 <Label Content="3. Numerate Graph" Height="28"></Label>
                 <Button x:Name="Numerate" Content="Run" Height="20" Margin="0,10,119,10" Width="50" RenderTransformOrigin="0.127,0.68" HorizontalAlignment="Right" Click="Numerate_OnClick"/>
             </StackPanel>
-            <TabControl>
+            <TabControl Grid.Column="1">
                 <TabItem Header="Graph">
                     <TabItem.Background>
                         <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
@@ -68,34 +68,41 @@
                             <GradientStop Color="#19E5E5E5" Offset="1"/>
                         </LinearGradientBrush>
                     </TabItem.Background>
-                    <StackPanel>
-                        <Separator/>
-                        <StackPanel Margin="0,0,0,0" Background="{StaticResource GrayGrayGradientBrush}">
-                            <ToolBarTray Background="Transparent"  Width="84" HorizontalAlignment="Left">
-                                <ToolBar  Width="106" Background="LightGray">
-                                    <Button Name="NewVertex" ToolTip="Create new vertex." BorderBrush ="Gray" Background="{StaticResource GrayGrayGradientBrush}" Click="NewVertex_OnClick">
-                                        <Image Source="pack://application:,,,/new_vertex.ico" Height="22" Width="23"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="36"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Separator Grid.Row="0"/>
+                        <Grid Grid.Row="0" Background="{StaticResource GrayGrayGradientBrush}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="53*" />
+                                <ColumnDefinition Width="231*" />
+                            </Grid.ColumnDefinitions>
+                            <ToolBarTray Grid.Row="0" Grid.Column="0" Background="Transparent" HorizontalAlignment="Left">
+                                <ToolBar Background="LightGray" Height="36">
+                                    <Button Name="NewVertex" ToolTip="Create new vertex" BorderBrush ="Gray" Background="{StaticResource GrayGrayGradientBrush}" Click="NewVertex_OnClick">
+                                        <Image Source="/GUI;component/Resources/Icons/new_vertex.ico" Stretch="Fill"/>
                                     </Button>
                                     <Separator/>
-                                    <Button Name="NewEdge" ToolTip="Create new edge." BorderBrush ="Gray" Background="{StaticResource GrayGrayGradientBrush}"  Click="NewEdge_OnClick">
-                                        <Image Source="pack://application:,,,/new_edge.ico" Height="22" Width="23"/>
+                                    <Button Name="NewEdge" ToolTip="Create new edge" BorderBrush ="Gray" Background="{StaticResource GrayGrayGradientBrush}"  Click="NewEdge_OnClick">
+                                        <Image Source="/GUI;component/Resources/Icons/new_edge.ico" Stretch="Fill"/>
                                     </Button>
                                 </ToolBar>
                             </ToolBarTray>
-                            <Separator/>
-                            <Label  x:Name="PruferResult"  FontSize="15" HorizontalContentAlignment="Center" Height="36" Margin="89,-40,21,0"/>
-                        </StackPanel>
-                        <Separator/>
-                        <zoom:ZoomControl Height="400">
-                            <graph_component:GraphPane x:Name="GraphView" />
+                            <Label Grid.Column="1" x:Name="PruferResult"  FontSize="15" HorizontalContentAlignment="Center" />
+                        </Grid>
+                        <Separator Grid.Row="1"/>
+                        <zoom:ZoomControl Grid.Row="1" Zoom="0.2" MaxZoom="4">
+                            <graph_component:GraphPane x:Name="GraphView"/>
                         </zoom:ZoomControl>
-                    </StackPanel>
+                    </Grid>
                 </TabItem>
                 <TabItem Header="Place holder for second tab">
                 </TabItem>
                 <TabItem Header="Place holder for third tab">
                 </TabItem>
             </TabControl>
-        </DockPanel>
-    </Grid>
+        </Grid>
+    </DockPanel>
 </Window>
