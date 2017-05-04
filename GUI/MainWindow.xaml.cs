@@ -110,7 +110,7 @@ namespace GUI
 
         private void Numerate_OnClick(object sender, RoutedEventArgs e)
         {
-            Numerator.Renumber(GraphView.Graph);
+            GraphView.Graph = Numerator.Renumber(GraphView.Graph);
         }
 
         //GraphPane PopupWindow handlers

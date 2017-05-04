@@ -8,11 +8,31 @@ namespace GraphComponent
 {
     public class Numerator
     {
-
-        public static void Renumber(CustomGraph graph)
+        public static CustomGraph Renumber(CustomGraph graph)
         {
             List<MyEdge> new_graph = ConvertGraph(graph);
-            InitGraph(new_graph);
+            InitGraphRecurs(InitGraph(new_graph,graph.VertexCount),null, graph.VertexCount);
+            Numeration(new_graph,1);
+            return BuildNewGraph(new_graph);
+        }
+        static CustomGraph BuildNewGraph(List<MyEdge> graph)
+        {
+            CustomGraph new_graph = new CustomGraph();
+            List<CustomVertex> Vertices = new List<CustomVertex>();
+            CustomVertex tmp = null;
+            foreach (MyEdge edge in graph)
+            {
+                tmp = new CustomVertex(edge.Next.Number);
+                if (Vertices.Find(x=>x.ID == tmp.ID) == null) Vertices.Add(tmp);
+                tmp = new CustomVertex(edge.Preview.Number);
+                if (Vertices.Find(x => x.ID == tmp.ID) == null) Vertices.Add(tmp);
+            }
+            new_graph.AddVertexRange(Vertices);
+            foreach (MyEdge edge in graph)
+            {
+                new_graph.AddEdge(new CustomEdge("0", Vertices.Find(x => x.ID == edge.Preview.Number), Vertices.Find(x => x.ID == edge.Next.Number)));
+            }
+                return new_graph;
         }
         static List<MyEdge> ConvertGraph(CustomGraph graph)
         {
@@ -39,138 +59,146 @@ namespace GraphComponent
             }
             return result;
         }
-        static void InitGraph(List<MyEdge> graph)
+        static MyEdge InitGraph(List<MyEdge> graph,int kolvo)
         {
             foreach (MyEdge edge in graph)
             {
-                if (edge.Preview.List_of_edge.Count == 1)
-                {
-                    MyVertex tmp_vert = edge.Next;
-                    edge.Next = edge.Preview;
-                    edge.Preview = tmp_vert;
-                    Recurs(edge, edge.Next, graph.Count);
-                    break;
-                }
                 if (edge.Next.List_of_edge.Count == 1)
                 {
-                    Recurs(edge, edge.Next, graph.Count);
-                    break;
+                    edge.Number_vertex_next = 1;
+                    edge.Number_vertex_preview = kolvo-1;
                 }
-            }            
+                if (edge.Preview.List_of_edge.Count == 1)
+                {
+                    edge.Number_vertex_preview = 1;
+                    edge.Number_vertex_next = kolvo-1;
+                }
+            }
+            foreach (MyEdge edge in graph)
+                if (edge.Number_vertex_next == 0) return edge;
+            return null;
         }
-        static int Recurs(MyEdge edge,MyVertex vert,int kolvo)
+        static void InitGraphRecurs(MyEdge current,MyEdge preview,int kolvo)
         {
-            if (edge.Number_vertex_preview == 0) 
+            if (current != null)
             {
-                if (edge.Next != vert)
-                {
-                    MyVertex tmp_vert = edge.Next;
-                    edge.Next = edge.Preview;
-                    edge.Preview = tmp_vert;
-                }
-                if (edge.Preview.List_of_edge.Count != 1)
-                {
-                    foreach (MyEdge tmp in edge.Preview.List_of_edge)
+                foreach (MyEdge edge in current.Next.List_of_edge)
+                    if (edge != current && edge!= preview && edge.Number_vertex_next == 0) InitGraphRecurs(edge, current, kolvo);
+                foreach (MyEdge edge in current.Next.List_of_edge)
+                    if (edge.Number_vertex_next != 0 && edge != current)
+                        if (current.Next == edge.Next) current.Number_vertex_next += edge.Number_vertex_preview;
+                        else current.Number_vertex_next += edge.Number_vertex_next;
+                current.Number_vertex_next++;
+                current.Number_vertex_preview = kolvo - current.Number_vertex_next;
+            }
+        }
+        static MyVertex SearchNextVertex(MyVertex current,MyEdge preview)
+        {
+            int max = int.MinValue;
+            MyVertex next = null;
+            foreach (MyEdge edge in current.List_of_edge)
+                if (edge != preview)
+                    if (edge.Next == current)
                     {
-                        if (tmp != edge) edge.Number_vertex_preview += Recurs(tmp, edge.Next, kolvo);
+                        if (edge.Number_vertex_preview > max)
+                        {
+                            max = edge.Number_vertex_preview;
+                            next = edge.Preview;
+                        }
                     }
-                    edge.Number_vertex_preview++;
-                    edge.Number_vertex_next = kolvo - edge.Number_vertex_preview + 1;
+                    else
+                    {
+                        if (edge.Number_vertex_next > max)
+                        {
+                            max = edge.Number_vertex_next;
+                            next = edge.Next;
+                        }
+                    }
+             return next;
+        }
+        static MyVertex SearchFirstVertex(MyVertex current, MyEdge preview)
+        {
+            MyVertex next = SearchNextVertex(current, preview);
+            while (next.List_of_edge.Count!=1)
+            {
+                foreach (MyEdge edge in next.List_of_edge)
+                    if (edge.Next == next && edge.Preview == current || edge.Next == current && edge.Preview == next)
+                    {
+                        preview = edge;
+                        break;
+                    }
+                current = next;
+                next = SearchNextVertex(current, preview);               
+            }
+            return next;
+        }
+        static int Numeration(List<MyEdge> graph,int first)
+        {
+            MyVertex preview_vertex = SearchFirstVertex(graph[0].Next, null),current_vertex = null,next_vertex = null;
+            preview_vertex.Number = first++;
+            MyEdge preview_edge = preview_vertex.List_of_edge[0],next_edge = null;
+            current_vertex = SearchNextVertex(preview_vertex, null);
+            while (true)
+            {
+                next_vertex = SearchNextVertex(current_vertex, preview_edge);
+                if (next_vertex != null)
+                {
+                    foreach (MyEdge edge in current_vertex.List_of_edge)
+                        if (edge.Next == next_vertex && edge.Preview == current_vertex || edge.Next == current_vertex && edge.Preview == next_vertex)
+                        {
+                            next_edge = edge;
+                            break;
+                        }
+                    List<MyEdge> new_graph = new List<MyEdge>();
+                    foreach (MyEdge edge in current_vertex.List_of_edge)
+                        if (edge != preview_edge && edge != next_edge) new_graph.Add(edge);
+                    if (new_graph.Count != 0)
+                    {
+                        BuildGraph(new_graph);
+                        InitGraphRecurs(InitGraph(new_graph, new_graph.Count + 1), null, new_graph.Count + 1);
+                        first = Numeration(new_graph, first);
+                    }
+                    else current_vertex.Number = first++;
+                    current_vertex = next_vertex;
+                    preview_edge = next_edge;
                 }
                 else
                 {
-                    edge.Number_vertex_preview = 1;
-                    edge.Number_vertex_next = kolvo;
-                }                   
+                    current_vertex.Number = first++;
+                    break;
+                }
             }
-            return edge.Number_vertex_preview;
+            return first;
         }
-        static void Numeration(List<MyEdge> graph,int first,int last)
+        static void BuildGraph(List<MyEdge> graph)
         {
-            MyVertex current_vertex = graph[0].Next, next_vertex = null;
-            int max;
-            while (true)
-            {
-                max = int.MinValue;
-                foreach (MyEdge edge in current_vertex.List_of_edge)
-                    if (current_vertex == edge.Next && !edge.Next.IsWatch)
-                    {
-                        if (edge.Number_vertex_preview > max)
-                        {
-                            max = edge.Number_vertex_preview;
-                            next_vertex = edge.Preview;
-                        }
-                    }
-                    else
-                    {
-                        if (edge.Number_vertex_next > max)
-                        {
-                            max = edge.Number_vertex_next;
-                            next_vertex = edge.Next;
-                        }
-                    }
-                current_vertex.IsWatch = true;
-                current_vertex = next_vertex;
-                if (current_vertex.List_of_edge.Count == 1) break;
-            }
             foreach (MyEdge edge in graph)
             {
-                edge.Next.IsWatch = false;
-                edge.Preview.IsWatch = false;
-            }
-            current_vertex.Number = first;
-            first++;
-            List<MyEdge> new_graph = new List<MyEdge>();
-            MyEdge tmp = null;
-            while (true)
-            {
-                max = int.MinValue;
-                foreach (MyEdge edge in current_vertex.List_of_edge)
-                    if (current_vertex == edge.Next && !edge.Next.IsWatch)
+                for (int i = 0; i < edge.Next.List_of_edge.Count; i++)
+                    if (graph.IndexOf(edge.Next.List_of_edge[i]) == -1)
                     {
-                        if (edge.Number_vertex_preview > max)
-                        {
-                            max = edge.Number_vertex_preview;
-                            next_vertex = edge.Preview;
-                            tmp = edge;
-                        }
+                        edge.Next.List_of_edge.RemoveAt(i);
+                        i--;
                     }
-                    else
+                for (int i = 0; i < edge.Preview.List_of_edge.Count; i++)
+                    if (graph.IndexOf(edge.Preview.List_of_edge[i]) == -1)
                     {
-                        if (edge.Number_vertex_next > max)
-                        {
-                            max = edge.Number_vertex_next;
-                            next_vertex = edge.Next;
-                            tmp = edge;
-                        }
+                        edge.Preview.List_of_edge.RemoveAt(i);
+                        i--;
                     }
-                foreach (MyEdge edge in current_vertex.List_of_edge)
-                    if (edge != tmp) new_graph.Add(edge);
-                if (new_graph.Count!=0)
-                {
-                    //ClearGraph(new_graph);
-                    InitGraph(new_graph);
-
-                    //Numeration(new_graph,first,)
-                }
-                current_vertex.IsWatch = true;
-                current_vertex = next_vertex;
-                if (current_vertex.List_of_edge.Count == 1) break;
             }
-        }
+        }      
     }
     class MyVertex
     {
+        List<MyEdge> list_of_edge;
+        int id, number;
         public MyVertex(int pid)
         {
             id = pid;
             number = 0;
             list_of_edge = new List<MyEdge>();
-            IsWatch = false;
-        }
-        List<MyEdge> list_of_edge;
-        int id,number;
-        bool is_watch;
+        }      
         public List<MyEdge> List_of_edge
         {
             get
@@ -202,17 +230,6 @@ namespace GraphComponent
             set
             {
                 number = value;
-            }
-        }
-        public bool IsWatch
-        {
-            get
-            {
-                return is_watch;
-            }
-            set
-            {
-                is_watch = value;
             }
         }
     }
