@@ -5,6 +5,7 @@
         xmlns:local="clr-namespace:GraphComponent">
     <UserControl.Resources>
         <ContextMenu x:Key="cmVertex" DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+            <MenuItem Header="Mark as Root" Click="MenuItem_MarkAsRoot_Click"/>
             <MenuItem Header="Change number" Click="MenuItem_ChangeID_Click" />
             <MenuItem Header="Delete" Click="MenuItem_DeleteVertex_Click" />
         </ContextMenu>
@@ -47,7 +48,7 @@
         </Style>
     </UserControl.Resources>
     <local:CustomGraphLayout x:Name="graphLayout"
-                        Graph="{Binding Path=Graph}"
+                        Graph="{Binding Path=Tree}"
                         LayoutAlgorithmType="{Binding Path=LayoutAlgorithmType}"
                         OverlapRemovalAlgorithmType="FSA"
                         HighlightAlgorithmType="Simple"/>

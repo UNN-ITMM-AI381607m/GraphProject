@@ -15,14 +15,15 @@ namespace GraphComponent
         private Tree tree;
         private List<string> layoutAlgorithmTypes = new List<string>();
 
-        public Tree Graph
+        public Tree Tree
         {
             get { return tree; }
             set
             {
                 SortLayout(true);
                 tree = value;
-                NotifyPropertyChanged("Graph");
+                tree.PropertyChanged += Tree_PropertyChanged;
+                NotifyPropertyChanged("Tree");
                 SortLayout(false);
             }
         }
@@ -52,24 +53,30 @@ namespace GraphComponent
 
         public ViewModel()
         {
-            tree = new Tree(true);
-
+            Tree = new Tree();
             //Add Layout Algorithm Types
-            layoutAlgorithmTypes.Add("None");
-            layoutAlgorithmTypes.Add("BoundedFR");
-            layoutAlgorithmTypes.Add("Circular");
-            layoutAlgorithmTypes.Add("CompoundFDP");
-            layoutAlgorithmTypes.Add("EfficientSugiyama");
-            layoutAlgorithmTypes.Add("FR");
-            layoutAlgorithmTypes.Add("ISOM");
-            layoutAlgorithmTypes.Add("KK");
-            layoutAlgorithmTypes.Add("LinLog");
-            layoutAlgorithmTypes.Add("Tree");
-
-            LayoutAlgorithmType = "LinLog";
+            //layoutAlgorithmTypes.Add("None");
+            //layoutAlgorithmTypes.Add("BoundedFR");
+            //layoutAlgorithmTypes.Add("Circular");
+            //layoutAlgorithmTypes.Add("CompoundFDP");
+            //layoutAlgorithmTypes.Add("EfficientSugiyama");
+            //layoutAlgorithmTypes.Add("FR");
+            //layoutAlgorithmTypes.Add("ISOM");
+            //layoutAlgorithmTypes.Add("KK");
+            //layoutAlgorithmTypes.Add("LinLog");
+            //layoutAlgorithmTypes.Add("Tree");
         }
 
-        public VertexStatus AddNewVertex(int id)
+        private void Tree_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Root")
+            {
+                SortLayout(true);
+                SortLayout(false);
+            }
+        }
+
+        public VertexStatus AddVertex(int id)
         {
             VertexStatus status = CheckValidId(id);
             if (status == VertexStatus.SUCCES)
@@ -113,10 +120,15 @@ namespace GraphComponent
             return VertexStatus.SUCCES;
         }
 
-        public bool AddNewGraphEdge(CustomVertex from, CustomVertex to)
+        public bool AddEdge(CustomVertex from, CustomVertex to)
         {
             CustomEdge newEdge = new CustomEdge(from, to);
             return tree.AddEdge(newEdge);
+        }
+
+        public void SetRoot(CustomVertex newRoot)
+        {
+            tree.Root = newRoot;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

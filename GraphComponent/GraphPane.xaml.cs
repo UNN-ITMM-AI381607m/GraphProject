@@ -34,8 +34,8 @@ namespace GraphComponent
 
         public Tree Graph
         {
-            get { return vm.Graph; }
-            set { vm.Graph = value; }
+            get { return vm.Tree; }
+            set { vm.Tree = value; }
         }
 
         public void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -43,23 +43,23 @@ namespace GraphComponent
             if (selectedVertex == null)
             {
                 selectedVertex = (sender as Label).Content as CustomVertex;
-                selectedVertex.Color = "Blue";
+                selectedVertex.Selected = true;
             }
             else
             {
                 CustomVertex second = ((sender as Label).Content as CustomVertex);
                 if (second != selectedVertex)
                 {
-                    vm.AddNewGraphEdge(selectedVertex, second);
+                    vm.AddEdge(selectedVertex, second);
                 }
-                selectedVertex.Color = "Black";
+                selectedVertex.Selected = false;
                 selectedVertex = null;
             }
         }
 
         private void MenuItem_ChangeID_Click(object sender, RoutedEventArgs e)
         {
-            CustomVertex vertex = (((sender as MenuItem).Parent as ContextMenu).PlacementTarget as GraphSharp.Controls.VertexControl).Vertex as CustomVertex;
+            CustomVertex vertex = GetVertexFromContextMenu(sender);
             var result = On_MenuItem_ChangeID(sender, e);
             if (result == -1)
                 return;
@@ -87,19 +87,35 @@ namespace GraphComponent
         {
             if (number == -1)
                 return;
-            HandleNewIdStatus(vm.AddNewVertex(number), number);
+            HandleNewIdStatus(vm.AddVertex(number), number);
         }
 
         private void MenuItem_DeleteVertex_Click(object sender, RoutedEventArgs e)
         {
-            CustomVertex vertex = (((sender as MenuItem).Parent as ContextMenu).PlacementTarget as GraphSharp.Controls.VertexControl).Vertex as CustomVertex;
+            CustomVertex vertex = GetVertexFromContextMenu(sender);
             vm.RemoveVertex(vertex);
         }
 
         private void MenuItem_DeleteEdge_Click(object sender, RoutedEventArgs e)
         {
-            CustomEdge edge = (((sender as MenuItem).Parent as ContextMenu).PlacementTarget as GraphSharp.Controls.EdgeControl).Edge as CustomEdge;
+            CustomEdge edge = GetEdgeFromContextMenu(sender);
             vm.RemoveEdge(edge);
+        }
+
+        private void MenuItem_MarkAsRoot_Click(object sender, RoutedEventArgs e)
+        {
+            CustomVertex newRoot = GetVertexFromContextMenu(sender);
+            vm.SetRoot(newRoot);
+        }
+
+        CustomVertex GetVertexFromContextMenu(object sender)
+        {
+            return (((sender as MenuItem).Parent as ContextMenu).PlacementTarget as GraphSharp.Controls.VertexControl).Vertex as CustomVertex;
+        }
+
+        CustomEdge GetEdgeFromContextMenu(object sender)
+        {
+            return (((sender as MenuItem).Parent as ContextMenu).PlacementTarget as GraphSharp.Controls.EdgeControl).Edge as CustomEdge;
         }
     }
 }
