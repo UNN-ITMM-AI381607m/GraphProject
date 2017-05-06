@@ -9,8 +9,12 @@ using System.Windows.Input;
 
 namespace GraphComponent
 {
-    public class CustomGraphLayout : GraphLayout<CustomVertex, CustomEdge, CustomGraph> 
+    public class CustomGraphLayout : GraphLayout<CustomVertex, CustomEdge, Tree> 
     {
-        
+        public CustomGraphLayout() : base()
+        {
+            DestructionTransition = null;
+            CreationTransition = null;
+        }
     }
 }

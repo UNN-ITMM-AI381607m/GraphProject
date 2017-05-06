@@ -32,13 +32,13 @@ namespace GraphComponent
         }
 
 
-        public CustomGraph Graph
+        public Tree Graph
         {
             get { return vm.Graph; }
             set { vm.Graph = value; }
         }
 
-        public void Label_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        public void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (selectedVertex == null)
             {

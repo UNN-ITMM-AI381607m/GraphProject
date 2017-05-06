@@ -14,9 +14,9 @@ namespace GraphComponent.GraphBuilder
         //    return CodeToGraph(code_list);
         //}
 
-        static public CustomGraph CodeToGraph(List<int> code)
+        static public Tree CodeToGraph(List<int> code)
         {
-            CustomGraph NewGraph = new CustomGraph();
+            Tree NewGraph = new Tree();
             List<CustomVertex> Vertices = new List<CustomVertex>();
             List<int> used = new List<int>();
             for (int i = 0; i < code.Count() + 2; i++)
@@ -40,7 +40,7 @@ namespace GraphComponent.GraphBuilder
             return NewGraph;
         }
 
-        static public List<int> GraphToCode(CustomGraph Graph)
+        static public List<int> GraphToCode(Tree Graph)
         {
             List<CustomVertex> Verticies = Graph.Vertices.ToList();
             List<CustomEdge> Edges = Graph.Edges.ToList();

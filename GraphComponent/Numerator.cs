@@ -8,16 +8,16 @@ namespace GraphComponent
 {
     public class Numerator
     {
-        public static CustomGraph Renumber(CustomGraph graph)
+        public static Tree Renumber(Tree graph)
         {
             List<MyEdge> new_graph = ConvertGraph(graph);
             InitGraphRecurs(InitGraph(new_graph,graph.VertexCount),null, graph.VertexCount);
             Numeration(new_graph,1);
             return BuildNewGraph(new_graph);
         }
-        static CustomGraph BuildNewGraph(List<MyEdge> graph)
+        static Tree BuildNewGraph(List<MyEdge> graph)
         {
-            CustomGraph new_graph = new CustomGraph();
+            Tree new_graph = new Tree();
             List<CustomVertex> Vertices = new List<CustomVertex>();
             CustomVertex tmp = null;
             foreach (MyEdge edge in graph)
@@ -34,7 +34,7 @@ namespace GraphComponent
             }
                 return new_graph;
         }
-        static List<MyEdge> ConvertGraph(CustomGraph graph)
+        static List<MyEdge> ConvertGraph(Tree graph)
         {
             List<MyEdge> result = new List<MyEdge>();
             List<MyVertex> vertices = new List<MyVertex>();

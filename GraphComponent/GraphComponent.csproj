@@ -85,7 +85,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="GraphCustom\CustomEdge.cs" />
-    <Compile Include="GraphCustom\CustomGraph.cs" />
+    <Compile Include="GraphCustom\Tree.cs" />
     <Compile Include="Layout\CustomGraphLayout.cs" />
     <Compile Include="GraphCustom\CustomVertex.cs" />
     <Page Include="PopupWindow\PopupWindow.xaml">

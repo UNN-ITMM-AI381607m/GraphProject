@@ -12,16 +12,16 @@ namespace GraphComponent
     public class ViewModel : INotifyPropertyChanged
     {
         private string layoutAlgorithmType;
-        private CustomGraph graph;
+        private Tree tree;
         private List<string> layoutAlgorithmTypes = new List<string>();
 
-        public CustomGraph Graph
+        public Tree Graph
         {
-            get { return graph; }
+            get { return tree; }
             set
             {
                 SortLayout(true);
-                graph = value;
+                tree = value;
                 NotifyPropertyChanged("Graph");
                 SortLayout(false);
             }
@@ -52,7 +52,7 @@ namespace GraphComponent
 
         public ViewModel()
         {
-            graph = new CustomGraph(true);
+            tree = new Tree(true);
 
             //Add Layout Algorithm Types
             layoutAlgorithmTypes.Add("None");
@@ -74,19 +74,19 @@ namespace GraphComponent
             VertexStatus status = CheckValidId(id);
             if (status == VertexStatus.SUCCES)
             {
-                graph.AddVertex(new CustomVertex(id));
+                tree.AddVertex(new CustomVertex(id));
             }
             return status;
         }
 
         public void RemoveVertex(CustomVertex vertex)
         {
-            graph.RemoveVertex(vertex);
+            tree.RemoveVertex(vertex);
         }
 
         public void RemoveEdge(CustomEdge edge)
         {
-            graph.RemoveEdge(edge);
+            tree.RemoveEdge(edge);
         }
 
         public VertexStatus ChangeId(CustomVertex vertex, int newId)
@@ -108,16 +108,15 @@ namespace GraphComponent
         {
             if (id < 0 || id > 999)
                 return VertexStatus.OUT_OF_BOUNDS;
-            if (graph.Vertices.Any(x => x.ID == id))
+            if (tree.Vertices.Any(x => x.ID == id))
                 return VertexStatus.ALREADY_EXISTS;
             return VertexStatus.SUCCES;
         }
 
-        public CustomEdge AddNewGraphEdge(CustomVertex from, CustomVertex to)
+        public bool AddNewGraphEdge(CustomVertex from, CustomVertex to)
         {
             CustomEdge newEdge = new CustomEdge(from, to);
-            graph.AddEdge(newEdge);
-            return newEdge;
+            return tree.AddEdge(newEdge);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -26,7 +26,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type graphsharp:VertexControl}">
-                        <Label  Content="{TemplateBinding Vertex}" ContentTemplate="{StaticResource template}" MouseDoubleClick="Label_MouseLeftButtonUp" />
+                        <Label  Content="{TemplateBinding Vertex}" ContentTemplate="{StaticResource template}" MouseDoubleClick="Label_MouseDoubleClick" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
