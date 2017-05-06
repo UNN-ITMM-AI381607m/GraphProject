@@ -9,8 +9,14 @@ namespace GraphComponent
 {
     public class CustomGraph : BidirectionalGraph<CustomVertex, CustomEdge>
     {
-        public CustomGraph() { }
-        public CustomGraph(bool allowParallelEdges) : base(allowParallelEdges) { }
+        public CustomGraph(bool allowParallelEdges = false) : base(allowParallelEdges) { }
         public CustomGraph(bool allowParallelEdges, int vertexCapacity) : base(allowParallelEdges, vertexCapacity) { }
+
+        public override bool AddEdge(CustomEdge e)
+        {
+            if (!AllowParallelEdges && Edges.Any(x => x.Source == e.Target && x.Target == e.Source))
+                return false;
+            return base.AddEdge(e);
+        }
     }
 }

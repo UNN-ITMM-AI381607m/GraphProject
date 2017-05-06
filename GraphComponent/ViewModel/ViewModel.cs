@@ -15,6 +15,41 @@ namespace GraphComponent
         private CustomGraph graph;
         private List<string> layoutAlgorithmTypes = new List<string>();
 
+        public CustomGraph Graph
+        {
+            get { return graph; }
+            set
+            {
+                SortLayout(true);
+                graph = value;
+                NotifyPropertyChanged("Graph");
+                SortLayout(false);
+            }
+        }
+
+        void SortLayout(bool enabled)
+        {
+            if (enabled)
+                LayoutAlgorithmType = "Tree";
+            else
+                LayoutAlgorithmType = "None";
+        }
+
+        public List<string> LayoutAlgorithmTypes
+        {
+            get { return layoutAlgorithmTypes; }
+        }
+
+        public string LayoutAlgorithmType
+        {
+            get { return layoutAlgorithmType; }
+            set
+            {
+                layoutAlgorithmType = value;
+                NotifyPropertyChanged("LayoutAlgorithmType");
+            }
+        }
+
         public ViewModel()
         {
             graph = new CustomGraph(true);
@@ -34,25 +69,14 @@ namespace GraphComponent
             LayoutAlgorithmType = "LinLog";
         }
 
-        public List<string> LayoutAlgorithmTypes
+        public VertexStatus AddNewVertex(int id)
         {
-            get { return layoutAlgorithmTypes; }
-        }
-
-        public string LayoutAlgorithmType
-        {
-            get { return layoutAlgorithmType; }
-            set
+            VertexStatus status = CheckValidId(id);
+            if (status == VertexStatus.SUCCES)
             {
-                layoutAlgorithmType = value;
-                NotifyPropertyChanged("LayoutAlgorithmType");
-            }
-        }
-
-        public void AddNewVertex(int id)
-        {
-            if (CheckValidId(id))
                 graph.AddVertex(new CustomVertex(id));
+            }
+            return status;
         }
 
         public void RemoveVertex(CustomVertex vertex)
@@ -60,42 +84,42 @@ namespace GraphComponent
             graph.RemoveVertex(vertex);
         }
 
-        public void ChangeId(CustomVertex vertex, int newId)
+        public void RemoveEdge(CustomEdge edge)
         {
-            if (CheckValidId(newId))
-                vertex.ID = newId;
+            graph.RemoveEdge(edge);
         }
 
-        bool CheckValidId(int id)
+        public VertexStatus ChangeId(CustomVertex vertex, int newId)
+        {
+            VertexStatus status = CheckValidId(newId);
+            if (status == VertexStatus.SUCCES)
+                vertex.ID = newId;
+            return status;
+        }
+
+        public enum VertexStatus
+        {
+            SUCCES,
+            OUT_OF_BOUNDS,
+            ALREADY_EXISTS
+        }
+
+        VertexStatus CheckValidId(int id)
         {
             if (id < 0 || id > 999)
-                return false;
+                return VertexStatus.OUT_OF_BOUNDS;
             if (graph.Vertices.Any(x => x.ID == id))
-                return false;
-            return true;
+                return VertexStatus.ALREADY_EXISTS;
+            return VertexStatus.SUCCES;
         }
 
         public CustomEdge AddNewGraphEdge(CustomVertex from, CustomVertex to)
         {
-            string edgeString = string.Format("{0}-{1} Connected", from.ID, to.ID);
-            
-            CustomEdge newEdge = new CustomEdge(edgeString, from, to);
-            if (!graph.Edges.Any(item => item.ID == newEdge.ID))
-            {
-                graph.AddEdge(newEdge);
-                return newEdge;
-            }
-            return null;
+            CustomEdge newEdge = new CustomEdge(from, to);
+            graph.AddEdge(newEdge);
+            return newEdge;
         }
-        public CustomGraph Graph
-        {
-            get { return graph; }
-            set
-            {
-                graph = value;
-                NotifyPropertyChanged("Graph");
-            }
-        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged(String info)

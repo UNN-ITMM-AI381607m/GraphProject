@@ -38,14 +38,12 @@ namespace GUI
         //File menu handlers
         private void OpenFile_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
-            GraphView.ChangeAlgo("LinLog");
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
                 ConstructByPrufer(File.ReadAllText(openFileDialog.FileName));
                 PruferResult.Content = "";
             }
-            GraphView.ChangeAlgo("None");
         }
 
         private void SaveFile_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
@@ -110,9 +108,7 @@ namespace GUI
 
         private void Numerate_OnClick(object sender, RoutedEventArgs e)
         {
-            GraphView.ChangeAlgo("LinLog");
             GraphView.Graph = Numerator.Renumber(GraphView.Graph);
-            GraphView.ChangeAlgo("None");
         }
 
         //GraphPane PopupWindow handlers

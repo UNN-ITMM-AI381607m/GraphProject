@@ -4,10 +4,13 @@
         xmlns:graphsharp="clr-namespace:GraphSharp.Controls;assembly=GraphSharp.Controls"
         xmlns:local="clr-namespace:GraphComponent">
     <UserControl.Resources>
-        <ContextMenu x:Key="cmVertex">
-            <MenuItem Header="Change number" Click="MenuItem_ChangeID_Click"
-                      CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+        <ContextMenu x:Key="cmVertex" DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+            <MenuItem Header="Change number" Click="MenuItem_ChangeID_Click" />
             <MenuItem Header="Delete" Click="MenuItem_DeleteVertex_Click" />
+        </ContextMenu>
+        
+        <ContextMenu x:Key="cmEdge" DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+            <MenuItem Header="Delete" Click="MenuItem_DeleteEdge_Click" />
         </ContextMenu>
 
         <DataTemplate x:Key="template" DataType="{x:Type local:CustomVertex}">
@@ -23,10 +26,11 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type graphsharp:VertexControl}">
-                        <Label  Content="{TemplateBinding Vertex}" ContentTemplate="{StaticResource template}" MouseDoubleClick="Label_MouseLeftButtonUp" PreviewMouseRightButtonDown="Label_MouseRightButtonDown"/>
+                        <Label  Content="{TemplateBinding Vertex}" ContentTemplate="{StaticResource template}" MouseDoubleClick="Label_MouseLeftButtonUp" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Setter Property="ContextMenu" Value="{StaticResource cmVertex}"/>
         </Style>
 
         <Style TargetType="{x:Type graphsharp:EdgeControl}">
@@ -39,11 +43,12 @@
                 </ToolTip>
             </Style.Resources>
             <Setter Property="ToolTip" Value="{StaticResource ToolTipContent}"/>
+            <Setter Property="ContextMenu" Value="{StaticResource cmEdge}" />
         </Style>
     </UserControl.Resources>
     <local:CustomGraphLayout x:Name="graphLayout"
                         Graph="{Binding Path=Graph}"
-                        LayoutAlgorithmType="None"
+                        LayoutAlgorithmType="{Binding Path=LayoutAlgorithmType}"
                         OverlapRemovalAlgorithmType="FSA"
                         HighlightAlgorithmType="Simple"/>
 </UserControl>

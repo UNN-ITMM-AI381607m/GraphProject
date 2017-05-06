@@ -30,7 +30,7 @@ namespace GraphComponent
             new_graph.AddVertexRange(Vertices);
             foreach (MyEdge edge in graph)
             {
-                new_graph.AddEdge(new CustomEdge("0", Vertices.Find(x => x.ID == edge.Preview.Number), Vertices.Find(x => x.ID == edge.Next.Number)));
+                new_graph.AddEdge(new CustomEdge(Vertices.Find(x => x.ID == edge.Preview.Number), Vertices.Find(x => x.ID == edge.Next.Number)));
             }
                 return new_graph;
         }

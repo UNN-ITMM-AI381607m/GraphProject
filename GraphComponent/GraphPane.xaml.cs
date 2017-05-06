@@ -59,31 +59,47 @@ namespace GraphComponent
 
         private void MenuItem_ChangeID_Click(object sender, RoutedEventArgs e)
         {
+            CustomVertex vertex = (((sender as MenuItem).Parent as ContextMenu).PlacementTarget as GraphSharp.Controls.VertexControl).Vertex as CustomVertex;
             var result = On_MenuItem_ChangeID(sender, e);
-            //WTFF
-            vm.ChangeId((((sender as MenuItem).Parent as ContextMenu).PlacementTarget as Label).Content as CustomVertex, result);
+            if (result == -1)
+                return;
+            HandleNewIdStatus(vm.ChangeId(vertex, result), result);
         }
 
-        private void Label_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        void HandleNewIdStatus(ViewModel.VertexStatus status, int newId)
         {
-            ContextMenu cm = this.FindResource("cmVertex") as ContextMenu;
-            cm.PlacementTarget = sender as Label;
-            cm.IsOpen = true;
+            switch (status)
+            {
+                case ViewModel.VertexStatus.SUCCES:
+                    break;
+                case ViewModel.VertexStatus.OUT_OF_BOUNDS:
+                    MessageBox.Show("Vertex number must be within the range [0, 1000)", "Error");
+                    break;
+                case ViewModel.VertexStatus.ALREADY_EXISTS:
+                    MessageBox.Show("Vertex with number " + newId + " already exists", "Error");
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void AddNewVertex(int number)
         {
-            vm.AddNewVertex(number);
+            if (number == -1)
+                return;
+            HandleNewIdStatus(vm.AddNewVertex(number), number);
         }
 
         private void MenuItem_DeleteVertex_Click(object sender, RoutedEventArgs e)
         {
-            vm.RemoveVertex(((((sender as MenuItem).Parent as ContextMenu).PlacementTarget as Label).Content as CustomVertex));
+            CustomVertex vertex = (((sender as MenuItem).Parent as ContextMenu).PlacementTarget as GraphSharp.Controls.VertexControl).Vertex as CustomVertex;
+            vm.RemoveVertex(vertex);
         }
 
-        public void ChangeAlgo(string name)
+        private void MenuItem_DeleteEdge_Click(object sender, RoutedEventArgs e)
         {
-            graphLayout.LayoutAlgorithmType = name;
+            CustomEdge edge = (((sender as MenuItem).Parent as ContextMenu).PlacementTarget as GraphSharp.Controls.EdgeControl).Edge as CustomEdge;
+            vm.RemoveEdge(edge);
         }
     }
 }

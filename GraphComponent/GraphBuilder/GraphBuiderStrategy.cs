@@ -14,28 +14,28 @@ namespace GraphComponent.GraphBuilder
         //    return CodeToGraph(code_list);
         //}
 
-        static public CustomGraph CodeToGraph (List<int> code)
+        static public CustomGraph CodeToGraph(List<int> code)
         {
             CustomGraph NewGraph = new CustomGraph();
             List<CustomVertex> Vertices = new List<CustomVertex>();
             List<int> used = new List<int>();
-            for (int i = 0; i < code.Count()+2; i++)
+            for (int i = 0; i < code.Count() + 2; i++)
             {
                 used.Add(i + 1);
                 Vertices.Add(new CustomVertex(i + 1));
             }
             NewGraph.AddVertexRange(Vertices);
-            while (code.Count()!=0)
-                {
-                    int use = 0;
-                    while (code.Contains(used[use]))
-                        use++;
-                    CustomEdge Edgee = new CustomEdge("0", Vertices[code[0] - 1], Vertices[used[use] - 1]);
-                    NewGraph.AddEdge(Edgee);
-                    used.RemoveAt(use);
-                    code.RemoveAt(0);
-                }
-            CustomEdge E = new CustomEdge("0", Vertices[used[0]-1], Vertices[used[1]-1]);
+            while (code.Count() != 0)
+            {
+                int use = 0;
+                while (code.Contains(used[use]))
+                    use++;
+                CustomEdge Edgee = new CustomEdge(Vertices[code[0] - 1], Vertices[used[use] - 1]);
+                NewGraph.AddEdge(Edgee);
+                used.RemoveAt(use);
+                code.RemoveAt(0);
+            }
+            CustomEdge E = new CustomEdge(Vertices[used[0] - 1], Vertices[used[1] - 1]);
             NewGraph.AddEdge(E);
             return NewGraph;
         }
@@ -49,10 +49,10 @@ namespace GraphComponent.GraphBuilder
             {
                 int[] current_edge = new int[2] { Edges[i].Source.ID, Edges[i].Target.ID };
                 ListEdges.Add(current_edge);
-        }
+            }
             List<int> Answer = new List<int>();
 
-            while (Verticies.Count()>2)
+            while (Verticies.Count() > 2)
             {
                 int min = int.MaxValue;
                 int min_ref = int.MaxValue;
@@ -69,7 +69,7 @@ namespace GraphComponent.GraphBuilder
                             if (id == ListEdges[i][j])
                             {
                                 counter++;
-                                maybe_ref = ListEdges[i][(j+1) % 2];
+                                maybe_ref = ListEdges[i][(j + 1) % 2];
                                 may_rem = i;
                             }
                     if ((counter == 1) && (min > id))

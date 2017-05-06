@@ -16,9 +16,9 @@ namespace GraphComponent
             private set;
         }
 
-        public CustomEdge(string id, CustomVertex source, CustomVertex target) : base(source, target)
+        public CustomEdge(CustomVertex source, CustomVertex target) : base(source, target)
         {
-            ID = id;
+            ID = source.ID + " - " + target.ID;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
