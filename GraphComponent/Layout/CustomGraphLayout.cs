@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using QuickGraph;
 using GraphSharp.Controls;
 using System.Windows.Input;
+using GraphSharp.Algorithms.Layout.Simple.Hierarchical;
 
 namespace GraphComponent
 {
@@ -15,6 +16,13 @@ namespace GraphComponent
         {
             DestructionTransition = null;
             CreationTransition = null;
+            OverlapRemovalConstraint = AlgorithmConstraints.Must;
+
+            LayoutParameters = new EfficientSugiyamaLayoutParameters()
+            {
+                LayerDistance = 50,
+                VertexDistance = 50
+            };
         }
     }
 }

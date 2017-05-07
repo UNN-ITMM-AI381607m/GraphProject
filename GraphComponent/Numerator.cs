@@ -8,32 +8,31 @@ namespace GraphComponent
 {
     public class Numerator
     {
-        public static Tree Renumber(Tree graph)
+        public static Tree Renumber(Tree tree)
         {
-            List<MyEdge> new_graph = ConvertGraph(graph);
-            InitGraphRecurs(InitGraph(new_graph,graph.VertexCount),null, graph.VertexCount);
-            Numeration(new_graph,1);
-            return BuildNewGraph(new_graph);
+            List<MyEdge> new_graph = ConvertGraph(tree);
+            InitGraphRecurs(InitGraph(new_graph, tree.VertexCount), null, tree.VertexCount);
+            Numeration(new_graph, 1);
+            return BuildNewTree(new_graph, tree);
         }
-        static Tree BuildNewGraph(List<MyEdge> graph)
+
+        static Tree BuildNewTree(List<MyEdge> newGraph, Tree tree)
         {
-            Tree new_graph = new Tree();
-            List<CustomVertex> Vertices = new List<CustomVertex>();
-            CustomVertex tmp = null;
-            foreach (MyEdge edge in graph)
+            Dictionary<CustomVertex, int> idMap = new Dictionary<CustomVertex, int>();
+            foreach (var edge in newGraph)
             {
-                tmp = new CustomVertex(edge.Next.Number);
-                if (Vertices.Find(x=>x.ID == tmp.ID) == null) Vertices.Add(tmp);
-                tmp = new CustomVertex(edge.Preview.Number);
-                if (Vertices.Find(x => x.ID == tmp.ID) == null) Vertices.Add(tmp);
+                idMap[tree.Vertices.First(x => x.ID == edge.Preview.Id)] = edge.Preview.Number;
+                idMap[tree.Vertices.First(x => x.ID == edge.Next.Id)] = edge.Next.Number;
             }
-            new_graph.AddVertexRange(Vertices);
-            foreach (MyEdge edge in graph)
+
+            foreach (var pair in idMap)
             {
-                new_graph.AddEdge(new CustomEdge(Vertices.Find(x => x.ID == edge.Preview.Number), Vertices.Find(x => x.ID == edge.Next.Number)));
+                pair.Key.ID = pair.Value;
             }
-                return new_graph;
+
+            return tree;
         }
+
         static List<MyEdge> ConvertGraph(Tree graph)
         {
             List<MyEdge> result = new List<MyEdge>();
@@ -59,31 +58,31 @@ namespace GraphComponent
             }
             return result;
         }
-        static MyEdge InitGraph(List<MyEdge> graph,int kolvo)
+        static MyEdge InitGraph(List<MyEdge> graph, int kolvo)
         {
             foreach (MyEdge edge in graph)
             {
                 if (edge.Next.List_of_edge.Count == 1)
                 {
                     edge.Number_vertex_next = 1;
-                    edge.Number_vertex_preview = kolvo-1;
+                    edge.Number_vertex_preview = kolvo - 1;
                 }
                 if (edge.Preview.List_of_edge.Count == 1)
                 {
                     edge.Number_vertex_preview = 1;
-                    edge.Number_vertex_next = kolvo-1;
+                    edge.Number_vertex_next = kolvo - 1;
                 }
             }
             foreach (MyEdge edge in graph)
                 if (edge.Number_vertex_next == 0) return edge;
             return null;
         }
-        static void InitGraphRecurs(MyEdge current,MyEdge preview,int kolvo)
+        static void InitGraphRecurs(MyEdge current, MyEdge preview, int kolvo)
         {
             if (current != null)
             {
                 foreach (MyEdge edge in current.Next.List_of_edge)
-                    if (edge != current && edge!= preview && edge.Number_vertex_next == 0) InitGraphRecurs(edge, current, kolvo);
+                    if (edge != current && edge != preview && edge.Number_vertex_next == 0) InitGraphRecurs(edge, current, kolvo);
                 foreach (MyEdge edge in current.Next.List_of_edge)
                     if (edge.Number_vertex_next != 0 && edge != current)
                         if (current.Next == edge.Next) current.Number_vertex_next += edge.Number_vertex_preview;
@@ -92,7 +91,7 @@ namespace GraphComponent
                 current.Number_vertex_preview = kolvo - current.Number_vertex_next;
             }
         }
-        static MyVertex SearchNextVertex(MyVertex current,MyEdge preview)
+        static MyVertex SearchNextVertex(MyVertex current, MyEdge preview)
         {
             int max = int.MinValue;
             MyVertex next = null;
@@ -114,12 +113,12 @@ namespace GraphComponent
                             next = edge.Next;
                         }
                     }
-             return next;
+            return next;
         }
         static MyVertex SearchFirstVertex(MyVertex current, MyEdge preview)
         {
             MyVertex next = SearchNextVertex(current, preview);
-            while (next.List_of_edge.Count!=1)
+            while (next.List_of_edge.Count != 1)
             {
                 foreach (MyEdge edge in next.List_of_edge)
                     if (edge.Next == next && edge.Preview == current || edge.Next == current && edge.Preview == next)
@@ -128,15 +127,15 @@ namespace GraphComponent
                         break;
                     }
                 current = next;
-                next = SearchNextVertex(current, preview);               
+                next = SearchNextVertex(current, preview);
             }
             return next;
         }
-        static int Numeration(List<MyEdge> graph,int first)
+        static int Numeration(List<MyEdge> graph, int first)
         {
-            MyVertex preview_vertex = SearchFirstVertex(graph[0].Next, null),current_vertex = null,next_vertex = null;
+            MyVertex preview_vertex = SearchFirstVertex(graph[0].Next, null), current_vertex = null, next_vertex = null;
             preview_vertex.Number = first++;
-            MyEdge preview_edge = preview_vertex.List_of_edge[0],next_edge = null;
+            MyEdge preview_edge = preview_vertex.List_of_edge[0], next_edge = null;
             current_vertex = SearchNextVertex(preview_vertex, null);
             while (true)
             {
@@ -187,7 +186,7 @@ namespace GraphComponent
                         i--;
                     }
             }
-        }      
+        }
     }
     class MyVertex
     {
@@ -198,7 +197,7 @@ namespace GraphComponent
             id = pid;
             number = 0;
             list_of_edge = new List<MyEdge>();
-        }      
+        }
         public List<MyEdge> List_of_edge
         {
             get
@@ -237,7 +236,7 @@ namespace GraphComponent
     {
         MyVertex preview, next;
         int number_vertex_preview, number_vertex_next;
-        public MyEdge(MyVertex vert1,MyVertex vert2)
+        public MyEdge(MyVertex vert1, MyVertex vert2)
         {
             preview = vert1;
             next = vert2;

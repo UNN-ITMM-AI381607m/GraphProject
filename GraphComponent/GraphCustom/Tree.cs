@@ -63,8 +63,6 @@ namespace GraphComponent
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public override bool AddEdge(CustomEdge e)
         {
             if (!AllowParallelEdges && Edges.Any(x => x.Source == e.Target && x.Target == e.Source))
@@ -73,7 +71,7 @@ namespace GraphComponent
             var newTree = Clone();
             newTree.AddEdge(e);
 
-            ClarifyRoot();
+            ClarifyRoot(newTree);
             if (!CheckTree(newTree))
                 return false;
 
@@ -81,20 +79,20 @@ namespace GraphComponent
             return true;
         }
 
-        void ClarifyRoot()
+        void ClarifyRoot(BidirectionalGraph<CustomVertex, CustomEdge> newTree)
         {
-            if (rootVertex != null && TryGetInEdges(Root, out IEnumerable<CustomEdge> inRootEdges) && inRootEdges.Count() == 0)
+            if (rootVertex != null && newTree.TryGetInEdges(rootVertex, out IEnumerable<CustomEdge> inRootEdges) && inRootEdges.Count() == 0)
                 return;
 
             foreach (var v in Vertices)
             {
-                if (TryGetInEdges(v, out IEnumerable<CustomEdge> inEdges) && inEdges.Count() == 0)
+                if (newTree.TryGetInEdges(v, out IEnumerable<CustomEdge> inEdges) && inEdges.Count() == 0)
                 {
-                    rootVertex = v;
+                    Root = v;
                     return;
                 }
             }
-            rootVertex = null;
+            Root = null;
         }
 
         bool CheckTree(IBidirectionalGraph<CustomVertex, CustomEdge> tree)
@@ -108,6 +106,8 @@ namespace GraphComponent
             bfs.Compute(rootVertex);
             return state;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged(string info)
         {

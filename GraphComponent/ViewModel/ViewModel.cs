@@ -20,20 +20,16 @@ namespace GraphComponent
             get { return tree; }
             set
             {
-                SortLayout(true);
                 tree = value;
                 tree.PropertyChanged += Tree_PropertyChanged;
                 NotifyPropertyChanged("Tree");
-                SortLayout(false);
             }
         }
 
-        void SortLayout(bool enabled)
+        public void UpdateLayout()
         {
-            if (enabled)
-                LayoutAlgorithmType = "Tree";
-            else
-                LayoutAlgorithmType = "None";
+            LayoutAlgorithmType = "Tree";
+            LayoutAlgorithmType = "None";
         }
 
         public List<string> LayoutAlgorithmTypes
@@ -71,8 +67,7 @@ namespace GraphComponent
         {
             if (e.PropertyName == "Root")
             {
-                SortLayout(true);
-                SortLayout(false);
+                UpdateLayout();
             }
         }
 

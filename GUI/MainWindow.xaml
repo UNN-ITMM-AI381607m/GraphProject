@@ -88,6 +88,10 @@
                                     <Button Name="NewEdge" ToolTip="Create new edge" BorderBrush ="Gray" Background="{StaticResource GrayGrayGradientBrush}"  Click="NewEdge_OnClick">
                                         <Image Source="/GUI;component/Resources/Icons/new_edge.ico" Stretch="Fill"/>
                                     </Button>
+                                    <Separator/>
+                                    <Button Name="Refresh" ToolTip="Refresh layout" BorderBrush ="Gray" Background="{StaticResource GrayGrayGradientBrush}"  Click="Refresh_Click">
+                                        <Image Source="/GUI;component/Resources/Icons/refresh.ico" Stretch="Fill"/>
+                                    </Button>
                                 </ToolBar>
                             </ToolBarTray>
                             <Label Grid.Column="1" x:Name="PruferResult"  FontSize="15" HorizontalContentAlignment="Center" />

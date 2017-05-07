@@ -27,6 +27,7 @@ namespace GUI
             {
                 List<int> pruferCode = str.Split(' ', ',', ';').Select(int.Parse).ToList();
                 GraphView.Graph = GraphBuilderStrategy.CodeToGraph(pruferCode);
+                UpdateLayoutThroughViewModel();
             }
             catch
             {
@@ -44,6 +45,11 @@ namespace GUI
                 ConstructByPrufer(File.ReadAllText(openFileDialog.FileName));
                 PruferResult.Content = "";
             }
+        }
+
+        void UpdateLayoutThroughViewModel()
+        {
+            (GraphView.DataContext as ViewModel).UpdateLayout();
         }
 
         private void SaveFile_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
@@ -70,7 +76,6 @@ namespace GUI
                 }
             }
         }
-
 
         private void Close_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
@@ -99,7 +104,6 @@ namespace GUI
             PruferResult.Content = "";
         }
 
-
         private void GetPrufer_OnClick(object sender, RoutedEventArgs e)
         {
             bool isEmpty = GraphView.Graph.IsVerticesEmpty;
@@ -121,6 +125,11 @@ namespace GUI
  
             popup.ShowDialog();
             return popup.NewID;
+        }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateLayoutThroughViewModel();
         }
     }
 }
