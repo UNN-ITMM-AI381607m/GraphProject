@@ -28,7 +28,7 @@ namespace GraphComponent
 
         public void UpdateLayout()
         {
-            LayoutAlgorithmType = "Tree";
+            LayoutAlgorithmType = "EfficientSugiyama";
             LayoutAlgorithmType = "None";
         }
 
