@@ -65,7 +65,7 @@ namespace GraphComponent
 
         private void Tree_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Root")
+            if (e.PropertyName == "Root" && tree.Root != null)
             {
                 UpdateLayout();
             }

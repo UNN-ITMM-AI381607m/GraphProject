@@ -69,43 +69,76 @@ namespace GraphComponent
             if (!AllowParallelEdges && Edges.Any(x => x.Source == e.Target && x.Target == e.Source))
                 return false;
 
-            var newTree = Clone();
-            newTree.AddEdge(e);
+            return base.AddEdge(e);
+        }
 
-            ClarifyRoot(newTree);
-            if (!CheckTree(newTree))
+        public override bool RemoveVertex(CustomVertex v)
+        {
+            v.Selected = false;
+            return base.RemoveVertex(v);
+        }
+
+        public bool FindRoot()
+        {
+            var root = TryFindRoot();
+
+            if (root == null)
                 return false;
 
-            base.AddEdge(e);
+            Root = root;
             return true;
         }
 
-        void ClarifyRoot(BidirectionalGraph<CustomVertex, CustomEdge> newTree)
+        CustomVertex TryFindRoot()
         {
-            if (rootVertex != null && newTree.TryGetInEdges(rootVertex, out IEnumerable<CustomEdge> inRootEdges) && inRootEdges.Count() == 0)
-                return;
-
-            foreach (var v in Vertices)
+            int rootCounter = 0;
+            CustomVertex root = null;
+            foreach (var vertex in Vertices)
             {
-                if (newTree.TryGetInEdges(v, out IEnumerable<CustomEdge> inEdges) && inEdges.Count() == 0)
+                if (TryGetInEdges(vertex, out IEnumerable<CustomEdge> edges) && edges.Count() == 0)
                 {
-                    Root = v;
-                    return;
+                    rootCounter++;
+                    root = vertex;
                 }
             }
-            Root = null;
+            if (rootCounter == 1)
+                return root;
+            return null;
         }
 
-        bool CheckTree(IBidirectionalGraph<CustomVertex, CustomEdge> tree)
+        IEnumerable<CustomEdge> FindNonTreeEdges(CustomVertex root)
         {
-            if (rootVertex == null)
+            List<CustomEdge> nonTreeEdges = new List<CustomEdge>();
+
+            BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge> bfs = new BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge>(this);
+            bfs.NonTreeEdge += u => nonTreeEdges.Add(u);
+            bfs.Compute(root);
+            
+            return nonTreeEdges;
+        }
+
+        IDictionary<CustomVertex, GraphColor> GetBFSColors(CustomVertex root)
+        {
+            BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge> bfs = new BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge>(this);
+            bfs.Compute(root);
+            return bfs.VertexColors;
+        }
+
+        public bool IsTree()
+        {
+            CustomVertex root = TryFindRoot();
+
+            if (root == null)
                 return false;
 
-            bool state = true;
-            BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge> bfs = new BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge>(tree);
-            bfs.NonTreeEdge += u => state = false;
-            bfs.Compute(rootVertex);
-            return state;
+            var nonTreeEdges = FindNonTreeEdges(root);
+
+            bool notAllVisited = GetBFSColors(root).Any(x => x.Value == GraphColor.White);
+
+            if (nonTreeEdges.Count() > 0 || notAllVisited)
+                return false;
+
+            return true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

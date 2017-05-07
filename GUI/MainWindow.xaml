@@ -11,9 +11,10 @@
         <CommandBinding Command="Open" Executed="OpenFile_OnClick"/>
         <CommandBinding Command="Save" Executed="SaveFile_OnClick"/>
         <CommandBinding Command="Close" Executed="Close_OnClick"/>
+        <CommandBinding Command="New" Executed="New_OnClick"/>
     </Window.CommandBindings>
     <Window.Resources>
-        <LinearGradientBrush x:Key="GrayGrayGradientBrush"      StartPoint="0,0" EndPoint="1,1">
+        <LinearGradientBrush x:Key="GrayGrayGradientBrush" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="DarkGray" Offset="0" />
             <GradientStop Color="White" Offset="0.5" />
             <GradientStop Color="DarkGray" Offset="1" />
@@ -21,23 +22,11 @@
         <Style x:Key="BaseButton" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource GrayGrayGradientBrush}" />
         </Style>
-        <Style x:Key="RunButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
-            <Setter Property="Content" Value="Run"/>
-            <Setter Property="Height" Value="20"/>
-            <Setter Property="Width" Value="50"/>
-            <Setter Property="Margin" Value="0,10,119,10"/>
-            <Setter Property="RenderTransformOrigin" Value="0.127,0.68"/>
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-        </Style>
-        <Style x:Key="ToolBarButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
-            <Setter Property="Width" Value="34"/>
-            <Setter Property="Height" Value="34"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
-        </Style>
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
+                <MenuItem Command="New"/>
                 <MenuItem Command="Open"/>
                 <MenuItem Command="Save"/>
                 <Separator />
@@ -51,25 +40,38 @@
                 <ColumnDefinition Width="186"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" HorizontalAlignment="Right" Name="textEditor" Width="187"  Background="#FFF0F0F0" Margin="-1,0,0,0">
+            <StackPanel Grid.Column="0" HorizontalAlignment="Right" Name="textEditor" Background="#FFF0F0F0">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type Label}">
                         <Setter Property="Margin" Value="0,5,0,0"/>
+                        <Setter Property="Height" Value="28"/>
+                    </Style>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
+                        <Setter Property="Content" Value="Run"/>
+                        <Setter Property="Height" Value="20"/>
+                        <Setter Property="Width" Value="50"/>
+                        <Setter Property="Margin" Value="0,10,119,10"/>
+                        <Setter Property="RenderTransformOrigin" Value="0.127,0.68"/>
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
                     </Style>
                 </StackPanel.Resources>
                 <Separator />
                 <TextBlock Background="{StaticResource GrayGrayGradientBrush}">
-                    <Label Content="Workflow" FontSize="14" Background="Transparent" BorderBrush="Transparent" Width="73" Height="28" Margin="57,0"/>
+                    <Label Content="Workflow" FontSize="14" Background="Transparent" BorderBrush="Transparent" Width="73" Margin="57,0"/>
                 </TextBlock>
                 <Separator />
-                <Label Content="1. Construct by Prufer code" Height="28"></Label>
-                <TextBlock Height="55" TextWrapping="WrapWithOverflow" Margin="18,0,35,0"><Run Text="Please type a code."/><LineBreak/><Run FontStyle="Italic" Text="As a separator use a semicolon or a space."/></TextBlock>
+                <Label Content="1. Construct by Prufer code"></Label>
+                <TextBlock Height="55" TextWrapping="WrapWithOverflow" Margin="18,0,35,0">
+                    <Run Text="Please type a code."/>
+                    <LineBreak/>
+                    <Run FontStyle="Italic" Text="As a separator use a semicolon or a space."/>
+                </TextBlock>
                 <TextBox x:Name="PruferTextBox" Height="22" HorizontalAlignment="Right" Width="112" Margin="0,0,57,0"/>
-                <Button x:Name="Construct" Style="{StaticResource RunButton}" Click="ConstructByPrufer_OnClick"/>
-                <Label Content="2. Get Prufer code" Height="28"></Label>
-                <Button x:Name="GetPrufer" Style="{StaticResource RunButton}" Click="GetPrufer_OnClick"/>
-                <Label Content="3. Numerate Graph" Height="28"></Label>
-                <Button x:Name="Numerate" Style="{StaticResource RunButton}" Click="Numerate_OnClick"/>
+                <Button x:Name="Construct" Click="ConstructByPrufer_OnClick"/>
+                <Label Content="2. Get Prufer code"></Label>
+                <Button x:Name="GetPrufer" Click="GetPrufer_OnClick"/>
+                <Label Content="3. Numerate Graph"></Label>
+                <Button x:Name="Numerate" Click="Numerate_OnClick"/>
             </StackPanel>
             <TabControl Grid.Column="1">
                 <TabItem Header="Graph">
@@ -87,21 +89,36 @@
                         <Separator Grid.Row="0"/>
                         <Grid Grid.Row="0" Background="{StaticResource GrayGrayGradientBrush}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="53*" />
-                                <ColumnDefinition Width="231*" />
+                                <ColumnDefinition Width="35*" />
+                                <ColumnDefinition Width="107*" />
                             </Grid.ColumnDefinitions>
                             <ToolBarTray Grid.Row="0" Grid.Column="0" Background="Transparent" HorizontalAlignment="Left">
                                 <ToolBar Background="LightGray" Height="36">
-                                    <Button Name="NewVertex" ToolTip="Create new vertex" Click="NewVertex_OnClick" Style="{StaticResource ToolBarButton}">
+                                    <ToolBar.Resources>
+                                        <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
+                                            <Setter Property="Width" Value="34"/>
+                                            <Setter Property="Height" Value="34"/>
+                                            <Setter Property="BorderBrush" Value="Gray"/>
+                                        </Style>
+                                    </ToolBar.Resources>
+                                    <Button Name="NewVertex" ToolTip="Create new vertex" Click="NewVertex_OnClick">
                                         <Image Source="/GUI;component/Resources/Icons/new_vertex.ico" Stretch="Fill"/>
                                     </Button>
                                     <Separator/>
-                                    <Button Name="NewEdge" ToolTip="Create new edge" Click="NewEdge_OnClick" Style="{StaticResource ToolBarButton}">
+                                    <!--<Button Name="NewEdge" ToolTip="Create new edge" Click="NewEdge_OnClick">
                                         <Image Source="/GUI;component/Resources/Icons/new_edge.ico" Stretch="Fill"/>
+                                    </Button>-->
+                                    <!--<Separator/>-->
+                                    <Button Name="Refresh" ToolTip="Refresh layout" Click="Refresh_Click">
+                                        <Image Source="/GUI;component/Resources/Icons/refresh.ico" Stretch="Fill"/>
                                     </Button>
                                     <Separator/>
-                                    <Button Name="Refresh" ToolTip="Refresh layout" Click="Refresh_Click" Style="{StaticResource ToolBarButton}">
-                                        <Image Source="/GUI;component/Resources/Icons/refresh.ico" Stretch="Fill"/>
+                                    <Button Name="CheckTree" ToolTip="Check if Graph is a Tree" Click="CheckTree_Click">
+                                        <Image Source="/GUI;component/Resources/Icons/tree.ico" Stretch="Fill"/>
+                                    </Button>
+                                    <Separator/>
+                                    <Button Name="FindRoot" ToolTip="Find Root Element" Click="FindRoot_Click">
+                                        <Image Source="/GUI;component/Resources/Icons/search.ico" Stretch="Fill"/>
                                     </Button>
                                 </ToolBar>
                             </ToolBarTray>

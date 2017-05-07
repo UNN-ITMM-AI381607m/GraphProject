@@ -12,13 +12,14 @@ namespace GraphComponent
     {
         public string ID
         {
-            get;
-            private set;
+            get
+            {
+                return Source + " - " + Target;
+            }
         }
 
         public CustomEdge(CustomVertex source, CustomVertex target) : base(source, target)
         {
-            ID = source.ID + " - " + target.ID;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

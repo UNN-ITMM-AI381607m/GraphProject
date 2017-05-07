@@ -159,5 +159,11 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\refresh.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\tree.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\search.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -18,9 +18,11 @@ namespace GraphComponent
         private CustomVertex selectedVertex;
 
         public delegate int PopupMenuDelegate(object sender, RoutedEventArgs e);
+        public delegate void ShowMessageBoxDelegate(string message, MessageBoxImage icon);
 
         //PopupMenuDelegate events
         public event PopupMenuDelegate On_MenuItem_ChangeID;
+        public event ShowMessageBoxDelegate ShowMessage;
 
 
         public GraphPane()
@@ -31,8 +33,7 @@ namespace GraphComponent
             InitializeComponent();
         }
 
-
-        public Tree Graph
+        public Tree Tree
         {
             get { return vm.Tree; }
             set { vm.Tree = value; }
@@ -40,7 +41,7 @@ namespace GraphComponent
 
         public void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (selectedVertex == null)
+            if (selectedVertex == null || !selectedVertex.Selected)
             {
                 selectedVertex = (sender as Label).Content as CustomVertex;
                 selectedVertex.Selected = true;
@@ -73,10 +74,10 @@ namespace GraphComponent
                 case ViewModel.VertexStatus.SUCCES:
                     break;
                 case ViewModel.VertexStatus.OUT_OF_BOUNDS:
-                    MessageBox.Show("Vertex number must be within the range [0, 1000)", "Error");
+                    ShowMessage("Vertex number must be within the range [0, 1000)", MessageBoxImage.Error);
                     break;
                 case ViewModel.VertexStatus.ALREADY_EXISTS:
-                    MessageBox.Show("Vertex with number " + newId + " already exists", "Error");
+                    ShowMessage("Vertex number must be within the range [0, 1000)", MessageBoxImage.Error);
                     break;
                 default:
                     break;
@@ -104,6 +105,12 @@ namespace GraphComponent
 
         private void MenuItem_MarkAsRoot_Click(object sender, RoutedEventArgs e)
         {
+            if (!vm.Tree.IsTree())
+            {
+                ShowMessage("Graph is NOT a Tree", MessageBoxImage.Error);
+                return;
+            }
+
             CustomVertex newRoot = GetVertexFromContextMenu(sender);
             vm.SetRoot(newRoot);
         }

@@ -19,6 +19,31 @@ namespace GUI
             InitializeComponent();
             //GraphPane popupmenu event handlers
             GraphView.On_MenuItem_ChangeID += MenuItem_ChangeID_Click;
+            GraphView.ShowMessage += ShowMessage;
+        }
+
+        private void ShowMessage(string message, MessageBoxImage icon)
+        {
+            string title = "";
+            switch (icon)
+            {
+                case MessageBoxImage.None:
+                case MessageBoxImage.Question:
+                    title = "Message";
+                    break;
+                case MessageBoxImage.Error:
+                    title = "Error";
+                    break;
+                case MessageBoxImage.Warning:
+                    title = "Warning";
+                    break;
+                case MessageBoxImage.Information:
+                    title = "Information";
+                    break;
+                default:
+                    break;
+            }
+            MessageBox.Show(this, message, title, MessageBoxButton.OK, icon);
         }
 
         private void ConstructByPrufer(string str)
@@ -26,12 +51,12 @@ namespace GUI
             try
             {
                 List<int> pruferCode = str.Split(' ', ',', ';').Select(int.Parse).ToList();
-                GraphView.Graph = GraphBuilderStrategy.CodeToGraph(pruferCode);
+                GraphView.Tree = GraphBuilderStrategy.CodeToGraph(pruferCode);
                 UpdateLayoutThroughViewModel();
             }
             catch
             {
-                MessageBox.Show(this, "Invalid Prufer code", "Error");
+                ShowMessage("Invalid Prufer code", MessageBoxImage.Error);
                 return;
             }
         }
@@ -54,14 +79,16 @@ namespace GUI
 
         private void SaveFile_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
-            SaveFileDialog saveDialogFile = new SaveFileDialog();
-            saveDialogFile.Filter = "Text Files | *.txt";
+            SaveFileDialog saveDialogFile = new SaveFileDialog()
+            {
+                Filter = "Text Files | *.txt"
+            };
             if (saveDialogFile.ShowDialog() == true)
             {
-                string a = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Graph).ToArray());
+                string a = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Tree).ToArray());
                 if (a.Length == 0)
                 {
-                    MessageBox.Show(this, "Nothing to save", "Error");
+                    ShowMessage("Nothing to save", MessageBoxImage.Error);
                     return;
                 }
                 try
@@ -72,7 +99,7 @@ namespace GUI
                 }
                 catch
                 {
-                    MessageBox.Show("Can not save graph to file: \n" + saveDialogFile.FileName, "Error");
+                    ShowMessage("Can not save graph to file: \n" + saveDialogFile.FileName, MessageBoxImage.Error);
                 }
             }
         }
@@ -106,13 +133,19 @@ namespace GUI
 
         private void GetPrufer_OnClick(object sender, RoutedEventArgs e)
         {
-            bool isEmpty = GraphView.Graph.IsVerticesEmpty;
-            PruferResult.Content = isEmpty ? "" : "Generated Prufer Code: " + string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Graph).ToArray());
+            if (!HandleCheckTreeStatus())
+                return;
+
+            bool isEmpty = GraphView.Tree.IsVerticesEmpty;
+            PruferResult.Content = isEmpty ? "" : "Generated Prufer Code: " + string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Tree).ToArray());
         }
 
         private void Numerate_OnClick(object sender, RoutedEventArgs e)
         {
-            GraphView.Graph = Numerator.Renumber(GraphView.Graph);
+            if (!HandleCheckTreeStatus())
+                return;
+
+            GraphView.Tree = Numerator.Renumber(GraphView.Tree);
         }
 
         //GraphPane PopupWindow handlers
@@ -122,7 +155,7 @@ namespace GUI
             {
                 Owner = this
             };
- 
+
             popup.ShowDialog();
             return popup.NewID;
         }
@@ -130,6 +163,37 @@ namespace GUI
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
             UpdateLayoutThroughViewModel();
+        }
+
+        private void CheckTree_Click(object sender, RoutedEventArgs e)
+        {
+            if (!GraphView.Tree.IsTree())
+                ShowMessage("Graph is NOT a Tree", MessageBoxImage.Information);
+            else
+                ShowMessage("Graph is a Tree", MessageBoxImage.Information);
+        }
+
+        bool HandleCheckTreeStatus()
+        {
+            if (!GraphView.Tree.IsTree())
+            {
+                ShowMessage("Graph is NOT a Tree", MessageBoxImage.Error);
+                return false;
+            }
+            return true;
+        }
+
+        private void FindRoot_Click(object sender, RoutedEventArgs e)
+        {
+            if (HandleCheckTreeStatus())
+            {
+                GraphView.Tree.FindRoot();
+            }
+        }
+		
+		private void New_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            GraphView.Tree = new Tree();
         }
     }
 }
