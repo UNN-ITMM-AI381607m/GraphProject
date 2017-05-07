@@ -43,9 +43,10 @@ namespace GraphComponent
 
         void Visit(CustomVertex toVisit, List<CustomVertex> visited)
         {
-            if (TryGetInEdges(toVisit, out IEnumerable<CustomEdge> inEdges))
+            IEnumerable<CustomEdge> edges;
+            if (TryGetInEdges(toVisit, out edges))
             {
-                foreach (var e in inEdges)
+                foreach (var e in edges)
                 {
                     var start = e.Source;
                     if (!visited.Contains(start))
@@ -54,9 +55,9 @@ namespace GraphComponent
                 RemoveInEdgeIf(toVisit, x => !visited.Contains(x.Source));
             }
             visited.Add(toVisit);
-            if (TryGetOutEdges(toVisit, out IEnumerable<CustomEdge> outEdges))
+            if (TryGetOutEdges(toVisit, out edges))
             {
-                foreach (var e in outEdges)
+                foreach (var e in edges)
                 {
                     Visit(e.Target, visited);
                 }

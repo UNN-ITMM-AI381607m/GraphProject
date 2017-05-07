@@ -18,10 +18,21 @@
             <GradientStop Color="White" Offset="0.5" />
             <GradientStop Color="DarkGray" Offset="1" />
         </LinearGradientBrush>
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Background"        Value="{StaticResource GrayGrayGradientBrush}" />
-            <Setter Property="Width" Value="80" />
-            <Setter Property="Margin" Value="10" />
+        <Style x:Key="BaseButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource GrayGrayGradientBrush}" />
+        </Style>
+        <Style x:Key="RunButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Content" Value="Run"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Margin" Value="0,10,119,10"/>
+            <Setter Property="RenderTransformOrigin" Value="0.127,0.68"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+        <Style x:Key="ToolBarButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
         </Style>
     </Window.Resources>
     <DockPanel>
@@ -54,11 +65,11 @@
                 <Label Content="1. Construct by Prufer code" Height="28"></Label>
                 <TextBlock Height="55" TextWrapping="WrapWithOverflow" Margin="18,0,35,0"><Run Text="Please type a code."/><LineBreak/><Run FontStyle="Italic" Text="As a separator use a semicolon or a space."/></TextBlock>
                 <TextBox x:Name="PruferTextBox" Height="22" HorizontalAlignment="Right" Width="112" Margin="0,0,57,0"/>
-                <Button x:Name="Construct" Content="Run" Height="20" Margin="0,10,119,10" Width="50" RenderTransformOrigin="0.127,0.68" HorizontalAlignment="Right" Click="ConstructByPrufer_OnClick"/>
+                <Button x:Name="Construct" Style="{StaticResource RunButton}" Click="ConstructByPrufer_OnClick"/>
                 <Label Content="2. Get Prufer code" Height="28"></Label>
-                <Button x:Name="GetPrufer" Content="Run" Height="20" Margin="0,10,119,10" Width="50" RenderTransformOrigin="0.127,0.68" HorizontalAlignment="Right" Click="GetPrufer_OnClick"/>
+                <Button x:Name="GetPrufer" Style="{StaticResource RunButton}" Click="GetPrufer_OnClick"/>
                 <Label Content="3. Numerate Graph" Height="28"></Label>
-                <Button x:Name="Numerate" Content="Run" Height="20" Margin="0,10,119,10" Width="50" RenderTransformOrigin="0.127,0.68" HorizontalAlignment="Right" Click="Numerate_OnClick"/>
+                <Button x:Name="Numerate" Style="{StaticResource RunButton}" Click="Numerate_OnClick"/>
             </StackPanel>
             <TabControl Grid.Column="1">
                 <TabItem Header="Graph">
@@ -81,20 +92,20 @@
                             </Grid.ColumnDefinitions>
                             <ToolBarTray Grid.Row="0" Grid.Column="0" Background="Transparent" HorizontalAlignment="Left">
                                 <ToolBar Background="LightGray" Height="36">
-                                    <Button Name="NewVertex" ToolTip="Create new vertex" BorderBrush ="Gray" Background="{StaticResource GrayGrayGradientBrush}" Click="NewVertex_OnClick">
+                                    <Button Name="NewVertex" ToolTip="Create new vertex" Click="NewVertex_OnClick" Style="{StaticResource ToolBarButton}">
                                         <Image Source="/GUI;component/Resources/Icons/new_vertex.ico" Stretch="Fill"/>
                                     </Button>
                                     <Separator/>
-                                    <Button Name="NewEdge" ToolTip="Create new edge" BorderBrush ="Gray" Background="{StaticResource GrayGrayGradientBrush}"  Click="NewEdge_OnClick">
+                                    <Button Name="NewEdge" ToolTip="Create new edge" Click="NewEdge_OnClick" Style="{StaticResource ToolBarButton}">
                                         <Image Source="/GUI;component/Resources/Icons/new_edge.ico" Stretch="Fill"/>
                                     </Button>
                                     <Separator/>
-                                    <Button Name="Refresh" ToolTip="Refresh layout" BorderBrush ="Gray" Background="{StaticResource GrayGrayGradientBrush}"  Click="Refresh_Click">
+                                    <Button Name="Refresh" ToolTip="Refresh layout" Click="Refresh_Click" Style="{StaticResource ToolBarButton}">
                                         <Image Source="/GUI;component/Resources/Icons/refresh.ico" Stretch="Fill"/>
                                     </Button>
                                 </ToolBar>
                             </ToolBarTray>
-                            <Label Grid.Column="1" x:Name="PruferResult"  FontSize="15" HorizontalContentAlignment="Center" />
+                            <Label Grid.Column="1" x:Name="PruferResult" FontSize="15" HorizontalContentAlignment="Center" />
                         </Grid>
                         <Separator Grid.Row="1"/>
                         <zoom:ZoomControl Grid.Row="1" Zoom="0.2" MaxZoom="4">
