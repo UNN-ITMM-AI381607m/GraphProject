@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using QuickGraph;
 using QuickGraph.Algorithms.Search;
 using System.ComponentModel;
+using System.Collections;
 
 namespace GraphComponent
 {
@@ -95,7 +96,8 @@ namespace GraphComponent
             CustomVertex root = null;
             foreach (var vertex in Vertices)
             {
-                if (TryGetInEdges(vertex, out IEnumerable<CustomEdge> edges) && edges.Count() == 0)
+                IEnumerable<CustomEdge> edges;
+                if (TryGetInEdges(vertex, out edges) && edges.Count() == 0)
                 {
                     rootCounter++;
                     root = vertex;
