@@ -47,6 +47,22 @@ namespace GraphComponent
             }
         }
 
+        public enum VertexStatus
+        {
+            SUCCESS,
+            OUT_OF_BOUNDS,
+            ALREADY_EXISTS
+        }
+
+        public enum EdgeStatus
+        {
+            NONE = 0,
+            INVALID_ID1,
+            INVALID_ID2,
+            ALREADY_EXISTS,
+            SUCCESS
+        }
+
         public ViewModel()
         {
             Tree = new Tree();
@@ -74,7 +90,7 @@ namespace GraphComponent
         public VertexStatus AddVertex(int id)
         {
             VertexStatus status = CheckValidId(id);
-            if (status == VertexStatus.SUCCES)
+            if (status == VertexStatus.SUCCESS)
             {
                 tree.AddVertex(new CustomVertex(id));
             }
@@ -86,24 +102,67 @@ namespace GraphComponent
             tree.RemoveVertex(vertex);
         }
 
+        public CustomVertex GetVertex(int id)
+        {
+            var vertices = tree.Vertices.ToList();
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                if (vertices[i].ID == id)
+                {
+                    return vertices[i];
+                };
+            }
+            return null;
+        }
+
+        public EdgeStatus AddEdge(CustomVertex from, CustomVertex to)
+        {
+            CustomEdge newEdge = new CustomEdge(from, to);
+            var res = tree.AddEdge(newEdge);
+            if (!res)
+            {
+                var edge = GetEdge(to, from);
+                if (edge != null) tree.RemoveEdge(edge);
+                res = tree.AddEdge(newEdge);
+            }
+            return res ? EdgeStatus.SUCCESS : EdgeStatus.ALREADY_EXISTS;
+        }
+
+        public EdgeStatus AddEgde(int from, int to)
+        {
+            var v1 = GetVertex(from);
+            if (v1 == null) return EdgeStatus.INVALID_ID1;
+            var v2 = GetVertex(to);
+            if (v2 == null) return EdgeStatus.INVALID_ID2;
+
+            return AddEdge(v1, v2);
+        }
+
         public void RemoveEdge(CustomEdge edge)
         {
             tree.RemoveEdge(edge);
         }
 
+
+        public CustomEdge GetEdge(CustomVertex source, CustomVertex target)
+        {
+            var edges = tree.Edges.ToList();
+            for (int i = 0; i < edges.Count; ++i)
+            {
+                if (edges[i].Source == source && edges[i].Target == target)
+                {
+                    return edges[i];
+                };
+            }
+            return null;
+        }
+
         public VertexStatus ChangeId(CustomVertex vertex, int newId)
         {
             VertexStatus status = CheckValidId(newId);
-            if (status == VertexStatus.SUCCES)
+            if (status == VertexStatus.SUCCESS)
                 vertex.ID = newId;
             return status;
-        }
-
-        public enum VertexStatus
-        {
-            SUCCES,
-            OUT_OF_BOUNDS,
-            ALREADY_EXISTS
         }
 
         VertexStatus CheckValidId(int id)
@@ -112,13 +171,7 @@ namespace GraphComponent
                 return VertexStatus.OUT_OF_BOUNDS;
             if (tree.Vertices.Any(x => x.ID == id))
                 return VertexStatus.ALREADY_EXISTS;
-            return VertexStatus.SUCCES;
-        }
-
-        public bool AddEdge(CustomVertex from, CustomVertex to)
-        {
-            CustomEdge newEdge = new CustomEdge(from, to);
-            return tree.AddEdge(newEdge);
+            return VertexStatus.SUCCESS;
         }
 
         public void SetRoot(CustomVertex newRoot)

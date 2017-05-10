@@ -79,6 +79,9 @@
     <Compile Include="PopupWindow\PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PopupWindow\PopupWindowWith2Boxes.xaml.cs">
+      <DependentUpon>PopupWindowWith2Boxes.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\ViewModel.cs" />
     <Page Include="GraphPane.xaml">
       <SubType>Designer</SubType>
@@ -89,6 +92,10 @@
     <Compile Include="Layout\CustomGraphLayout.cs" />
     <Compile Include="GraphCustom\CustomVertex.cs" />
     <Page Include="PopupWindow\PopupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PopupWindow\PopupWindowWith2Boxes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

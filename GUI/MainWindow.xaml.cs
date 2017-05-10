@@ -5,6 +5,7 @@ using System.IO;
 using Microsoft.Win32;
 using GraphComponent.GraphBuilder;
 using GraphComponent.SettingWindow;
+using GraphComponent.PopupWindow;
 using GraphComponent;
 
 namespace GUI
@@ -122,6 +123,13 @@ namespace GUI
 
         private void NewEdge_OnClick(object sender, RoutedEventArgs e)
         {
+            PopupWindowWith2Boxes popup = new PopupWindowWith2Boxes("Create New Edge", "Enter id two vertices you want to merge: ", "Join")
+            {
+                Owner = this
+            };
+            popup.ShowDialog();
+            GraphView.AddNewEdge(popup.ID1, popup.ID2);
+            UpdateLayoutThroughViewModel();
         }
 
         //Workflow handlers  

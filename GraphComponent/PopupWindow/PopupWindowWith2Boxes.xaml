@@ -1,0 +1,24 @@
+﻿<Window x:Class="GraphComponent.PopupWindow.PopupWindowWith2Boxes"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GraphComponent.PopupWindow"
+        mc:Ignorable="d"
+        Title="PopupWindowWith2Boxes" Height="140" Width="300" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10">
+            <TextBlock x:Name="Message"/>
+            <Separator/>
+            <TextBlock>
+                <InlineUIContainer>
+                    <TextBox x:Name="FirstTextBox" HorizontalAlignment="center" Height="19" Width="130"/>
+                </InlineUIContainer><Run Text=" "/><InlineUIContainer>
+                    <TextBox x:Name="SecondTextBox"  HorizontalAlignment="center" Height="19" Width="130"/>
+                </InlineUIContainer>
+            </TextBlock>
+            <Separator/>
+            <Button x:Name="Button" Click="OnSave" />
+        </StackPanel>
+    </Grid>
+</Window>

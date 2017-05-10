@@ -71,7 +71,7 @@ namespace GraphComponent
         {
             switch (status)
             {
-                case ViewModel.VertexStatus.SUCCES:
+                case ViewModel.VertexStatus.SUCCESS:
                     break;
                 case ViewModel.VertexStatus.OUT_OF_BOUNDS:
                     ShowMessage("Vertex number must be within the range [0, 1000)", MessageBoxImage.Error);
@@ -89,6 +89,26 @@ namespace GraphComponent
             if (number == -1)
                 return;
             HandleNewIdStatus(vm.AddVertex(number), number);
+        }
+
+        public bool AddNewEdge(int id1, int id2)
+        {
+            var status = vm.AddEgde(id1, id2);
+            HandleCreatingEdgeStatus(status, id1, id2);
+            return status == ViewModel.EdgeStatus.SUCCESS;
+        }
+
+        void HandleCreatingEdgeStatus(ViewModel.EdgeStatus status, int id1, int id2)
+        {
+          switch(status)
+          {
+                case ViewModel.EdgeStatus.INVALID_ID1:
+                    ShowMessage("Vertex with id " + id1 + " does not exist!", MessageBoxImage.Error);
+                    break;
+                case ViewModel.EdgeStatus.INVALID_ID2:
+                    ShowMessage("Vertex with id " + id2 + " does not exist!", MessageBoxImage.Error);
+                    break;
+            }
         }
 
         private void MenuItem_DeleteVertex_Click(object sender, RoutedEventArgs e)
