@@ -152,7 +152,11 @@ namespace GUI
             if (!HandleCheckTreeStatus())
                 return;
 
-            GraphView.Tree = Numerator.Renumber(GraphView.Tree);
+            var mapId = Numerator.GetIDMap(GraphView.Tree);
+            foreach (var pair in mapId)
+            {
+                pair.Key.ID = pair.Value;
+            }
         }
 
         //GraphPane PopupWindow handlers
@@ -209,7 +213,9 @@ namespace GUI
                 return;
 
             int length = GraphView.Tree.GetLength();
-            InfoBar.Content = "Current numeration length: " + length;
+            int minLength = GraphView.Tree.GetLength(Numerator.GetIDMap(GraphView.Tree));
+            InfoBar.Content = "Current: " + length + "  Min: " + minLength;
         }
+        
     }
 }

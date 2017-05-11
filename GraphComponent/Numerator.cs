@@ -8,15 +8,15 @@ namespace GraphComponent
 {
     public class Numerator
     {
-        public static Tree Renumber(Tree tree)
+        public static Dictionary<CustomVertex, int> GetIDMap(Tree tree)
         {
             List<MyEdge> new_graph = ConvertGraph(tree);
             InitGraphRecurs(InitGraph(new_graph, tree.VertexCount), null, tree.VertexCount);
             Numeration(new_graph, 1);
-            return BuildNewTree(new_graph, tree);
+            return CreateIDMap(new_graph, tree);
         }
 
-        static Tree BuildNewTree(List<MyEdge> newGraph, Tree tree)
+        static Dictionary<CustomVertex, int> CreateIDMap(List<MyEdge> newGraph, Tree tree)
         {
             Dictionary<CustomVertex, int> idMap = new Dictionary<CustomVertex, int>();
             foreach (var edge in newGraph)
@@ -25,12 +25,7 @@ namespace GraphComponent
                 idMap[tree.Vertices.First(x => x.ID == edge.Next.Id)] = edge.Next.Number;
             }
 
-            foreach (var pair in idMap)
-            {
-                pair.Key.ID = pair.Value;
-            }
-
-            return tree;
+            return idMap;
         }
 
         static List<MyEdge> ConvertGraph(Tree graph)

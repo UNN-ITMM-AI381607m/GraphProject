@@ -143,7 +143,7 @@ namespace GraphComponent
             return true;
         }
 
-        public int GetLength()
+        public int GetLength(Dictionary<CustomVertex, int> mapId = null)
         {
             int length = 0;
 
@@ -154,7 +154,12 @@ namespace GraphComponent
             {
                 if (firstVertex != null)
                 {
-                    int diff = Math.Abs(firstVertex.ID - u.ID);
+                    int diff = 0;
+                    if (mapId == null)
+                        diff = Math.Abs(firstVertex.ID - u.ID);
+                    else
+                        diff = Math.Abs(mapId[firstVertex] - mapId[u]);
+
                     length += diff;
                 }
             };
