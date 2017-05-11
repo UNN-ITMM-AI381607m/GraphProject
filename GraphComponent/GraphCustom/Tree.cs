@@ -143,6 +143,34 @@ namespace GraphComponent
             return true;
         }
 
+        public int GetLength()
+        {
+            int length = 0;
+
+            BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge> bfs = new BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge>(this);
+            CustomVertex firstVertex = null;
+            bfs.ExamineVertex += u => firstVertex = u;
+            bfs.DiscoverVertex += u =>
+            {
+                if (firstVertex != null)
+                {
+                    int diff = Math.Abs(firstVertex.ID - u.ID);
+                    length += diff;
+                }
+            };
+            if (rootVertex != null)
+                bfs.Compute(rootVertex);
+            else
+                bfs.Compute(TryFindRoot());
+
+            return length;
+        }
+
+        private void Bfs_DiscoverVertex(CustomVertex vertex)
+        {
+            throw new NotImplementedException();
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged(string info)

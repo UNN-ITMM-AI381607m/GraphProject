@@ -72,6 +72,8 @@
                 <Button x:Name="GetPrufer" Click="GetPrufer_OnClick"/>
                 <Label Content="3. Numerate Graph"></Label>
                 <Button x:Name="Numerate" Click="Numerate_OnClick"/>
+                <Label Content="4. Get Graph's Length"></Label>
+                <Button x:Name="GetLength" Click="GetLength_Click"/>
             </StackPanel>
             <TabControl Grid.Column="1">
                 <TabItem Header="Graph">
@@ -122,7 +124,7 @@
                                     </Button>
                                 </ToolBar>
                             </ToolBarTray>
-                            <Label x:Name="PruferResult" Grid.Column="1" FontSize="15" HorizontalContentAlignment="Center"/>
+                            <Label x:Name="InfoBar" Grid.Column="1" FontSize="15" HorizontalContentAlignment="Center"/>
                         </Grid>
                         <Separator Grid.Row="1"/>
                         <zoom:ZoomControl Grid.Row="1" Zoom="0.2" MaxZoom="4">

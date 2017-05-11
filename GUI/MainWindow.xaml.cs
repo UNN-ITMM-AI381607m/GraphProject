@@ -69,7 +69,7 @@ namespace GUI
             if (openFileDialog.ShowDialog() == true)
             {
                 ConstructByPrufer(File.ReadAllText(openFileDialog.FileName));
-                PruferResult.Content = "";
+                InfoBar.Content = "";
             }
         }
 
@@ -123,20 +123,19 @@ namespace GUI
 
         private void NewEdge_OnClick(object sender, RoutedEventArgs e)
         {
-            PopupWindowWith2Boxes popup = new PopupWindowWith2Boxes("Create New Edge", "Enter id two vertices you want to merge: ", "Join")
+            PopupWindowWith2Boxes popup = new PopupWindowWith2Boxes("Create New Edge", "Enter id of two vertices you want to connect: ", "Join")
             {
                 Owner = this
             };
             popup.ShowDialog();
             GraphView.AddNewEdge(popup.ID1, popup.ID2);
-            UpdateLayoutThroughViewModel();
         }
 
         //Workflow handlers  
         private void ConstructByPrufer_OnClick(object sender, RoutedEventArgs e)
         {
             ConstructByPrufer(PruferTextBox.Text.ToString());
-            PruferResult.Content = "";
+            InfoBar.Content = "";
         }
 
         private void GetPrufer_OnClick(object sender, RoutedEventArgs e)
@@ -145,7 +144,7 @@ namespace GUI
                 return;
 
             bool isEmpty = GraphView.Tree.IsVerticesEmpty;
-            PruferResult.Content = isEmpty ? "" : "Generated Prufer Code: " + string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Tree).ToArray());
+            InfoBar.Content = isEmpty ? "" : "Generated Prufer Code: " + string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Tree).ToArray());
         }
 
         private void Numerate_OnClick(object sender, RoutedEventArgs e)
@@ -202,6 +201,15 @@ namespace GUI
 		private void New_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             GraphView.Tree = new Tree();
+        }
+
+        private void GetLength_Click(object sender, RoutedEventArgs e)
+        {
+            if (!HandleCheckTreeStatus())
+                return;
+
+            int length = GraphView.Tree.GetLength();
+            InfoBar.Content = "Current numeration length: " + length;
         }
     }
 }
