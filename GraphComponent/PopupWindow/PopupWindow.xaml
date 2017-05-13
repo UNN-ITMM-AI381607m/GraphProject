@@ -8,7 +8,7 @@
         Title="PopupWindow" Height="140" Width="300" WindowStartupLocation="CenterOwner">
     <Grid>
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10">
-            <TextBlock x:Name="Message"/>
+            <TextBlock x:Name="Message" TextWrapping="WrapWithOverflow"/>
             <Separator/>
             <TextBox x:Name="NameTextBox"/>
             <Separator/>

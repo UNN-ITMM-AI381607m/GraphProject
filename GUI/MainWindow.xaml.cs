@@ -30,16 +30,16 @@ namespace GUI
             {
                 case MessageBoxImage.None:
                 case MessageBoxImage.Question:
-                    title = "Message";
+                    title = "Сообщение";
                     break;
                 case MessageBoxImage.Error:
-                    title = "Error";
+                    title = "Ошибка";
                     break;
                 case MessageBoxImage.Warning:
-                    title = "Warning";
+                    title = "Предупреждение";
                     break;
                 case MessageBoxImage.Information:
-                    title = "Information";
+                    title = "Информация";
                     break;
                 default:
                     break;
@@ -57,7 +57,7 @@ namespace GUI
             }
             catch
             {
-                ShowMessage("Invalid Prufer code", MessageBoxImage.Error);
+                ShowMessage("Неверный код Прюфера.", MessageBoxImage.Error);
                 return;
             }
         }
@@ -89,7 +89,7 @@ namespace GUI
                 string a = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Tree).ToArray());
                 if (a.Length == 0)
                 {
-                    ShowMessage("Nothing to save", MessageBoxImage.Error);
+                    ShowMessage("Отсутствует граф для сохранения", MessageBoxImage.Error);
                     return;
                 }
                 try
@@ -100,7 +100,7 @@ namespace GUI
                 }
                 catch
                 {
-                    ShowMessage("Can not save graph to file: \n" + saveDialogFile.FileName, MessageBoxImage.Error);
+                    ShowMessage("Невозможно сохранить граф в файл: \n" + saveDialogFile.FileName, MessageBoxImage.Error);
                 }
             }
         }
@@ -113,7 +113,7 @@ namespace GUI
         //Toolbar handlers
         private void NewVertex_OnClick(object sender, RoutedEventArgs e)
         {
-            PopupWindow popup = new PopupWindow("Create New Vertex", "Enter number for new vertex: ", "Create")
+            PopupWindow popup = new PopupWindow("Создать вершину", "Введите номер новой вершины: ", "Создать")
             {
                 Owner = this
             };
@@ -123,7 +123,7 @@ namespace GUI
 
         private void NewEdge_OnClick(object sender, RoutedEventArgs e)
         {
-            PopupWindowWith2Boxes popup = new PopupWindowWith2Boxes("Create New Edge", "Enter id of two vertices you want to connect: ", "Join")
+            PopupWindowWith2Boxes popup = new PopupWindowWith2Boxes("Создать ребро", "Введите номера двух вершин, которые хотите соединить: ", "Соединить")
             {
                 Owner = this
             };
@@ -144,7 +144,7 @@ namespace GUI
                 return;
 
             bool isEmpty = GraphView.Tree.IsVerticesEmpty;
-            InfoBar.Content = isEmpty ? "" : "Generated Prufer Code: " + string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Tree).ToArray());
+            InfoBar.Content = isEmpty ? "" : "Код Прюфера: " + string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Tree).ToArray());
         }
 
         private void Numerate_OnClick(object sender, RoutedEventArgs e)
@@ -162,7 +162,7 @@ namespace GUI
         //GraphPane PopupWindow handlers
         private int MenuItem_ChangeID_Click(object sender, RoutedEventArgs e)
         {
-            PopupWindow popup = new PopupWindow("Change Number", "Enter new number: ", "Save")
+            PopupWindow popup = new PopupWindow("Изменить номер", "Введите новый номер вершины: ", "Сохранить")
             {
                 Owner = this
             };
@@ -179,16 +179,16 @@ namespace GUI
         private void CheckTree_Click(object sender, RoutedEventArgs e)
         {
             if (!GraphView.Tree.IsTree())
-                ShowMessage("Graph is NOT a Tree", MessageBoxImage.Information);
+                ShowMessage("Граф НЕ является деревом", MessageBoxImage.Information);
             else
-                ShowMessage("Graph is a Tree", MessageBoxImage.Information);
+                ShowMessage("Граф является деревом", MessageBoxImage.Information);
         }
 
         bool HandleCheckTreeStatus()
         {
             if (!GraphView.Tree.IsTree())
             {
-                ShowMessage("Graph is NOT a Tree", MessageBoxImage.Error);
+                ShowMessage("Граф НЕ является деревом", MessageBoxImage.Error);
                 return false;
             }
             return true;
@@ -214,7 +214,7 @@ namespace GUI
 
             int length = GraphView.Tree.GetLength();
             int minLength = GraphView.Tree.GetLength(Numerator.GetIDMap(GraphView.Tree));
-            InfoBar.Content = "Current: " + length + "  Min: " + minLength;
+            InfoBar.Content = "Текущая длина: " + length + "  Минимальная длина: " + minLength;
         }
         
     }

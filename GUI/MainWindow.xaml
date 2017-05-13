@@ -6,7 +6,7 @@
         xmlns:zoom="clr-namespace:GraphSharp.Controls.Zoom;assembly=GraphSharp.Controls"
         xmlns:graph_component="clr-namespace:GraphComponent;assembly=GraphComponent"
         mc:Ignorable="d"
-        Title="Graph Constructor" Height="{Binding SystemParameters.PrimaryScreenHeight}" Width="{Binding SystemParameters.PrimaryScreenWidth}">
+        Title="Конструктор графов" Height="{Binding SystemParameters.PrimaryScreenHeight}" Width="{Binding SystemParameters.PrimaryScreenWidth}">
     <Window.CommandBindings>
         <CommandBinding Command="Open" Executed="OpenFile_OnClick"/>
         <CommandBinding Command="Save" Executed="SaveFile_OnClick"/>
@@ -25,14 +25,14 @@
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="File">
-                <MenuItem Command="New"/>
-                <MenuItem Command="Open"/>
-                <MenuItem Command="Save"/>
+            <MenuItem Header="Файл">
+                <MenuItem Command="New" Header="Создать"/>
+                <MenuItem Command="Open" Header="Открыть"/>
+                <MenuItem Command="Save" Header="Сохранить"/>
                 <Separator />
-                <MenuItem Command="Close"/>
+                <MenuItem Command="Close" Header="Закрыть"/>
             </MenuItem>
-            <MenuItem Header="Options">
+            <MenuItem Header="Опции">
             </MenuItem>
         </Menu>
         <Grid>
@@ -57,26 +57,26 @@
                 </StackPanel.Resources>
                 <Separator />
                 <TextBlock Background="{StaticResource GrayGrayGradientBrush}">
-                    <Label Content="Workflow" FontSize="14" Background="Transparent" BorderBrush="Transparent" Width="73" Margin="57,0"/>
+                    <Label Content="Меню" FontSize="14" Background="Transparent" BorderBrush="Transparent" Width="73" Margin="57,0"/>
                 </TextBlock>
                 <Separator />
-                <Label Content="1. Construct by Prufer code"></Label>
-                <TextBlock Height="55" TextWrapping="WrapWithOverflow" Margin="18,0,35,0">
-                    <Run Text="Please type a code."/>
+                <TextBlock Text="1. Построить граф по коду Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                <TextBlock Height="67" TextWrapping="WrapWithOverflow" Margin="18,0,35,0"> 
+                    <Run Text="Введите код."/>
                     <LineBreak/>
-                    <Run FontStyle="Italic" Text="As a separator use a semicolon or a space."/>
+                    <Run FontStyle="Italic" Text="Используйте точку с запятой или пробел как разделитель."/>
                 </TextBlock>
                 <TextBox x:Name="PruferTextBox" Height="22" HorizontalAlignment="Right" Width="112" Margin="0,0,57,0"/>
-                <Button x:Name="Construct" Click="ConstructByPrufer_OnClick"/>
-                <Label Content="2. Get Prufer code"></Label>
-                <Button x:Name="GetPrufer" Click="GetPrufer_OnClick"/>
-                <Label Content="3. Numerate Graph"></Label>
-                <Button x:Name="Numerate" Click="Numerate_OnClick"/>
-                <Label Content="4. Get Graph's Length"></Label>
-                <Button x:Name="GetLength" Click="GetLength_Click"/>
+                <Button x:Name="Construct" Content="Запустить" Click="ConstructByPrufer_OnClick" Width="60" />
+                <TextBlock Text="2. Получить Код Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                <Button x:Name="GetPrufer"  Content="Запустить" Click="GetPrufer_OnClick" Width="60"/>
+                <TextBlock Text="3. Пронумеровать граф" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                <Button x:Name="Numerate" Content="Запустить" Click="Numerate_OnClick" Width="60"/>
+                <TextBlock Text="4. Длина графа" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                <Button x:Name="GetLength" Content="Запустить" Click="GetLength_Click" Width="60"/>
             </StackPanel>
             <TabControl Grid.Column="1">
-                <TabItem Header="Graph">
+                <TabItem Header="Граф">
                     <TabItem.Background>
                         <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                             <GradientStop Color="#FFF0F0F0" Offset="0"/>
@@ -103,23 +103,23 @@
                                             <Setter Property="BorderBrush" Value="Gray"/>
                                         </Style>
                                     </ToolBar.Resources>
-                                    <Button Name="NewVertex" ToolTip="Create new vertex" Click="NewVertex_OnClick">
+                                    <Button Name="NewVertex" ToolTip="Создать новую вершину" Click="NewVertex_OnClick">
                                         <Image Source="/GUI;component/Resources/Icons/new_vertex.ico" Stretch="Fill"/>
                                     </Button>
                                     <Separator/>
-                                    <Button Name="NewEdge" ToolTip="Create new edge" Click="NewEdge_OnClick">
+                                    <Button Name="NewEdge" ToolTip="Создать новое ребро" Click="NewEdge_OnClick">
                                         <Image Source="/GUI;component/Resources/Icons/new_edge.ico" Stretch="Fill"/>
                                     </Button>
                                     <Separator/>
-                                    <Button Name="Refresh" ToolTip="Refresh layout" Click="Refresh_Click">
+                                    <Button Name="Refresh" ToolTip="Обновить" Click="Refresh_Click">
                                         <Image Source="/GUI;component/Resources/Icons/refresh.ico" Stretch="Fill"/>
                                     </Button>
                                     <Separator/>
-                                    <Button Name="CheckTree" ToolTip="Check if Graph is a Tree" Click="CheckTree_Click">
+                                    <Button Name="CheckTree" ToolTip="Проверить является ли граф деревом" Click="CheckTree_Click">
                                         <Image Source="/GUI;component/Resources/Icons/tree.ico" Stretch="Fill"/>
                                     </Button>
                                     <Separator/>
-                                    <Button Name="FindRoot" ToolTip="Find Root Element" Click="FindRoot_Click">
+                                    <Button Name="FindRoot" ToolTip="Найти корневой элемент" Click="FindRoot_Click">
                                         <Image Source="/GUI;component/Resources/Icons/search.ico" Stretch="Fill"/>
                                     </Button>
                                 </ToolBar>
@@ -132,9 +132,9 @@
                         </zoom:ZoomControl>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Place holder for second tab">
+                <TabItem Header="Теория">
                 </TabItem>
-                <TabItem Header="Place holder for third tab">
+                <TabItem Header="Практика">
                 </TabItem>
             </TabControl>
         </Grid>

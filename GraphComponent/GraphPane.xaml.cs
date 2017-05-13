@@ -74,10 +74,8 @@ namespace GraphComponent
                 case ViewModel.VertexStatus.SUCCESS:
                     break;
                 case ViewModel.VertexStatus.OUT_OF_BOUNDS:
-                    ShowMessage("Vertex number must be within the range [0, 1000)", MessageBoxImage.Error);
-                    break;
                 case ViewModel.VertexStatus.ALREADY_EXISTS:
-                    ShowMessage("Vertex number must be within the range [0, 1000)", MessageBoxImage.Error);
+                    ShowMessage("Номер вершины должен быть в диапазоне: [0, 1000)", MessageBoxImage.Error);
                     break;
                 default:
                     break;
@@ -103,10 +101,10 @@ namespace GraphComponent
           switch(status)
           {
                 case ViewModel.EdgeStatus.INVALID_ID1:
-                    ShowMessage("Vertex with id " + id1 + " does not exist!", MessageBoxImage.Error);
+                    ShowMessage("Вершина с номером " + id1 + " не существует!", MessageBoxImage.Error);
                     break;
                 case ViewModel.EdgeStatus.INVALID_ID2:
-                    ShowMessage("Vertex with id " + id2 + " does not exist!", MessageBoxImage.Error);
+                    ShowMessage("Вершина с номером " + id2 + " не существует!", MessageBoxImage.Error);
                     break;
             }
         }
@@ -127,7 +125,7 @@ namespace GraphComponent
         {
             if (!vm.Tree.IsTree())
             {
-                ShowMessage("Graph is NOT a Tree", MessageBoxImage.Error);
+                ShowMessage("Граф НЕ является деревом", MessageBoxImage.Error);
                 return;
             }
 

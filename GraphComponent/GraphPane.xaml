@@ -5,14 +5,14 @@
         xmlns:local="clr-namespace:GraphComponent">
     <UserControl.Resources>
         <ContextMenu x:Key="cmVertex" DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
-            <MenuItem Header="Mark as Root" Click="MenuItem_MarkAsRoot_Click"/>
-            <MenuItem Header="Change number" Click="MenuItem_ChangeID_Click" />
+            <MenuItem Header="Сделать корнем" Click="MenuItem_MarkAsRoot_Click"/>
+            <MenuItem Header="Изменить номер" Click="MenuItem_ChangeID_Click" />
             <Separator/>
-            <MenuItem Header="Delete" Click="MenuItem_DeleteVertex_Click" />
+            <MenuItem Header="Удалить" Click="MenuItem_DeleteVertex_Click" />
         </ContextMenu>
         
         <ContextMenu x:Key="cmEdge" DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
-            <MenuItem Header="Delete" Click="MenuItem_DeleteEdge_Click" />
+            <MenuItem Header="Удалить" Click="MenuItem_DeleteEdge_Click" />
         </ContextMenu>
 
         <DataTemplate x:Key="template" DataType="{x:Type local:CustomVertex}">

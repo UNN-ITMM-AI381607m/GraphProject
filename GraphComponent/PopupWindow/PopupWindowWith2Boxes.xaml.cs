@@ -53,6 +53,11 @@ namespace GraphComponent.PopupWindow
             }
         }
 
+        //public bool Closed
+        //{
+        //    get; set;
+        //}
+
         public PopupWindowWith2Boxes(string title, string message, string button)
         {
             InitializeComponent();
