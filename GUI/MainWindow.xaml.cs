@@ -57,7 +57,7 @@ namespace GUI
             }
             catch
             {
-                ShowMessage("Неверный код Прюфера.", MessageBoxImage.Error);
+                ShowMessage("Неверный код Прюфера", MessageBoxImage.Error);
                 return;
             }
         }

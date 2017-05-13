@@ -60,6 +60,7 @@
                     <Label Content="Меню" FontSize="14" Background="Transparent" BorderBrush="Transparent" Width="73" Margin="57,0"/>
                 </TextBlock>
                 <Separator />
+                <Separator Background="Transparent" Height="10"></Separator>
                 <TextBlock Text="1. Построить граф по коду Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
                 <TextBlock Height="67" TextWrapping="WrapWithOverflow" Margin="18,0,35,0"> 
                     <Run Text="Введите код."/>
@@ -68,10 +69,13 @@
                 </TextBlock>
                 <TextBox x:Name="PruferTextBox" Height="22" HorizontalAlignment="Right" Width="112" Margin="0,0,57,0"/>
                 <Button x:Name="Construct" Content="Запустить" Click="ConstructByPrufer_OnClick" Width="60" />
+                <Separator Background="Transparent" Height="10"></Separator>
                 <TextBlock Text="2. Получить Код Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
                 <Button x:Name="GetPrufer"  Content="Запустить" Click="GetPrufer_OnClick" Width="60"/>
-                <TextBlock Text="3. Пронумеровать граф" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                <Separator Background="Transparent" Height="10"></Separator>
+                <TextBlock Text="3. Перенумеровать граф" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
                 <Button x:Name="Numerate" Content="Запустить" Click="Numerate_OnClick" Width="60"/>
+                <Separator Background="Transparent" Height="10"></Separator>
                 <TextBlock Text="4. Длина графа" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
                 <Button x:Name="GetLength" Content="Запустить" Click="GetLength_Click" Width="60"/>
             </StackPanel>

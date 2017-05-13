@@ -40,7 +40,7 @@ namespace GraphComponent.SettingWindow
             }
             catch
             {
-                MessageBox.Show("Please enter positive integer", "Wrong Format");
+                MessageBox.Show("Пожалуйста, введите положительное число.", "Неверный формат");
                 return;
             }
             Close();
