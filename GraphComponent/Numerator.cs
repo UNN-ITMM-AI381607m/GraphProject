@@ -11,7 +11,7 @@ namespace GraphComponent
         public static Dictionary<CustomVertex, int> GetIDMap(Tree tree)
         {
             List<MyEdge> new_graph = ConvertGraph(tree);
-            InitGraphRecurs(InitGraph(new_graph, tree.VertexCount), null, tree.VertexCount);
+            InitGraph(new_graph, tree.VertexCount);
             Numeration(new_graph, 1);
             return CreateIDMap(new_graph, tree);
         }
@@ -53,7 +53,12 @@ namespace GraphComponent
             }
             return result;
         }
-        static MyEdge InitGraph(List<MyEdge> graph, int kolvo)
+        static void InitGraph(List<MyEdge> graph, int kolvo)
+        {
+            InitGraphRecurs(InitGraphBegin(graph, kolvo), kolvo);
+            foreach (MyEdge edge in graph) edge.Mark = false;
+        }
+        static MyEdge InitGraphBegin(List<MyEdge> graph, int kolvo)
         {
             foreach (MyEdge edge in graph)
             {
@@ -61,6 +66,7 @@ namespace GraphComponent
                 {
                     edge.Number_vertex_next = 1;
                     edge.Number_vertex_preview = kolvo - 1;
+                    edge.Mark = true;
                 }
                 if (edge.Preview.List_of_edge.Count == 1)
                 {
@@ -72,12 +78,15 @@ namespace GraphComponent
                 if (edge.Number_vertex_next == 0) return edge;
             return null;
         }
-        static void InitGraphRecurs(MyEdge current, MyEdge preview, int kolvo)
+        static void InitGraphRecurs(MyEdge current, int kolvo)
         {
             if (current != null)
             {
+                current.Mark = true;
                 foreach (MyEdge edge in current.Next.List_of_edge)
-                    if (edge != current && edge != preview && edge.Number_vertex_next == 0) InitGraphRecurs(edge, current, kolvo);
+                    if (edge != current && !edge.Mark) InitGraphRecurs(edge, kolvo);
+                foreach (MyEdge edge in current.Preview.List_of_edge)
+                    if (edge != current && !edge.Mark) InitGraphRecurs(edge, kolvo);
                 foreach (MyEdge edge in current.Next.List_of_edge)
                     if (edge.Number_vertex_next != 0 && edge != current)
                         if (current.Next == edge.Next) current.Number_vertex_next += edge.Number_vertex_preview;
@@ -86,12 +95,12 @@ namespace GraphComponent
                 current.Number_vertex_preview = kolvo - current.Number_vertex_next;
             }
         }
-        static MyVertex SearchNextVertex(MyVertex current, MyEdge preview)
+        static MyVertex SearchNextVertex(MyVertex current)
         {
             int max = int.MinValue;
             MyVertex next = null;
             foreach (MyEdge edge in current.List_of_edge)
-                if (edge != preview)
+                if (!edge.Mark)
                     if (edge.Next == current)
                     {
                         if (edge.Number_vertex_preview > max)
@@ -110,51 +119,48 @@ namespace GraphComponent
                     }
             return next;
         }
-        static MyVertex SearchFirstVertex(MyVertex current, MyEdge preview)
+        static MyVertex SearchFirstVertex(List<MyEdge> graph)
         {
-            MyVertex next = SearchNextVertex(current, preview);
+            MyVertex next = SearchNextVertex(graph[0].Next),current = graph[0].Next;
             while (next.List_of_edge.Count != 1)
             {
                 foreach (MyEdge edge in next.List_of_edge)
                     if (edge.Next == next && edge.Preview == current || edge.Next == current && edge.Preview == next)
                     {
-                        preview = edge;
+                        edge.Mark = true;
                         break;
                     }
                 current = next;
-                next = SearchNextVertex(current, preview);
+                next = SearchNextVertex(current);
             }
+            foreach (MyEdge edge in graph) edge.Mark = false;
             return next;
         }
         static int Numeration(List<MyEdge> graph, int first)
         {
-            MyVertex preview_vertex = SearchFirstVertex(graph[0].Next, null), current_vertex = null, next_vertex = null;
-            preview_vertex.Number = first++;
-            MyEdge preview_edge = preview_vertex.List_of_edge[0], next_edge = null;
-            current_vertex = SearchNextVertex(preview_vertex, null);
+            MyVertex current_vertex = SearchFirstVertex(graph), next_vertex;
             while (true)
             {
-                next_vertex = SearchNextVertex(current_vertex, preview_edge);
+                next_vertex = SearchNextVertex(current_vertex);
                 if (next_vertex != null)
                 {
                     foreach (MyEdge edge in current_vertex.List_of_edge)
                         if (edge.Next == next_vertex && edge.Preview == current_vertex || edge.Next == current_vertex && edge.Preview == next_vertex)
                         {
-                            next_edge = edge;
+                            edge.Mark = true;
                             break;
                         }
                     List<MyEdge> new_graph = new List<MyEdge>();
                     foreach (MyEdge edge in current_vertex.List_of_edge)
-                        if (edge != preview_edge && edge != next_edge) new_graph.Add(edge);
+                        if (!edge.Mark) new_graph.Add(edge);
                     if (new_graph.Count != 0)
                     {
-                        BuildGraph(new_graph);
-                        InitGraphRecurs(InitGraph(new_graph, new_graph.Count + 1), null, new_graph.Count + 1);
+                        new_graph = BuildGraph(new_graph);
+                        InitGraph(new_graph, new_graph.Count + 1);
                         first = Numeration(new_graph, first);
                     }
                     else current_vertex.Number = first++;
                     current_vertex = next_vertex;
-                    preview_edge = next_edge;
                 }
                 else
                 {
@@ -164,23 +170,32 @@ namespace GraphComponent
             }
             return first;
         }
-        static void BuildGraph(List<MyEdge> graph)
+        static List<MyEdge> BuildGraph(List<MyEdge> graph)
         {
             foreach (MyEdge edge in graph)
             {
                 for (int i = 0; i < edge.Next.List_of_edge.Count; i++)
-                    if (graph.IndexOf(edge.Next.List_of_edge[i]) == -1)
+                    if (edge.Next.List_of_edge[i].Mark)
                     {
                         edge.Next.List_of_edge.RemoveAt(i);
                         i--;
                     }
                 for (int i = 0; i < edge.Preview.List_of_edge.Count; i++)
-                    if (graph.IndexOf(edge.Preview.List_of_edge[i]) == -1)
+                    if (edge.Preview.List_of_edge[i].Mark)
                     {
                         edge.Preview.List_of_edge.RemoveAt(i);
                         i--;
                     }
             }
+            List<MyEdge> new_graph = new List<MyEdge>();
+            foreach (MyEdge edge in graph)
+            {
+                foreach (MyEdge next_edge in edge.Next.List_of_edge)
+                    if (new_graph.IndexOf(next_edge) == -1) new_graph.Add(next_edge);
+                foreach (MyEdge preview_edge in edge.Preview.List_of_edge)
+                    if (new_graph.IndexOf(preview_edge) == -1) new_graph.Add(preview_edge);
+            }
+            return new_graph;
         }
     }
     class MyVertex
@@ -231,12 +246,14 @@ namespace GraphComponent
     {
         MyVertex preview, next;
         int number_vertex_preview, number_vertex_next;
+        bool mark;
         public MyEdge(MyVertex vert1, MyVertex vert2)
         {
             preview = vert1;
             next = vert2;
             number_vertex_preview = 0;
             number_vertex_next = 0;
+            mark = false;
         }
         public MyVertex Preview
         {
@@ -280,6 +297,17 @@ namespace GraphComponent
             set
             {
                 number_vertex_next = value;
+            }
+        }
+        public bool Mark
+        {
+            get
+            {
+                return mark;
+            }
+            set
+            {
+                mark = value;
             }
         }
     }
