@@ -225,5 +225,24 @@ namespace GUI
             else
                 TaskGrid.Visibility = Visibility.Collapsed;
         }
+
+        private void GenerateCode_OnClick(object sender, RoutedEventArgs e)
+        {
+            PruferCode.Content = "1 2 3" ;
+        }
+
+        private void CheckGraph_OnClick(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void GenerateGraph_OnClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void CheckCode_OnClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

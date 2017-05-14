@@ -91,6 +91,14 @@
                     <DockPanel LastChildFill="True">
                         <Grid x:Name="TaskGrid" Visibility="Collapsed" DockPanel.Dock="Right" MinWidth="200">
                             <StackPanel x:Name="myGrid" Background="#FFF0F0F0">
+                                <TextBlock Text="1. Постройте граф по коду Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                                <Label x:Name="PruferCode" Grid.Column="1" FontSize="15" HorizontalContentAlignment="Center"></Label>
+                                <Button x:Name="GenCode" Content="Сгенерировать" Click="GenerateCode_OnClick" Width="60" />
+                                <Button x:Name="CheckGraph" Content="Проверить" Click="CheckGraph_OnClick" Width="60" />
+                                <TextBlock Text="2. Постройте код Прюфера по графу" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                                <Button x:Name="GenGraph" Content="Сгенерировать" Click="GenerateGraph_OnClick" Width="60" />
+                                <TextBox x:Name="CheckPruferTextBox" Height="22" HorizontalAlignment="Right" Width="112" Margin="0,0,57,0"/>
+                                <Button x:Name="CheckCode" Content="Проверить" Click="CheckCode_OnClick" Width="60" />
                             </StackPanel>
                         </Grid>
                         <Grid>
