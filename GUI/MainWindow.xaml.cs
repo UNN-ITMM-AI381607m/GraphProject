@@ -7,6 +7,7 @@ using GraphComponent.GraphBuilder;
 using GraphComponent.SettingWindow;
 using GraphComponent.PopupWindow;
 using GraphComponent;
+using System.Windows.Controls;
 
 namespace GUI
 {
@@ -216,6 +217,13 @@ namespace GUI
             int minLength = GraphView.Tree.GetLength(Numerator.GetIDMap(GraphView.Tree));
             InfoBar.Content = "Текущая длина: " + length + "  Минимальная длина: " + minLength;
         }
-        
+
+        private void OpenTasks_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as MenuItem).IsChecked)
+                TaskGrid.Visibility = Visibility.Visible;
+            else
+                TaskGrid.Visibility = Visibility.Collapsed;
+        }
     }
 }

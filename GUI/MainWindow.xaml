@@ -88,72 +88,64 @@
                             <GradientStop Color="#19E5E5E5" Offset="1"/>
                         </LinearGradientBrush>
                     </TabItem.Background>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="36"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
+                    <DockPanel LastChildFill="True">
+                        <Grid x:Name="TaskGrid" Visibility="Collapsed" DockPanel.Dock="Right" MinWidth="200">
+                            <StackPanel x:Name="myGrid" Background="#FFF0F0F0">
+                            </StackPanel>
+                        </Grid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="36"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <!--<Grid.ColumnDefinitions>
                             <ColumnDefinition Width="407*"/>
                             <ColumnDefinition Width="161*"/>
-                        </Grid.ColumnDefinitions>
-                        <Separator Grid.Row="0"/>
-                        <Grid Grid.Row="0" Background="{StaticResource GrayGrayGradientBrush}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="107*" />
-                                <ColumnDefinition Width="177*"/>
-                            </Grid.ColumnDefinitions>
-                            <ToolBarTray Grid.Row="0" Grid.Column="0" Background="Transparent" HorizontalAlignment="Left">
-                                <ToolBar Background="LightGray" Height="36">
-                                    <ToolBar.Resources>
-                                        <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
-                                            <Setter Property="Width" Value="34"/>
-                                            <Setter Property="Height" Value="34"/>
-                                            <Setter Property="BorderBrush" Value="Gray"/>
-                                        </Style>
-                                    </ToolBar.Resources>
-                                    <Button Name="NewVertex" ToolTip="Создать новую вершину" Click="NewVertex_OnClick">
-                                        <Image Source="/GUI;component/Resources/Icons/new_vertex.ico" Stretch="Fill"/>
-                                    </Button>
-                                    <Separator/>
-                                    <Button Name="NewEdge" ToolTip="Создать новое ребро" Click="NewEdge_OnClick">
-                                        <Image Source="/GUI;component/Resources/Icons/new_edge.ico" Stretch="Fill"/>
-                                    </Button>
-                                    <Separator/>
-                                    <Button Name="Refresh" ToolTip="Обновить" Click="Refresh_Click">
-                                        <Image Source="/GUI;component/Resources/Icons/refresh.ico" Stretch="Fill"/>
-                                    </Button>
-                                    <Separator/>
-                                    <Button Name="CheckTree" ToolTip="Проверить является ли граф деревом" Click="CheckTree_Click">
-                                        <Image Source="/GUI;component/Resources/Icons/tree.ico" Stretch="Fill"/>
-                                    </Button>
-                                    <Separator/>
-                                    <Button Name="FindRoot" ToolTip="Найти корневой элемент" Click="FindRoot_Click">
-                                        <Image Source="/GUI;component/Resources/Icons/search.ico" Stretch="Fill"/>
-                                    </Button>
-                                </ToolBar>
-                            </ToolBarTray>
-                            <Label x:Name="InfoBar" Grid.Column="1" FontSize="15" HorizontalContentAlignment="Center"/>
+                        </Grid.ColumnDefinitions>-->
+                            <Separator Grid.Row="0"/>
+                            <Grid Grid.Row="0" Background="{StaticResource GrayGrayGradientBrush}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="107*" />
+                                    <ColumnDefinition Width="177*"/>
+                                </Grid.ColumnDefinitions>
+                                <ToolBarTray Grid.Row="0" Grid.Column="0" Background="Transparent" HorizontalAlignment="Left">
+                                    <ToolBar Background="LightGray" Height="36">
+                                        <ToolBar.Resources>
+                                            <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
+                                                <Setter Property="Width" Value="34"/>
+                                                <Setter Property="Height" Value="34"/>
+                                                <Setter Property="BorderBrush" Value="Gray"/>
+                                            </Style>
+                                        </ToolBar.Resources>
+                                        <Button Name="NewVertex" ToolTip="Создать новую вершину" Click="NewVertex_OnClick">
+                                            <Image Source="/GUI;component/Resources/Icons/new_vertex.ico" Stretch="Fill"/>
+                                        </Button>
+                                        <Separator/>
+                                        <Button Name="NewEdge" ToolTip="Создать новое ребро" Click="NewEdge_OnClick">
+                                            <Image Source="/GUI;component/Resources/Icons/new_edge.ico" Stretch="Fill"/>
+                                        </Button>
+                                        <Separator/>
+                                        <Button Name="Refresh" ToolTip="Обновить" Click="Refresh_Click">
+                                            <Image Source="/GUI;component/Resources/Icons/refresh.ico" Stretch="Fill"/>
+                                        </Button>
+                                        <Separator/>
+                                        <Button Name="CheckTree" ToolTip="Проверить является ли граф деревом" Click="CheckTree_Click">
+                                            <Image Source="/GUI;component/Resources/Icons/tree.ico" Stretch="Fill"/>
+                                        </Button>
+                                        <Separator/>
+                                        <Button Name="FindRoot" ToolTip="Найти корневой элемент" Click="FindRoot_Click">
+                                            <Image Source="/GUI;component/Resources/Icons/search.ico" Stretch="Fill"/>
+                                        </Button>
+                                    </ToolBar>
+                                </ToolBarTray>
+                                <Label x:Name="InfoBar" Grid.Column="1" FontSize="15" HorizontalContentAlignment="Center"/>
+                            </Grid>
+                            <Separator Grid.Row="1"/>
+                            <zoom:ZoomControl Grid.Row="1" Zoom="0.2" MaxZoom="4">
+                                <graph_component:GraphPane x:Name="GraphView"/>
+                            </zoom:ZoomControl>
                         </Grid>
-                        <Separator Grid.Row="1"/>
-                        <zoom:ZoomControl Grid.Row="1" Zoom="0.2" MaxZoom="4">
-                            <graph_component:GraphPane x:Name="GraphView"/>
-                        </zoom:ZoomControl>
-                        <StackPanel x:Name="myGrid" Grid.Column="1" Grid.RowSpan="2" Background="#FFF0F0F0">
-                            <StackPanel.Style>
-                                <Style TargetType="StackPanel">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=OpenTasks, Path=IsChecked}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ElementName=OpenTasks, Path=IsChecked}" Value="False">
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </StackPanel.Style>
-                        </StackPanel>
-                    </Grid>
+                    </DockPanel>
                 </TabItem>
                 <TabItem Header="Теория">
                 </TabItem>
