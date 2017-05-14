@@ -271,6 +271,5 @@ namespace GUI
             GraphView.Tree = GraphBuilderStrategy.CodeToGraph(GeneratePruferCode(vertices).Split(' ', ',', ';').Select(int.Parse).ToList());
             UpdateLayoutThroughViewModel();
         }
-
     }
 }
