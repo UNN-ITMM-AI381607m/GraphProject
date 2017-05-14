@@ -25,6 +25,14 @@ namespace GraphComponent.GraphBuilder
             UndirectedBreadthFirstSearchAlgorithm<CustomVertex, CustomEdge> bfs = new UndirectedBreadthFirstSearchAlgorithm<CustomVertex, CustomEdge>(undirectTree);
             bfs.GrayTarget += (u,v) => bfsCycle=true;
             bfs.Compute(tree.Vertices.ElementAt(0));
+            List<CustomVertex> verticies = tree.Vertices.ToList();
+            List<int> numerate = new List<int>();
+            foreach (var vert in verticies)
+            {
+                numerate.Add(vert.ID);
+            }
+            if (numerate.Max() > numerate.Count())
+                return false;
             return !(bfsCycle || bfs.VertexColors.Any(x => x.Value == GraphColor.White));
         }
 
