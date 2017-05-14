@@ -132,6 +132,11 @@ namespace GUI
                 TaskGrid.Visibility = Visibility.Collapsed;
         }
 
+        private void OpenTheory_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         #endregion
 
         #region ToolBar Handling

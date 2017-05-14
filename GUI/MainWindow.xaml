@@ -22,18 +22,26 @@
         <Style x:Key="BaseButton" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource GrayGrayGradientBrush}" />
         </Style>
+        <LinearGradientBrush x:Key="GrayBrush">
+            <GradientStop Color="Gray" Offset="0" />
+        </LinearGradientBrush>
+        <Style x:Key="GrayBorder" TargetType="Border">
+            <Setter Property="BorderBrush" Value="{StaticResource GrayBrush}" />
+            <Setter Property="BorderThickness" Value="1,1,1,1" />
+        </Style>
     </Window.Resources>
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top" Height="21">
             <MenuItem Header="Файл">
                 <MenuItem Command="New" Header="Создать"/>
                 <MenuItem Command="Open" Header="Открыть"/>
                 <MenuItem Command="Save" Header="Сохранить"/>
-                <Separator />
+                <Separator/>
                 <MenuItem Command="Close" Header="Закрыть"/>
             </MenuItem>
-            <MenuItem Header="Опции">
+            <MenuItem Header="Обучение">
                 <MenuItem x:Name ="OpenTasks" Click="OpenTasks_Click" IsCheckable="True" Header="Задачи"/>
+                <MenuItem x:Name ="OpenTheory" Click="OpenTheory_Click" IsCheckable="True" Header="Теория"/>
             </MenuItem>
         </Menu>
         <Grid>
@@ -41,126 +49,120 @@
                 <ColumnDefinition Width="186"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" Name="textEditor" Background="#FFF0F0F0" Width="186">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
-                        <Setter Property="Content" Value="Run"/>
-                        <Setter Property="Height" Value="20"/>
-                        <Setter Property="Width" Value="50"/>
-                        <Setter Property="Margin" Value="10,10"/>
-                        <Setter Property="HorizontalAlignment" Value="Left"/>
-                    </Style>
-                </StackPanel.Resources>
-                <Label Content="Меню" FontSize="14" BorderBrush="Transparent" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Background="{StaticResource GrayGrayGradientBrush}" Margin="0, 0, 0, 0"/>
-                <Separator />
-                <Separator Background="Transparent" Height="10"></Separator>
-                <TextBlock Text="1. Построить граф по коду Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
-                <TextBlock Height="67" TextWrapping="WrapWithOverflow" Margin="18,0,35,0"> 
-                    <Run Text="Введите код."/>
-                    <LineBreak/>
-                    <Run FontStyle="Italic" Text="Используйте точку с запятой или пробел как разделитель."/>
-                </TextBlock>
-                <TextBox x:Name="PruferTextBox" Height="22" HorizontalAlignment="Right" Width="112" Margin="0,0,57,0"/>
-                <Button x:Name="Construct" Content="Запустить" Click="ConstructByPrufer_OnClick" Width="60" />
-                <Separator Background="Transparent" Height="10"></Separator>
-                <TextBlock Text="2. Получить Код Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
-                <Button x:Name="GetPrufer"  Content="Запустить" Click="GetPrufer_OnClick" Width="60"/>
-                <Separator Background="Transparent" Height="10"></Separator>
-                <TextBlock Text="3. Перенумеровать граф" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
-                <Button x:Name="Numerate" Content="Запустить" Click="Numerate_OnClick" Width="60"/>
-                <Separator Background="Transparent" Height="10"></Separator>
-                <TextBlock Text="4. Длина графа" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
-                <Button x:Name="GetLength" Content="Запустить" Click="GetLength_Click" Width="60"/>
-            </StackPanel>
-            <TabControl Grid.Column="1">
-                <TabItem Header="Граф">
-                    <TabItem.Background>
-                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                            <GradientStop Color="#FFF0F0F0" Offset="0"/>
-                            <GradientStop Color="#19E5E5E5" Offset="1"/>
-                        </LinearGradientBrush>
-                    </TabItem.Background>
-                    <DockPanel LastChildFill="True">
-                        <Grid x:Name="TaskGrid" Visibility="Collapsed" DockPanel.Dock="Right" MinWidth="200">
-                            <Border BorderBrush="Black" BorderThickness="1 0 0 0">
-                                <StackPanel x:Name="myGrid" Background="#FFF0F0F0" >
-                                    <StackPanel.Resources>
-                                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
-                                            <Setter Property="Height" Value="20"/>
-                                            <Setter Property="Margin" Value="10,10"/>
-                                            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <DockPanel Grid.Column="0" Name="textEditor" Background="#FFF0F0F0" Width="186">
+                <Grid>
+                    <Border Style="{StaticResource GrayBorder}">
+                        <StackPanel>
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
+                                    <Setter Property="Content" Value="Run"/>
+                                    <Setter Property="Height" Value="20"/>
+                                    <Setter Property="Width" Value="50"/>
+                                    <Setter Property="Margin" Value="10,10"/>
+                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Label Content="Меню" FontSize="14" BorderBrush="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Background="{StaticResource GrayGrayGradientBrush}" Height="35"/>
+                            <Separator Background="{StaticResource GrayBrush}" />
+                            <Separator Background="Transparent" Height="10"></Separator>
+                            <TextBlock Text="1. Построить граф по коду Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                            <TextBlock Height="67" TextWrapping="WrapWithOverflow" Margin="18,0,35,0">
+                            <Run Text="Введите код."/>
+                            <LineBreak/>
+                            <Run FontStyle="Italic" Text="Используйте точку с запятой или пробел как разделитель."/>
+                            </TextBlock>
+                            <TextBox x:Name="PruferTextBox" Height="22" HorizontalAlignment="Right" Width="112" Margin="0,0,57,0"/>
+                            <Button x:Name="Construct" Content="Запустить" Click="ConstructByPrufer_OnClick" Width="60" />
+                            <Separator Background="Transparent" Height="10"></Separator>
+                            <TextBlock Text="2. Получить Код Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                            <Button x:Name="GetPrufer"  Content="Запустить" Click="GetPrufer_OnClick" Width="60"/>
+                            <Separator Background="Transparent" Height="10"></Separator>
+                            <TextBlock Text="3. Перенумеровать граф" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                            <Button x:Name="Numerate" Content="Запустить" Click="Numerate_OnClick" Width="60"/>
+                            <Separator Background="Transparent" Height="10"></Separator>
+                            <TextBlock Text="4. Длина графа" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                            <Button x:Name="GetLength" Content="Запустить" Click="GetLength_Click" Width="60"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </DockPanel>
+            <DockPanel Grid.Column="1">
+                <DockPanel LastChildFill="True">
+                    <Grid x:Name="TaskGrid" Visibility="Collapsed" DockPanel.Dock="Right" MinWidth="200">
+                        <Border Style="{StaticResource GrayBorder}">
+                            <StackPanel x:Name="myGrid" Background="#FFF0F0F0" >
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
+                                        <Setter Property="Height" Value="20"/>
+                                        <Setter Property="Margin" Value="10,10"/>
+                                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Label Content="Задачи" FontSize="14" BorderBrush="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Background="{StaticResource GrayGrayGradientBrush}" Height="35"/>
+                                <Separator Background="{StaticResource GrayBrush}"/>
+                                <Separator Background="Transparent" Height="10"></Separator>
+                                <TextBlock Text="1. Постройте граф по коду Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                                <Label x:Name="PruferCode" FontSize="15" HorizontalContentAlignment="Center"></Label>
+                                <Button x:Name="GenCode" Content="Сгенерировать" Click="GenerateCode_OnClick" />
+                                <Button x:Name="CheckGraph" Content="Проверить" Click="CheckGraph_OnClick" />
+                                <TextBlock Text="2. Постройте код Прюфера по графу" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                                <Button x:Name="GenGraph" Content="Сгенерировать" Click="GenerateGraph_OnClick" />
+                                <Label Content="Ответ:" Margin="10, 0"/>
+                                <TextBox x:Name="CheckPruferTextBox" Height="22" HorizontalAlignment="Center" Width="112"/>
+                                <Button x:Name="CheckCode" Content="Проверить" Click="CheckCode_OnClick" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="36"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Separator Grid.Row="0"/>
+                        <Grid Grid.Row="0" Background="{StaticResource GrayGrayGradientBrush}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="107*" />
+                                <ColumnDefinition Width="177*"/>
+                            </Grid.ColumnDefinitions>
+                            <ToolBarTray Grid.Row="0" Grid.Column="0" Background="Transparent" HorizontalAlignment="Left">
+                                <ToolBar Background="LightGray" Height="36">
+                                    <ToolBar.Resources>
+                                        <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
+                                            <Setter Property="Width" Value="34"/>
+                                            <Setter Property="Height" Value="34"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource GrayBrush}"/>
                                         </Style>
-                                    </StackPanel.Resources>
-                                    <Label Content="Задачи" FontSize="14" BorderBrush="Transparent" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Background="{StaticResource GrayGrayGradientBrush}" Margin="0, 0, 0, 0"/>
+                                    </ToolBar.Resources>
+                                    <Button Name="NewVertex" ToolTip="Создать новую вершину" Click="NewVertex_OnClick">
+                                        <Image Source="/GUI;component/Resources/Icons/new_vertex.ico" Stretch="Fill"/>
+                                    </Button>
                                     <Separator/>
-                                    <Separator Background="Transparent" Height="10"></Separator>
-                                    <TextBlock Text="1. Постройте граф по коду Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
-                                    <Label x:Name="PruferCode" FontSize="15" HorizontalContentAlignment="Center"></Label>
-                                    <Button x:Name="GenCode" Content="Сгенерировать" Click="GenerateCode_OnClick" />
-                                    <Button x:Name="CheckGraph" Content="Проверить" Click="CheckGraph_OnClick" />
-                                    <TextBlock Text="2. Постройте код Прюфера по графу" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
-                                    <Button x:Name="GenGraph" Content="Сгенерировать" Click="GenerateGraph_OnClick" />
-                                    <Label Content="Ответ:" Margin="10, 0"/>
-                                    <TextBox x:Name="CheckPruferTextBox" Height="22" HorizontalAlignment="Center" Width="112"/>
-                                    <Button x:Name="CheckCode" Content="Проверить" Click="CheckCode_OnClick" />
-                                </StackPanel>
-                            </Border>
+                                    <Button Name="NewEdge" ToolTip="Создать новое ребро" Click="NewEdge_OnClick">
+                                        <Image Source="/GUI;component/Resources/Icons/new_edge.ico" Stretch="Fill"/>
+                                    </Button>
+                                    <Separator/>
+                                    <Button Name="Refresh" ToolTip="Обновить" Click="Refresh_Click">
+                                        <Image Source="/GUI;component/Resources/Icons/refresh.ico" Stretch="Fill"/>
+                                    </Button>
+                                    <Separator/>
+                                    <Button Name="CheckTree" ToolTip="Проверить является ли граф деревом" Click="CheckTree_Click">
+                                        <Image Source="/GUI;component/Resources/Icons/tree.ico" Stretch="Fill"/>
+                                    </Button>
+                                    <Separator/>
+                                    <Button Name="FindRoot" ToolTip="Найти корневой элемент" Click="FindRoot_Click">
+                                        <Image Source="/GUI;component/Resources/Icons/search.ico" Stretch="Fill"/>
+                                    </Button>
+                                </ToolBar>
+                            </ToolBarTray>
+                            <Label x:Name="InfoBar" Grid.Column="1" FontSize="15" HorizontalContentAlignment="Center"/>
                         </Grid>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="36"/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Separator Grid.Row="0"/>
-                            <Grid Grid.Row="0" Background="{StaticResource GrayGrayGradientBrush}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="107*" />
-                                    <ColumnDefinition Width="177*"/>
-                                </Grid.ColumnDefinitions>
-                                <ToolBarTray Grid.Row="0" Grid.Column="0" Background="Transparent" HorizontalAlignment="Left">
-                                    <ToolBar Background="LightGray" Height="36">
-                                        <ToolBar.Resources>
-                                            <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
-                                                <Setter Property="Width" Value="34"/>
-                                                <Setter Property="Height" Value="34"/>
-                                                <Setter Property="BorderBrush" Value="Gray"/>
-                                            </Style>
-                                        </ToolBar.Resources>
-                                        <Button Name="NewVertex" ToolTip="Создать новую вершину" Click="NewVertex_OnClick">
-                                            <Image Source="/GUI;component/Resources/Icons/new_vertex.ico" Stretch="Fill"/>
-                                        </Button>
-                                        <Separator/>
-                                        <Button Name="NewEdge" ToolTip="Создать новое ребро" Click="NewEdge_OnClick">
-                                            <Image Source="/GUI;component/Resources/Icons/new_edge.ico" Stretch="Fill"/>
-                                        </Button>
-                                        <Separator/>
-                                        <Button Name="Refresh" ToolTip="Обновить" Click="Refresh_Click">
-                                            <Image Source="/GUI;component/Resources/Icons/refresh.ico" Stretch="Fill"/>
-                                        </Button>
-                                        <Separator/>
-                                        <Button Name="CheckTree" ToolTip="Проверить является ли граф деревом" Click="CheckTree_Click">
-                                            <Image Source="/GUI;component/Resources/Icons/tree.ico" Stretch="Fill"/>
-                                        </Button>
-                                        <Separator/>
-                                        <Button Name="FindRoot" ToolTip="Найти корневой элемент" Click="FindRoot_Click">
-                                            <Image Source="/GUI;component/Resources/Icons/search.ico" Stretch="Fill"/>
-                                        </Button>
-                                    </ToolBar>
-                                </ToolBarTray>
-                                <Label x:Name="InfoBar" Grid.Column="1" FontSize="15" HorizontalContentAlignment="Center"/>
-                            </Grid>
-                            <Separator Grid.Row="1"/>
-                            <zoom:ZoomControl Grid.Row="1" Zoom="0.2" MaxZoom="4">
-                                <graph_component:GraphPane x:Name="GraphView"/>
-                            </zoom:ZoomControl>
-                        </Grid>
-                    </DockPanel>
-                </TabItem>
-                <TabItem Header="Теория">
-                </TabItem>
-                <TabItem Header="Практика">
-                </TabItem>
-            </TabControl>
+                        <Separator Grid.Row="1"/>
+                        <zoom:ZoomControl Grid.Row="1" Zoom="0.2" MaxZoom="4">
+                            <graph_component:GraphPane x:Name="GraphView"/>
+                        </zoom:ZoomControl>
+                    </Grid>
+                </DockPanel>
+            </DockPanel>
         </Grid>
     </DockPanel>
 </Window>
