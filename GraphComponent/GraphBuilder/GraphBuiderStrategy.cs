@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QuickGraph;
+using QuickGraph.Algorithms.Search;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +10,64 @@ namespace GraphComponent.GraphBuilder
 {
     static public class GraphBuilderStrategy
     {
-        //static public CustomGraph CodeToGraph1(string code)
-        //{
-        //    List<int> code_list = code.Split(' ').Select(int.Parse).ToList();
-        //    return CodeToGraph(code_list);
-        //}
+        static public bool ValidateCode(List<int> code)
+        {
+            if (code.Max() > code.Count() + 2)
+                return false;
+            return true;
+        }
+
+        static public bool ValidateOrientedGraph(Tree tree)
+        {
+            if (tree == null || tree.VertexCount == 0)
+                return false;
+
+            int rootCounter = 0;
+            CustomVertex root = null;
+            foreach (var vertex in tree.Vertices)
+            {
+                IEnumerable<CustomEdge> edges;
+                if (tree.TryGetInEdges(vertex, out edges) && edges.Count() == 0)
+                {
+                    rootCounter++;
+                    root = vertex;
+                }
+            }
+            if (rootCounter != 1 || root == null)
+                return false;
+
+            bool hasCycle = false;
+
+            BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge> bfs = new BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge>(tree);
+            bfs.NonTreeEdge += u => hasCycle = true;
+            bfs.Compute(root);
+
+            bool notAllVisited = bfs.VertexColors.Any(x => x.Value == GraphColor.White);
+
+            return !(hasCycle || notAllVisited);
+        }
+
+        static public bool ValidateNonOrientedGraph(Tree tree)
+        {
+            if (tree == null || tree.VertexCount == 0)
+                return false;
+
+            bool bfsCycle = false;
+            List<CustomEdge> nonTreeEdges = new List<CustomEdge>();
+            UndirectedBidirectionalGraph<CustomVertex, CustomEdge> undirectTree = new UndirectedBidirectionalGraph<CustomVertex, CustomEdge>(tree);
+            UndirectedBreadthFirstSearchAlgorithm<CustomVertex, CustomEdge> bfs = new UndirectedBreadthFirstSearchAlgorithm<CustomVertex, CustomEdge>(undirectTree);
+            bfs.GrayTarget += (u,v) => bfsCycle=true;
+            bfs.Compute(tree.Vertices.ElementAt(0));
+            List<CustomVertex> verticies = tree.Vertices.ToList();
+            List<int> numerate = new List<int>();
+            foreach (var vert in verticies)
+            {
+                numerate.Add(vert.ID);
+            }
+            if (numerate.Max() > numerate.Count())
+                return false;
+            return !(bfsCycle || bfs.VertexColors.Any(x => x.Value == GraphColor.White));
+        }
 
         static public Tree CodeToGraph(List<int> code)
         {
@@ -87,6 +142,22 @@ namespace GraphComponent.GraphBuilder
             }
 
             return Answer;
+        }
+
+        static public string GeneratePruferCode(int num)
+        {
+            List<int> code = new List<int>();
+            Random random = new Random();
+            for (int i = 0; i < num - 2; i++)
+            {
+                code.Add(random.Next(1, num + 1));
+            }
+            return string.Join(" ", code.Select(x => x.ToString()).ToArray());
+        }
+
+        static public Tree GenerateGraph(int vertices)
+        {
+            return CodeToGraph(GeneratePruferCode(vertices).Split(' ', ',', ';').Select(int.Parse).ToList());
         }
     }
 }

@@ -7,6 +7,8 @@ using GraphComponent.GraphBuilder;
 using GraphComponent.SettingWindow;
 using GraphComponent.PopupWindow;
 using GraphComponent;
+using System.Windows.Controls;
+using System;
 
 namespace GUI
 {
@@ -22,6 +24,8 @@ namespace GUI
             GraphView.On_MenuItem_ChangeID += MenuItem_ChangeID_Click;
             GraphView.ShowMessage += ShowMessage;
         }
+
+        #region Message Handling
 
         private void ShowMessage(string message, MessageBoxImage icon)
         {
@@ -47,22 +51,30 @@ namespace GUI
             MessageBox.Show(this, message, title, MessageBoxButton.OK, icon);
         }
 
-        private void ConstructByPrufer(string str)
+        bool HandleCheckOrientedTreeStatus()
         {
-            try
+            if (!GraphBuilderStrategy.ValidateOrientedGraph(GraphView.Tree))
             {
-                List<int> pruferCode = str.Split(' ', ',', ';').Select(int.Parse).ToList();
-                GraphView.Tree = GraphBuilderStrategy.CodeToGraph(pruferCode);
-                UpdateLayoutThroughViewModel();
+                ShowMessage("Граф НЕ является ориентированным деревом", MessageBoxImage.Error);
+                return false;
             }
-            catch
-            {
-                ShowMessage("Неверный код Прюфера", MessageBoxImage.Error);
-                return;
-            }
+            return true;
         }
 
-        //File menu handlers
+        bool HandleCheckNonOrientedTreeStatus()
+        {
+            if (!GraphBuilderStrategy.ValidateNonOrientedGraph(GraphView.Tree))
+            {
+                ShowMessage("Граф НЕ является деревом", MessageBoxImage.Error);
+                return false;
+            }
+            return true;
+        }
+
+        #endregion
+
+        #region Menu Handling
+
         private void OpenFile_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -71,11 +83,6 @@ namespace GUI
                 ConstructByPrufer(File.ReadAllText(openFileDialog.FileName));
                 InfoBar.Content = "";
             }
-        }
-
-        void UpdateLayoutThroughViewModel()
-        {
-            (GraphView.DataContext as ViewModel).UpdateLayout();
         }
 
         private void SaveFile_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
@@ -110,15 +117,33 @@ namespace GUI
             Close();
         }
 
-        //Toolbar handlers
+        private void New_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            GraphView.Tree = new Tree();
+            InfoBar.Content = "";
+            PruferTextBox.Clear();
+        }
+
+        private void OpenTasks_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as MenuItem).IsChecked)
+                TaskGrid.Visibility = Visibility.Visible;
+            else
+                TaskGrid.Visibility = Visibility.Collapsed;
+        }
+
+        #endregion
+
+        #region ToolBar Handling
+
         private void NewVertex_OnClick(object sender, RoutedEventArgs e)
         {
             PopupWindow popup = new PopupWindow("Создать вершину", "Введите номер новой вершины: ", "Создать")
             {
                 Owner = this
             };
-            popup.ShowDialog();
-            GraphView.AddNewVertex(popup.NewID);
+            if (popup.ShowDialog() == true)
+                GraphView.AddNewVertex(popup.Result);
         }
 
         private void NewEdge_OnClick(object sender, RoutedEventArgs e)
@@ -127,20 +152,30 @@ namespace GUI
             {
                 Owner = this
             };
-            popup.ShowDialog();
-            GraphView.AddNewEdge(popup.ID1, popup.ID2);
+            if (popup.ShowDialog() == true)
+                GraphView.AddNewEdge(popup.Result1, popup.Result2);
         }
 
-        //Workflow handlers  
+        #endregion
+
+        #region Workflow Handling
+
         private void ConstructByPrufer_OnClick(object sender, RoutedEventArgs e)
         {
-            ConstructByPrufer(PruferTextBox.Text.ToString());
+            List<int> pruferCode = PruferTextBox.Text.Split(' ', ',', ';').Select(int.Parse).ToList();
+            if (!GraphBuilderStrategy.ValidateCode(pruferCode))
+            {
+                ShowMessage("Неверный код Прюфера", MessageBoxImage.Error);
+                return;
+            }
+            GraphView.Tree = GraphBuilderStrategy.CodeToGraph(pruferCode);
+            UpdateLayoutThroughViewModel();
             InfoBar.Content = "";
         }
 
         private void GetPrufer_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!HandleCheckTreeStatus())
+            if (!HandleCheckNonOrientedTreeStatus())
                 return;
 
             bool isEmpty = GraphView.Tree.IsVerticesEmpty;
@@ -149,7 +184,7 @@ namespace GUI
 
         private void Numerate_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!HandleCheckTreeStatus())
+            if (!HandleCheckNonOrientedTreeStatus())
                 return;
 
             var mapId = Numerator.GetIDMap(GraphView.Tree);
@@ -159,7 +194,10 @@ namespace GUI
             }
         }
 
-        //GraphPane PopupWindow handlers
+        #endregion
+
+        #region Graph Control
+
         private int MenuItem_ChangeID_Click(object sender, RoutedEventArgs e)
         {
             PopupWindow popup = new PopupWindow("Изменить номер", "Введите новый номер вершины: ", "Сохранить")
@@ -167,8 +205,10 @@ namespace GUI
                 Owner = this
             };
 
-            popup.ShowDialog();
-            return popup.NewID;
+            if (popup.ShowDialog() == true)
+                return popup.Result;
+            else
+                return -1;
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
@@ -178,44 +218,47 @@ namespace GUI
 
         private void CheckTree_Click(object sender, RoutedEventArgs e)
         {
-            if (!GraphView.Tree.IsTree())
-                ShowMessage("Граф НЕ является деревом", MessageBoxImage.Information);
+            if (!GraphBuilderStrategy.ValidateOrientedGraph(GraphView.Tree))
+                ShowMessage("Граф НЕ является ориентированным деревом", MessageBoxImage.Information);
             else
-                ShowMessage("Граф является деревом", MessageBoxImage.Information);
-        }
-
-        bool HandleCheckTreeStatus()
-        {
-            if (!GraphView.Tree.IsTree())
-            {
-                ShowMessage("Граф НЕ является деревом", MessageBoxImage.Error);
-                return false;
-            }
-            return true;
+                ShowMessage("Граф является ориентированным деревом", MessageBoxImage.Information);
         }
 
         private void FindRoot_Click(object sender, RoutedEventArgs e)
         {
-            if (HandleCheckTreeStatus())
+            if (HandleCheckOrientedTreeStatus())
             {
                 GraphView.Tree.FindRoot();
             }
         }
-		
-		private void New_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
-        {
-            GraphView.Tree = new Tree();
-        }
 
         private void GetLength_Click(object sender, RoutedEventArgs e)
         {
-            if (!HandleCheckTreeStatus())
+            if (!HandleCheckNonOrientedTreeStatus())
                 return;
 
             int length = GraphView.Tree.GetLength();
             int minLength = GraphView.Tree.GetLength(Numerator.GetIDMap(GraphView.Tree));
             InfoBar.Content = "Текущая длина: " + length + "  Минимальная длина: " + minLength;
         }
-        
+
+        void UpdateLayoutThroughViewModel()
+        {
+            (GraphView.DataContext as ViewModel).UpdateLayout();
+        }
+
+        void ConstructByPrufer(string str)
+        {
+            List<int> pruferCode = str.Split(' ', ',', ';').Select(int.Parse).ToList();
+            if (!GraphBuilderStrategy.ValidateCode(pruferCode))
+            {
+                ShowMessage("Неверный код Прюфера", MessageBoxImage.Error);
+                return;
+            }
+            GraphView.Tree = GraphBuilderStrategy.CodeToGraph(pruferCode);
+            UpdateLayoutThroughViewModel();
+        }
+
+        #endregion
     }
 }

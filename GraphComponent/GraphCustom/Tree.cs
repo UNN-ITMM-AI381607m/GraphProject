@@ -108,41 +108,6 @@ namespace GraphComponent
             return null;
         }
 
-        IEnumerable<CustomEdge> FindNonTreeEdges(CustomVertex root)
-        {
-            List<CustomEdge> nonTreeEdges = new List<CustomEdge>();
-
-            BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge> bfs = new BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge>(this);
-            bfs.NonTreeEdge += u => nonTreeEdges.Add(u);
-            bfs.Compute(root);
-            
-            return nonTreeEdges;
-        }
-
-        IDictionary<CustomVertex, GraphColor> GetBFSColors(CustomVertex root)
-        {
-            BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge> bfs = new BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge>(this);
-            bfs.Compute(root);
-            return bfs.VertexColors;
-        }
-
-        public bool IsTree()
-        {
-            CustomVertex root = TryFindRoot();
-
-            if (root == null)
-                return false;
-
-            var nonTreeEdges = FindNonTreeEdges(root);
-
-            bool notAllVisited = GetBFSColors(root).Any(x => x.Value == GraphColor.White);
-
-            if (nonTreeEdges.Count() > 0 || notAllVisited)
-                return false;
-
-            return true;
-        }
-
         public int GetLength(Dictionary<CustomVertex, int> mapId = null)
         {
             int length = 0;
@@ -169,11 +134,6 @@ namespace GraphComponent
                 bfs.Compute(TryFindRoot());
 
             return length;
-        }
-
-        private void Bfs_DiscoverVertex(CustomVertex vertex)
-        {
-            throw new NotImplementedException();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
