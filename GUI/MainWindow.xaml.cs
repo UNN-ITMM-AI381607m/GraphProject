@@ -8,6 +8,7 @@ using GraphComponent.SettingWindow;
 using GraphComponent.PopupWindow;
 using GraphComponent;
 using System.Windows.Controls;
+using System;
 
 namespace GUI
 {
@@ -50,17 +51,14 @@ namespace GUI
 
         private void ConstructByPrufer(string str)
         {
-            try
-            {
-                List<int> pruferCode = str.Split(' ', ',', ';').Select(int.Parse).ToList();
-                GraphView.Tree = GraphBuilderStrategy.CodeToGraph(pruferCode);
-                UpdateLayoutThroughViewModel();
-            }
-            catch
+            List<int> pruferCode = str.Split(' ', ',', ';').Select(int.Parse).ToList();
+            if (!GraphBuilderStrategy.ValidateCode(pruferCode))
             {
                 ShowMessage("Неверный код Прюфера", MessageBoxImage.Error);
                 return;
             }
+            GraphView.Tree = GraphBuilderStrategy.CodeToGraph(pruferCode);
+            UpdateLayoutThroughViewModel();
         }
 
         //File menu handlers
@@ -141,9 +139,11 @@ namespace GUI
 
         private void GetPrufer_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!HandleCheckTreeStatus())
+            if (!GraphBuilderStrategy.ValidateGraph(GraphView.Tree))
+            {
+                ShowMessage("Граф не является деревом", MessageBoxImage.Error);
                 return;
-
+            }
             bool isEmpty = GraphView.Tree.IsVerticesEmpty;
             InfoBar.Content = isEmpty ? "" : "Код Прюфера: " + string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Tree).ToArray());
         }
@@ -202,8 +202,8 @@ namespace GUI
                 GraphView.Tree.FindRoot();
             }
         }
-		
-		private void New_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+
+        private void New_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             GraphView.Tree = new Tree();
         }
@@ -228,21 +228,49 @@ namespace GUI
 
         private void GenerateCode_OnClick(object sender, RoutedEventArgs e)
         {
-            PruferCode.Content = "1 2 3" ;
+            PruferCode.Content = GeneratePruferCode(5);
         }
 
         private void CheckGraph_OnClick(object sender, RoutedEventArgs e)
         {
-            
+            bool isEmpty = GraphView.Tree.IsVerticesEmpty;
+            string checkcode = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Tree).ToArray());
+            if (checkcode == PruferCode.Content.ToString())
+                ShowMessage("Граф соответствует коду Прюфера", MessageBoxImage.Asterisk);
+            else
+                ShowMessage("Граф не соответствует коду Прюфера", MessageBoxImage.Warning);
         }
 
         private void GenerateGraph_OnClick(object sender, RoutedEventArgs e)
         {
-
+            GenerateGraph(5);
         }
+
         private void CheckCode_OnClick(object sender, RoutedEventArgs e)
         {
-
+            string checkcode = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Tree).ToArray());
+            if (checkcode == CheckPruferTextBox.Text)
+                ShowMessage("Код Прюфера соответствует графу", MessageBoxImage.Asterisk);
+            else
+                ShowMessage("Код Прюфера не соответствует графу", MessageBoxImage.Warning);
         }
+
+        private string GeneratePruferCode(int num)
+        {
+            List<int> code = new List<int>();
+            Random random = new Random();
+            for (int i = 0; i < num - 2; i++)
+            {
+                code.Add(random.Next(1, num + 1));
+            }
+            return string.Join(" ", code.Select(x => x.ToString()).ToArray());
+        }
+
+        private void GenerateGraph(int vertices)
+        {
+            GraphView.Tree = GraphBuilderStrategy.CodeToGraph(GeneratePruferCode(vertices).Split(' ', ',', ';').Select(int.Parse).ToList());
+            UpdateLayoutThroughViewModel();
+        }
+
     }
 }

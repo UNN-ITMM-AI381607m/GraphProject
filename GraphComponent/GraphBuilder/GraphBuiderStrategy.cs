@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QuickGraph;
+using QuickGraph.Algorithms.Search;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +10,23 @@ namespace GraphComponent.GraphBuilder
 {
     static public class GraphBuilderStrategy
     {
-        //static public CustomGraph CodeToGraph1(string code)
-        //{
-        //    List<int> code_list = code.Split(' ').Select(int.Parse).ToList();
-        //    return CodeToGraph(code_list);
-        //}
+        static public bool ValidateCode(List<int> code)
+        {
+            if (code.Max() > code.Count() + 2)
+                return false;
+            return true;
+        }
+
+        static public bool ValidateGraph(Tree tree)
+        {
+            bool bfsCycle = false;
+            List<CustomEdge> nonTreeEdges = new List<CustomEdge>();
+            UndirectedBidirectionalGraph<CustomVertex, CustomEdge> undirectTree = new UndirectedBidirectionalGraph<CustomVertex, CustomEdge>(tree);
+            UndirectedBreadthFirstSearchAlgorithm<CustomVertex, CustomEdge> bfs = new UndirectedBreadthFirstSearchAlgorithm<CustomVertex, CustomEdge>(undirectTree);
+            bfs.GrayTarget += (u,v) => bfsCycle=true;
+            bfs.Compute(tree.Vertices.ElementAt(0));
+            return !(bfsCycle || bfs.VertexColors.Any(x => x.Value == GraphColor.White));
+        }
 
         static public Tree CodeToGraph(List<int> code)
         {

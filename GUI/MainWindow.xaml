@@ -81,7 +81,7 @@
                         </LinearGradientBrush>
                     </TabItem.Background>
                     <DockPanel LastChildFill="True">
-                        <Grid x:Name="TaskGrid" Visibility="Visible" DockPanel.Dock="Right" MinWidth="200">
+                        <Grid x:Name="TaskGrid" Visibility="Collapsed" DockPanel.Dock="Right" MinWidth="200">
                             <Border BorderBrush="Black" BorderThickness="1 0 0 0">
                                 <StackPanel x:Name="myGrid" Background="#FFF0F0F0" >
                                     <StackPanel.Resources>
