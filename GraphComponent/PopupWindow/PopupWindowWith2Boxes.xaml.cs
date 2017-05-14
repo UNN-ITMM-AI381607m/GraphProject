@@ -19,37 +19,19 @@ namespace GraphComponent.PopupWindow
     /// </summary>
     public partial class PopupWindowWith2Boxes : Window
     {
-        public int ID1
+        public int Result1
         {
             get
             {
-                if (FirstTextBox == null)
-                    return -1;
-                try
-                {
-                    return int.Parse(FirstTextBox.Text);
-                }
-                catch
-                {
-                    return -1;
-                }
+                return int.Parse(FirstTextBox.Text);
             }
         }
 
-        public int ID2
+        public int Result2
         {
             get
             {
-                if (SecondTextBox == null)
-                    return -1;
-                try
-                {
-                    return int.Parse(SecondTextBox.Text);
-                }
-                catch
-                {
-                    return -1;
-                }
+                return int.Parse(SecondTextBox.Text);
             }
         }
 
@@ -73,6 +55,7 @@ namespace GraphComponent.PopupWindow
                 MessageBox.Show("Пожалуйста, введите положительное число.", "Неверный формат");
                 return;
             }
+            DialogResult = true;
             Close();
         }
     }

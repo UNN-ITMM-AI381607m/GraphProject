@@ -123,9 +123,9 @@ namespace GraphComponent
 
         private void MenuItem_MarkAsRoot_Click(object sender, RoutedEventArgs e)
         {
-            if (!vm.Tree.IsTree())
+            if (!GraphBuilder.GraphBuilderStrategy.ValidateOrientedGraph(Tree))
             {
-                ShowMessage("Граф НЕ является деревом", MessageBoxImage.Error);
+                ShowMessage("Граф НЕ является ориентированным деревом", MessageBoxImage.Error);
                 return;
             }
 

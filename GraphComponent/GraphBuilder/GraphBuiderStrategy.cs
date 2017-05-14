@@ -17,8 +17,41 @@ namespace GraphComponent.GraphBuilder
             return true;
         }
 
-        static public bool ValidateGraph(Tree tree)
+        static public bool ValidateOrientedGraph(Tree tree)
         {
+            if (tree == null || tree.VertexCount == 0)
+                return false;
+
+            int rootCounter = 0;
+            CustomVertex root = null;
+            foreach (var vertex in tree.Vertices)
+            {
+                IEnumerable<CustomEdge> edges;
+                if (tree.TryGetInEdges(vertex, out edges) && edges.Count() == 0)
+                {
+                    rootCounter++;
+                    root = vertex;
+                }
+            }
+            if (rootCounter != 1 || root == null)
+                return false;
+
+            bool hasCycle = false;
+
+            BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge> bfs = new BreadthFirstSearchAlgorithm<CustomVertex, CustomEdge>(tree);
+            bfs.NonTreeEdge += u => hasCycle = true;
+            bfs.Compute(root);
+
+            bool notAllVisited = bfs.VertexColors.Any(x => x.Value == GraphColor.White);
+
+            return !(hasCycle || notAllVisited);
+        }
+
+        static public bool ValidateNonOrientedGraph(Tree tree)
+        {
+            if (tree == null || tree.VertexCount == 0)
+                return false;
+
             bool bfsCycle = false;
             List<CustomEdge> nonTreeEdges = new List<CustomEdge>();
             UndirectedBidirectionalGraph<CustomVertex, CustomEdge> undirectTree = new UndirectedBidirectionalGraph<CustomVertex, CustomEdge>(tree);
@@ -109,6 +142,22 @@ namespace GraphComponent.GraphBuilder
             }
 
             return Answer;
+        }
+
+        static public string GeneratePruferCode(int num)
+        {
+            List<int> code = new List<int>();
+            Random random = new Random();
+            for (int i = 0; i < num - 2; i++)
+            {
+                code.Add(random.Next(1, num + 1));
+            }
+            return string.Join(" ", code.Select(x => x.ToString()).ToArray());
+        }
+
+        static public Tree GenerateGraph(int vertices)
+        {
+            return CodeToGraph(GeneratePruferCode(vertices).Split(' ', ',', ';').Select(int.Parse).ToList());
         }
     }
 }

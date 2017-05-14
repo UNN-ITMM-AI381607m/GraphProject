@@ -7,20 +7,11 @@ namespace GraphComponent.SettingWindow
     /// </summary>
     public partial class PopupWindow : Window
     {
-        public int NewID
+        public int Result
         {
             get
             {
-                if (NameTextBox == null)
-                    return -1;
-                try
-                {
-                    return int.Parse(NameTextBox.Text);
-                }
-                catch
-                {
-                    return -1;
-                }
+                return int.Parse(NameTextBox.Text);
             }
         }
 
@@ -43,6 +34,7 @@ namespace GraphComponent.SettingWindow
                 MessageBox.Show("Пожалуйста, введите положительное число.", "Неверный формат");
                 return;
             }
+            DialogResult = true;
             Close();
         }
     }
