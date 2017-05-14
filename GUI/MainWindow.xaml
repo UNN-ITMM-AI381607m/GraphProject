@@ -33,6 +33,7 @@
                 <MenuItem Command="Close" Header="Закрыть"/>
             </MenuItem>
             <MenuItem Header="Опции">
+                <MenuItem x:Name ="OpenTasks" Click="OpenTasks_Click" IsCheckable="True" Header="Задачи"/>
             </MenuItem>
         </Menu>
         <Grid>
@@ -92,6 +93,10 @@
                             <RowDefinition Height="36"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="407*"/>
+                            <ColumnDefinition Width="161*"/>
+                        </Grid.ColumnDefinitions>
                         <Separator Grid.Row="0"/>
                         <Grid Grid.Row="0" Background="{StaticResource GrayGrayGradientBrush}">
                             <Grid.ColumnDefinitions>
@@ -134,6 +139,20 @@
                         <zoom:ZoomControl Grid.Row="1" Zoom="0.2" MaxZoom="4">
                             <graph_component:GraphPane x:Name="GraphView"/>
                         </zoom:ZoomControl>
+                        <StackPanel x:Name="myGrid" Grid.Column="1" Grid.RowSpan="2" Background="#FFF0F0F0">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=OpenTasks, Path=IsChecked}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=OpenTasks, Path=IsChecked}" Value="False">
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                        </StackPanel>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Теория">

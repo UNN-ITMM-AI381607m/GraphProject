@@ -52,6 +52,11 @@ namespace GUI
             try
             {
                 List<int> pruferCode = str.Split(' ', ',', ';').Select(int.Parse).ToList();
+                if (pruferCode.Max() > pruferCode.Count() + 2)
+                {
+                    ShowMessage("Неверный код Прюфера", MessageBoxImage.Error);
+                    return;
+                }
                 GraphView.Tree = GraphBuilderStrategy.CodeToGraph(pruferCode);
                 UpdateLayoutThroughViewModel();
             }
@@ -216,6 +221,10 @@ namespace GUI
             int minLength = GraphView.Tree.GetLength(Numerator.GetIDMap(GraphView.Tree));
             InfoBar.Content = "Текущая длина: " + length + "  Минимальная длина: " + minLength;
         }
-        
+
+        private void OpenTasks_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
