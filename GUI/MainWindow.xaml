@@ -41,25 +41,17 @@
                 <ColumnDefinition Width="186"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" HorizontalAlignment="Right" Name="textEditor" Background="#FFF0F0F0">
+            <StackPanel Grid.Column="0" Name="textEditor" Background="#FFF0F0F0" Width="186">
                 <StackPanel.Resources>
-                    <Style TargetType="{x:Type Label}">
-                        <Setter Property="Margin" Value="0,5,0,0"/>
-                        <Setter Property="Height" Value="28"/>
-                    </Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
                         <Setter Property="Content" Value="Run"/>
                         <Setter Property="Height" Value="20"/>
                         <Setter Property="Width" Value="50"/>
-                        <Setter Property="Margin" Value="0,10,119,10"/>
-                        <Setter Property="RenderTransformOrigin" Value="0.127,0.68"/>
-                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="Margin" Value="10,10"/>
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
                     </Style>
                 </StackPanel.Resources>
-                <Separator />
-                <TextBlock Background="{StaticResource GrayGrayGradientBrush}">
-                    <Label Content="Меню" FontSize="14" Background="Transparent" BorderBrush="Transparent" Width="73" Margin="57,0"/>
-                </TextBlock>
+                <Label Content="Меню" FontSize="14" BorderBrush="Transparent" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Background="{StaticResource GrayGrayGradientBrush}" Margin="0, 0, 0, 0"/>
                 <Separator />
                 <Separator Background="Transparent" Height="10"></Separator>
                 <TextBlock Text="1. Построить граф по коду Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
@@ -89,27 +81,36 @@
                         </LinearGradientBrush>
                     </TabItem.Background>
                     <DockPanel LastChildFill="True">
-                        <Grid x:Name="TaskGrid" Visibility="Collapsed" DockPanel.Dock="Right" MinWidth="200">
-                            <StackPanel x:Name="myGrid" Background="#FFF0F0F0">
-                                <TextBlock Text="1. Постройте граф по коду Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
-                                <Label x:Name="PruferCode" Grid.Column="1" FontSize="15" HorizontalContentAlignment="Center"></Label>
-                                <Button x:Name="GenCode" Content="Сгенерировать" Click="GenerateCode_OnClick" Width="60" />
-                                <Button x:Name="CheckGraph" Content="Проверить" Click="CheckGraph_OnClick" Width="60" />
-                                <TextBlock Text="2. Постройте код Прюфера по графу" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
-                                <Button x:Name="GenGraph" Content="Сгенерировать" Click="GenerateGraph_OnClick" Width="60" />
-                                <TextBox x:Name="CheckPruferTextBox" Height="22" HorizontalAlignment="Right" Width="112" Margin="0,0,57,0"/>
-                                <Button x:Name="CheckCode" Content="Проверить" Click="CheckCode_OnClick" Width="60" />
-                            </StackPanel>
+                        <Grid x:Name="TaskGrid" Visibility="Visible" DockPanel.Dock="Right" MinWidth="200">
+                            <Border BorderBrush="Black" BorderThickness="1 0 0 0">
+                                <StackPanel x:Name="myGrid" Background="#FFF0F0F0" >
+                                    <StackPanel.Resources>
+                                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
+                                            <Setter Property="Height" Value="20"/>
+                                            <Setter Property="Margin" Value="10,10"/>
+                                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <Label Content="Задачи" FontSize="14" BorderBrush="Transparent" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Background="{StaticResource GrayGrayGradientBrush}" Margin="0, 0, 0, 0"/>
+                                    <Separator/>
+                                    <Separator Background="Transparent" Height="10"></Separator>
+                                    <TextBlock Text="1. Постройте граф по коду Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                                    <Label x:Name="PruferCode" FontSize="15" HorizontalContentAlignment="Center"></Label>
+                                    <Button x:Name="GenCode" Content="Сгенерировать" Click="GenerateCode_OnClick" />
+                                    <Button x:Name="CheckGraph" Content="Проверить" Click="CheckGraph_OnClick" />
+                                    <TextBlock Text="2. Постройте код Прюфера по графу" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
+                                    <Button x:Name="GenGraph" Content="Сгенерировать" Click="GenerateGraph_OnClick" />
+                                    <Label Content="Ответ:" Margin="10, 0"/>
+                                    <TextBox x:Name="CheckPruferTextBox" Height="22" HorizontalAlignment="Center" Width="112"/>
+                                    <Button x:Name="CheckCode" Content="Проверить" Click="CheckCode_OnClick" />
+                                </StackPanel>
+                            </Border>
                         </Grid>
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="36"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <!--<Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="407*"/>
-                            <ColumnDefinition Width="161*"/>
-                        </Grid.ColumnDefinitions>-->
                             <Separator Grid.Row="0"/>
                             <Grid Grid.Row="0" Background="{StaticResource GrayGrayGradientBrush}">
                                 <Grid.ColumnDefinitions>
