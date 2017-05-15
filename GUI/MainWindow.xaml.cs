@@ -167,7 +167,18 @@ namespace GUI
 
         private void ConstructByPrufer_OnClick(object sender, RoutedEventArgs e)
         {
-            List<int> pruferCode = PruferTextBox.Text.Split(' ', ',', ';').Select(int.Parse).ToList();
+            List<int> pruferCode = null;
+
+            try
+            {
+                pruferCode = PruferTextBox.Text.Trim(' ').Split(' ', ',', ';').Select(int.Parse).ToList();
+            }
+            catch (FormatException)
+            {
+                ShowMessage("Неверный формат", MessageBoxImage.Error);
+                return;
+            }
+
             if (!GraphBuilderStrategy.ValidateCode(pruferCode))
             {
                 ShowMessage("Неверный код Прюфера", MessageBoxImage.Error);
