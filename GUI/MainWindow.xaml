@@ -40,7 +40,7 @@
                 <MenuItem Command="Close" Header="Закрыть"/>
             </MenuItem>
             <MenuItem Header="Обучение">
-                <MenuItem x:Name ="OpenTheory" Click="OpenTheory_Click" IsCheckable="True" Header="Теория"/>
+                <MenuItem x:Name ="OpenTheory" Click="OpenTheory_Click" Header="Теория"/>
                 <MenuItem x:Name ="OpenTasks" Click="OpenTasks_Click" IsCheckable="True" Header="Задачи"/>
             </MenuItem>
         </Menu>

@@ -82,6 +82,9 @@
     <Compile Include="PopupWindow\PopupWindowWith2Boxes.xaml.cs">
       <DependentUpon>PopupWindowWith2Boxes.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PopupWindow\TheoryWindow.xaml.cs">
+      <DependentUpon>TheoryWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\ViewModel.cs" />
     <Page Include="GraphPane.xaml">
       <SubType>Designer</SubType>
@@ -96,6 +99,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PopupWindow\PopupWindowWith2Boxes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PopupWindow\TheoryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

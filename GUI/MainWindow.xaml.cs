@@ -135,6 +135,11 @@ namespace GUI
         private void OpenTheory_Click(object sender, RoutedEventArgs e)
         {
 
+            Window theoryWindow = new TheoryWindow();
+            theoryWindow.Show();
+            
+            //w.setValue("text");
+
         }
 
         #endregion
