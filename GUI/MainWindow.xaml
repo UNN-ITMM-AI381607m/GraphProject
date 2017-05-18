@@ -124,7 +124,7 @@
                                     <ColumnDefinition Width="177*"/>
                                 </Grid.ColumnDefinitions>
                                 <ToolBarTray Grid.Row="0" Grid.Column="0" Background="Transparent" HorizontalAlignment="Left">
-                                    <ToolBar Background="LightGray" Height="36">
+                                    <ToolBar x:Name="toolbar" Background="LightGray" Height="36">
                                         <ToolBar.Resources>
                                             <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
                                                 <Setter Property="Width" Value="30"/>
