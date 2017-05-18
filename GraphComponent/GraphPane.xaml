@@ -6,6 +6,7 @@
     <UserControl.Resources>
         <ContextMenu x:Key="cmVertex" DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
             <MenuItem Header="Сделать корнем" Click="MenuItem_MarkAsRoot_Click"/>
+            <MenuItem Header="Сделать корнем и пересчитать" Click="MenuItem_ChangeToRootForAll" />
             <MenuItem Header="Изменить номер" Click="MenuItem_ChangeID_Click" />
             <Separator/>
             <MenuItem Header="Удалить" Click="MenuItem_DeleteVertex_Click" />
