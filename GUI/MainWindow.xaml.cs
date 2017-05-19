@@ -259,7 +259,7 @@ namespace GUI
                 return;
 
             int length = GraphView.Tree.GetLength();
-            int minLength = GraphView.Tree.GetLength(Numerator.GetIDMap(GraphView.Tree));
+            int minLength = GraphView.Tree.GetLength(Numerator.GetIDMap(GraphView.Tree, true));
             InfoBar.Content = "Текущая длина: " + length + "  Минимальная длина: " + minLength;
         }
 
@@ -281,5 +281,15 @@ namespace GUI
         }
 
         #endregion
+
+        private void Numerate_Orient_Click(object sender, RoutedEventArgs e)
+        {
+            if (!HandleCheckOrientedTreeStatus()
+                || (GraphView.Tree.Root == null && !GraphView.Tree.FindRoot()))
+            {
+                return;
+            }
+            GraphView.DoNumerateStep();
+        }
     }
 }

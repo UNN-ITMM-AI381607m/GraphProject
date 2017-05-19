@@ -8,11 +8,11 @@ namespace GraphComponent
 {
     public class Numerator
     {
-        public static Dictionary<CustomVertex, int> GetIDMap(Tree tree)
+        public static Dictionary<CustomVertex, int> GetIDMap(Tree tree, bool fullNum = false)
         {
             List<MyEdge> new_graph = ConvertGraph(tree);
             InitGraph(new_graph, tree.VertexCount);
-            Numeration(new_graph, 1);
+            Numeration(new_graph, 1, fullNum);
             return CreateIDMap(new_graph, tree);
         }
 
@@ -161,7 +161,7 @@ namespace GraphComponent
             foreach (MyEdge edge in graph) edge.Mark = false;
             return next;
         }
-        static int Numeration(List<MyEdge> graph, int first)
+        static int Numeration(List<MyEdge> graph, int first, bool fullNum)
         {
             MyVertex current_vertex = SearchFirstVertex(graph), next_vertex;
             while (true)
@@ -181,8 +181,9 @@ namespace GraphComponent
                     if (new_graph.Count != 0)
                     {
                         new_graph = BuildGraph(new_graph);
-                        //InitGraph(new_graph, new_graph.Count + 1);
-                        first = Numeration(new_graph, first);
+                        if (fullNum)
+                            InitGraph(new_graph, new_graph.Count + 1);
+                        first = Numeration(new_graph, first, fullNum);
                     }
                     else current_vertex.Number = first++;
                     current_vertex = next_vertex;

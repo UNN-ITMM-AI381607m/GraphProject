@@ -132,8 +132,7 @@ namespace GraphComponent
             }
 
             CustomVertex newRoot = GetVertexFromContextMenu(sender);
-          
-
+            vm.SetRoot(newRoot);
         }
         public class Step
         {
@@ -248,9 +247,13 @@ namespace GraphComponent
             
             step = new Step(vm, newRoot);
            
-           
             step.DoStep();
-           
+        }
+
+        public void DoNumerateStep()
+        {
+            step = new Step(vm, vm.Tree.Root);
+            step.DoStep();
         }
         
         CustomVertex GetVertexFromContextMenu(object sender)

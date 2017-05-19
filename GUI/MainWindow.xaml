@@ -79,7 +79,13 @@
                             <TextBlock Text="3. Перенумеровать граф" TextWrapping="WrapWithOverflow" Width="170"/>
                             <Button x:Name="Numerate" Content="Запустить" Click="Numerate_OnClick" Width="60"/>
                             <Separator Background="Transparent" Height="10"/>
-                            <TextBlock Text="4. Длина графа" TextWrapping="WrapWithOverflow" Width="170"/>
+                            <TextBlock Text="4. Перенумеровать ориентированный граф" TextWrapping="WrapWithOverflow" Width="170">
+                                <LineBreak/>
+                                <Run FontStyle="Italic" Text="Выберите корень"/>
+                            </TextBlock>
+                            <Button x:Name="Numerate_Orient" Content="Запустить" Click="Numerate_Orient_Click" Width="60"/>
+                            <Separator Background="Transparent" Height="10"/>
+                            <TextBlock Text="5. Длина графа" TextWrapping="WrapWithOverflow" Width="170"/>
                             <Button x:Name="GetLength" Content="Запустить" Click="GetLength_Click" Width="60"/>
                         </StackPanel>
                     </Border>
