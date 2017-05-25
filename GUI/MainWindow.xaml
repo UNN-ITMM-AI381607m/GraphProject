@@ -87,6 +87,8 @@
                             <Separator Background="Transparent" Height="10"/>
                             <TextBlock Text="5. Длина графа" TextWrapping="WrapWithOverflow" Width="170"/>
                             <Button x:Name="GetLength" Content="Запустить" Click="GetLength_Click" Width="60"/>
+                            <TextBlock Text="6. Получить минимальную конфигурацию дерева" TextWrapping="WrapWithOverflow" Width="170"/>
+                            <Button x:Name="FindMinRoot" Content="Запустить" Click="MinRoot_Click" Width="60"/>
                         </StackPanel>
                     </Border>
                 </Grid>

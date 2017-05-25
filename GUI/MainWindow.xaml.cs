@@ -9,6 +9,7 @@ using GraphComponent.PopupWindow;
 using GraphComponent;
 using System.Windows.Controls;
 using System;
+using System.Threading;
 
 namespace GUI
 {
@@ -261,6 +262,30 @@ namespace GUI
             int length = GraphView.Tree.GetLength();
             int minLength = GraphView.Tree.GetLength(Numerator.GetIDMap(GraphView.Tree, true));
             InfoBar.Content = "Текущая длина: " + length + "  Минимальная длина: " + minLength;
+        }
+
+        private void MinRoot_Click(object sender, RoutedEventArgs e)
+        {
+            var tree = GraphView.Tree;
+            var minLength = tree.GetLength();
+            var minRoot = tree.Root;
+            foreach ( var v in tree.Vertices)
+            { 
+                (GraphView.DataContext as ViewModel).SetRoot(v);
+                //GraphView.DoNumerateStep();
+                if (tree.GetLength() < minLength)
+                {
+                    
+                    Thread.Sleep(10000);
+                    minLength = tree.GetLength();
+                    minRoot = tree.Root;
+                }
+            }
+            tree.Root = minRoot;
+            //GraphView.DoNumerateStep();
+            InfoBar.Content = "Длина минимальной конфигурации: " + minLength;
+            //GraphView.Tree = GraphBuilderStrategy.CodeToGraph(GraphBuilderStrategy.GraphToCode(GraphView.Tree));
+            UpdateLayoutThroughViewModel();
         }
 
         void UpdateLayoutThroughViewModel()
