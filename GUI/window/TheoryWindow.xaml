@@ -3,9 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Теория" Height="300" Width="700">
     <Grid>
-        <Button Name="PropertiesButton" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,5,0,20" AutomationProperties.HelpText="Нажми на кнопку, чтобы ..." Click="PropertiesButton_Click" >Свойства минимальных нумераций</Button>
-        <Button Name="FlatButton" Margin="20,40,0,0" AutomationProperties.HelpText="Нажми на кнопку, чтобы ..." RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" Click="FlatButton_Click" >Свойства минимальных нумераций</Button>
-        <Button Name="EstimatesButton" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,75,0,0" AutomationProperties.HelpText="Нажми на кнопку, чтобы ..." Click="EstimatesButton_Click" >Оценки длин деревьев</Button>
-        <TextBlock Name="TheoryRichTextBox" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2" Margin="240,5,5,5" HorizontalAlignment="Right" TextWrapping="Wrap" />
+        <WebBrowser x:Name="HelpWebBrowser" ></WebBrowser>
     </Grid>
 </Window>

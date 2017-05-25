@@ -173,7 +173,9 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\search.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\index.html" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Docs\1.txt" />
     <Resource Include="Resources\Docs\2.txt" />

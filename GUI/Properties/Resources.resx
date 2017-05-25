@@ -136,4 +136,7 @@
   <data name="_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Docs\3.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="index" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\index.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>

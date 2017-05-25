@@ -105,6 +105,12 @@ namespace GUI.Properties {
             }
         }
         
+        internal static string index {
+            get {
+                return ResourceManager.GetString("index", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
