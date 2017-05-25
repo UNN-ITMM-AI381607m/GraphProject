@@ -1,7 +1,7 @@
 ﻿<Window x:Class="GUI.TheoryWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Теория" Height="300" Width="700">
+        Title="Теория" Height="700" Width="700">
     <Grid>
         <WebBrowser x:Name="HelpWebBrowser" ></WebBrowser>
     </Grid>

@@ -18,7 +18,7 @@ namespace GUI
                 Owner = this
             };
             if (popup.ShowDialog() == true)
-                PruferCode.Content = GraphBuilderStrategy.GeneratePruferCode(popup.Result);
+                PruferCode.Text = GraphBuilderStrategy.GeneratePruferCode(popup.Result);
         }
 
         private void CheckGraph_OnClick(object sender, RoutedEventArgs e)
@@ -27,7 +27,7 @@ namespace GUI
                 return;
 
             string checkcode = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Tree).ToArray());
-            if (checkcode == PruferCode.Content.ToString())
+            if (checkcode == PruferCode.Text.ToString())
                 ShowMessage("Граф соответствует коду Прюфера", MessageBoxImage.Asterisk);
             else
                 ShowMessage("Граф не соответствует коду Прюфера", MessageBoxImage.Warning);

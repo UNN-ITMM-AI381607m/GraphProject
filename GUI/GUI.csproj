@@ -176,10 +176,5 @@
   <ItemGroup>
     <None Include="Resources\index.html" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Docs\1.txt" />
-    <Resource Include="Resources\Docs\2.txt" />
-    <Resource Include="Resources\Docs\3.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

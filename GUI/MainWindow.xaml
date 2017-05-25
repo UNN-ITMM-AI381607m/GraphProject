@@ -108,7 +108,7 @@
                                 <Label Content="Задачи" FontSize="14" BorderBrush="{StaticResource GrayBrush}" BorderThickness="0 0 0 1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Background="{StaticResource GrayGrayGradientBrush}" Height="35"/>
                                 <Separator Background="Transparent" Height="10"></Separator>
                                 <TextBlock Text="1. Постройте граф по коду Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
-                                <Label x:Name="PruferCode" FontSize="15" HorizontalContentAlignment="Center"></Label>
+                                <TextBlock x:Name="PruferCode" FontSize="15" TextWrapping="WrapWithOverflow"  Width="200"></TextBlock>
                                 <Button x:Name="GenCode" Content="Сгенерировать" Click="GenerateCode_OnClick" />
                                 <Button x:Name="CheckGraph" Content="Проверить" Click="CheckGraph_OnClick" />
                                 <TextBlock Text="2. Постройте код Прюфера по графу" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>

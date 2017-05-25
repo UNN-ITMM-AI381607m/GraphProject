@@ -61,41 +61,6 @@ namespace GUI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Лемма. Нумерация цепи является минимальной тогда и только тогда, когда она монотонна.
-        ///Лемма. Если существует минимальная нумерация дерева t{V,E), то:
-        ///1)	нумерация цепи монотонна,
-        ///2)	нумерующие последовательности  поддеревьев   сплошные.
-        ///Следствие. Минимальная нумерация дерева t(V,E) является минимальной и на каждом его поддереве.
-        ///.
-        /// </summary>
-        internal static string _1 {
-            get {
-                return ResourceManager.GetString("_1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Линейная укладка  дерева t(V,E) называется плоской, если она допускает геометрическую реализацию графа в полуплоскости. Соответствующая ей нумерация также называется плоской. Нумерация является плоской тогда и только тогда, когда между номерами вершин произвольной пары ребер (vi,vj) и (vk,vr) не существует соотношений: 
-        ///(vi) &lt; (vk) &lt; (vj) &lt; (vr) или (vk) &lt; (vi) &lt; (vr) &lt; (vj).
-        ///.
-        /// </summary>
-        internal static string _2 {
-            get {
-                return ResourceManager.GetString("_2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Алгоритм построения минимальной нумерации произвольного де-рева имеет сложную рекурсивную структуру. Относительно простой алгоритм построения минимальной плоской нумерации можно рассматривать как способ приближенного решения задачи построения минимальной нумерации. Минимум в классе плоских нумераций может превосходить глобальный минимум не более чем в полтора раза.
-        ///.
-        /// </summary>
-        internal static string _3 {
-            get {
-                return ResourceManager.GetString("_3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon graph {
@@ -105,6 +70,21 @@ namespace GUI.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
+        ///&lt;!-- Created by pdf2htmlEX (https://github.com/coolwanglu/pdf2htmlex) --&gt;
+        ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;meta charset=&quot;utf-8&quot;/&gt;
+        ///&lt;meta name=&quot;generator&quot; content=&quot;pdf2htmlEX&quot;/&gt;
+        ///&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot;/&gt;
+        ///&lt;style type=&quot;text/css&quot;&gt;
+        ////*! 
+        /// * Base CSS for pdf2htmlEX
+        /// * Copyright 2012,2013 Lu Wang &lt;coolwanglu@gmail.com&gt; 
+        /// * https://github.com/coolwanglu/pdf2htmlEX/blob/master/share/LICENSE
+        /// */#sidebar{position:absolute;top:0;left:0;b [rest of string was truncated]&quot;;.
+        /// </summary>
         internal static string index {
             get {
                 return ResourceManager.GetString("index", resourceCulture);
