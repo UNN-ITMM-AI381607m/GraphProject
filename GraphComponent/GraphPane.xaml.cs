@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 using GraphComponent.SettingWindow;
 using System.Threading.Tasks;
+using System;
 
 namespace GraphComponent
 {
@@ -21,6 +22,7 @@ namespace GraphComponent
         private Step step;
         public delegate int PopupMenuDelegate(object sender, RoutedEventArgs e);
         public delegate void ShowMessageBoxDelegate(string message, MessageBoxImage icon);
+        public delegate void NotifyPropertyChanged(string info);
 
         //PopupMenuDelegate events
         public event PopupMenuDelegate On_MenuItem_ChangeID;
@@ -37,7 +39,7 @@ namespace GraphComponent
 
         public Tree Tree
         {
-            get { return vm.Tree; }
+            get { return vm.GetWorkTree(); }
             set { vm.Tree = value; }
         }
 
@@ -76,8 +78,10 @@ namespace GraphComponent
                 case ViewModel.VertexStatus.SUCCESS:
                     break;
                 case ViewModel.VertexStatus.OUT_OF_BOUNDS:
-                case ViewModel.VertexStatus.ALREADY_EXISTS:
                     ShowMessage("Номер вершины должен быть в диапазоне: [0, 1000)", MessageBoxImage.Error);
+                    break;
+                case ViewModel.VertexStatus.ALREADY_EXISTS:
+                    ShowMessage("Номер уже существует", MessageBoxImage.Error);
                     break;
                 default:
                     break;
@@ -125,7 +129,7 @@ namespace GraphComponent
 
         private void MenuItem_MarkAsRoot_Click(object sender, RoutedEventArgs e)
         {
-            if (!GraphBuilder.GraphBuilderStrategy.ValidateOrientedGraph(Tree))
+            if (ViewModel.mode == ViewModel.TreeMode.UNDIRECTED || !GraphBuilder.GraphBuilderStrategy.ValidateOrientedGraph(Tree))
             {
                 ShowMessage("Граф НЕ является ориентированным деревом", MessageBoxImage.Error);
                 return;
@@ -234,26 +238,31 @@ namespace GraphComponent
                 //  vm.UpdateLayout();
             }
         }
-        private void MenuItem_ChangeToRootForAll(object sender, RoutedEventArgs e)
-        {
-            if (!GraphBuilder.GraphBuilderStrategy.ValidateOrientedGraph(Tree))
-            {
-                ShowMessage("Граф НЕ является ориентированным деревом", MessageBoxImage.Error);
-                return;
-            }
+        //private void MenuItem_ChangeToRootForAll(object sender, RoutedEventArgs e)
+        //{
+        //    if (!GraphBuilder.GraphBuilderStrategy.ValidateOrientedGraph(Tree))
+        //    {
+        //        ShowMessage("Граф НЕ является ориентированным деревом", MessageBoxImage.Error);
+        //        return;
+        //    }
 
-            CustomVertex newRoot = GetVertexFromContextMenu(sender);
-            vm.SetRoot(newRoot);
+        //    CustomVertex newRoot = GetVertexFromContextMenu(sender);
+        //    vm.SetRoot(newRoot);
             
-            step = new Step(vm, newRoot);
+        //    step = new Step(vm, newRoot);
            
-            step.DoStep();
-        }
+        //    step.DoStep();
+        //}
 
         public void DoNumerateStep()
         {
             step = new Step(vm, vm.Tree.Root);
             step.DoStep();
+        }
+
+        public void Switch()
+        {
+            vm.SwitchMode();
         }
         
         CustomVertex GetVertexFromContextMenu(object sender)
@@ -265,6 +274,5 @@ namespace GraphComponent
         {
             return (((sender as MenuItem).Parent as ContextMenu).PlacementTarget as GraphSharp.Controls.EdgeControl).Edge as CustomEdge;
         }
-
     }
 }

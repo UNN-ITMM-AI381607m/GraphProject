@@ -52,6 +52,19 @@ namespace GUI
             MessageBox.Show(this, message, title, MessageBoxButton.OK, icon);
         }
 
+        bool InAquiredMode(ViewModel.TreeMode mode)
+        {
+            if (ViewModel.mode != mode)
+            {
+                if (mode == ViewModel.TreeMode.DIRECTED)
+                    ShowMessage("Доступно только для ориентированных деревьев", MessageBoxImage.Information);
+                else
+                    ShowMessage("Доступно только для неориентированных деревьев", MessageBoxImage.Information);
+                return false;
+            }
+            return true;
+        }
+
         bool HandleCheckOrientedTreeStatus()
         {
             if (!GraphBuilderStrategy.ValidateOrientedGraph(GraphView.Tree))
@@ -135,12 +148,8 @@ namespace GUI
 
         private void OpenTheory_Click(object sender, RoutedEventArgs e)
         {
-
             Window theoryWindow = new TheoryWindow();
             theoryWindow.Show();
-            
-            //w.setValue("text");
-
         }
 
         #endregion
@@ -240,14 +249,27 @@ namespace GUI
 
         private void CheckTree_Click(object sender, RoutedEventArgs e)
         {
-            if (!GraphBuilderStrategy.ValidateOrientedGraph(GraphView.Tree))
-                ShowMessage("Граф НЕ является ориентированным деревом", MessageBoxImage.Information);
+            if (ViewModel.mode == ViewModel.TreeMode.DIRECTED)
+            {
+                if (!GraphBuilderStrategy.ValidateOrientedGraph(GraphView.Tree))
+                    ShowMessage("Граф НЕ является ориентированным деревом", MessageBoxImage.Information);
+                else 
+                    ShowMessage("Граф является ориентированным деревом", MessageBoxImage.Information);
+            }
             else
-                ShowMessage("Граф является ориентированным деревом", MessageBoxImage.Information);
+            {
+                if (!GraphBuilderStrategy.ValidateOrientedGraph(GraphView.Tree))
+                    ShowMessage("Граф НЕ является неориентированным деревом", MessageBoxImage.Information);
+                else
+                    ShowMessage("Граф является неориентированным деревом", MessageBoxImage.Information);
+            }
         }
 
         private void FindRoot_Click(object sender, RoutedEventArgs e)
         {
+            if (!InAquiredMode(ViewModel.TreeMode.DIRECTED))
+                return;
+
             if (HandleCheckOrientedTreeStatus())
             {
                 GraphView.Tree.FindRoot();
@@ -266,26 +288,25 @@ namespace GUI
 
         private void MinRoot_Click(object sender, RoutedEventArgs e)
         {
-            var tree = GraphView.Tree;
-            var minLength = tree.GetLength();
-            var minRoot = tree.Root;
-            foreach ( var v in tree.Vertices)
-            { 
-                (GraphView.DataContext as ViewModel).SetRoot(v);
+            if (!InAquiredMode(ViewModel.TreeMode.DIRECTED))
+                return;
+
+            var minLength = GraphView.Tree.GetLength();
+            var minRoot = GraphView.Tree.Root;
+            foreach ( var v in GraphView.Tree.Vertices)
+            {
+                GraphView.Tree.Root = v;
                 //GraphView.DoNumerateStep();
-                if (tree.GetLength() < minLength)
+                if (GraphView.Tree.GetLength() < minLength)
                 {
-                    
                     Thread.Sleep(10000);
-                    minLength = tree.GetLength();
-                    minRoot = tree.Root;
+                    minLength = GraphView.Tree.GetLength();
+                    minRoot = GraphView.Tree.Root;
                 }
             }
-            tree.Root = minRoot;
+            GraphView.Tree.Root = minRoot;
             //GraphView.DoNumerateStep();
             InfoBar.Content = "Длина минимальной конфигурации: " + minLength;
-            //GraphView.Tree = GraphBuilderStrategy.CodeToGraph(GraphBuilderStrategy.GraphToCode(GraphView.Tree));
-            UpdateLayoutThroughViewModel();
         }
 
         void UpdateLayoutThroughViewModel()
@@ -309,12 +330,20 @@ namespace GUI
 
         private void Numerate_Orient_Click(object sender, RoutedEventArgs e)
         {
+            if (!InAquiredMode(ViewModel.TreeMode.DIRECTED))
+                return;
+
             if (!HandleCheckOrientedTreeStatus()
                 || (GraphView.Tree.Root == null && !GraphView.Tree.FindRoot()))
             {
                 return;
             }
             GraphView.DoNumerateStep();
+        }
+
+        private void Switch_Click(object sender, RoutedEventArgs e)
+        {
+            GraphView.Switch();
         }
     }
 }

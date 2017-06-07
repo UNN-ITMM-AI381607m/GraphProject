@@ -11,40 +11,10 @@ namespace GraphComponent
 {
     public class ViewModel : INotifyPropertyChanged
     {
-        private string layoutAlgorithmType;
-        private Tree tree;
-        private List<string> layoutAlgorithmTypes = new List<string>();
-
-        public Tree Tree
+        public enum TreeMode
         {
-            get { return tree; }
-            set
-            {
-                tree = value;
-                tree.PropertyChanged += Tree_PropertyChanged;
-                NotifyPropertyChanged("Tree");
-            }
-        }
-
-        public void UpdateLayout()
-        {
-            LayoutAlgorithmType = "EfficientSugiyama";
-            LayoutAlgorithmType = "None";
-        }
-
-        public List<string> LayoutAlgorithmTypes
-        {
-            get { return layoutAlgorithmTypes; }
-        }
-
-        public string LayoutAlgorithmType
-        {
-            get { return layoutAlgorithmType; }
-            set
-            {
-                layoutAlgorithmType = value;
-                NotifyPropertyChanged("LayoutAlgorithmType");
-            }
+            DIRECTED,
+            UNDIRECTED
         }
 
         public enum VertexStatus
@@ -63,20 +33,78 @@ namespace GraphComponent
             SUCCESS
         }
 
+        public static TreeMode mode = TreeMode.UNDIRECTED;
+
+        public TreeMode Mode
+        {
+            get
+            {
+                return mode;
+            }
+            set
+            {
+                mode = value;
+                NotifyPropertyChanged("Mode");
+            }
+        }
+
+        private string layoutAlgorithmType;
+        private Tree tree;
+        private List<string> layoutAlgorithmTypes = new List<string>();
+
+        public Tree Tree
+        {
+            get
+            {
+                if (Mode == TreeMode.DIRECTED)
+                    return tree;
+                else
+                    return MakeUndirected(tree);
+            }
+            set
+            {
+                tree = value;
+                tree.PropertyChanged += Tree_PropertyChanged;
+                NotifyPropertyChanged("Tree");
+            }
+        }
+
+        public Tree GetWorkTree()
+        {
+            return tree;
+        }
+
+        private Tree MakeUndirected(Tree tree)
+        {
+            Tree undirectedTree = new Tree();
+            undirectedTree.AddVertexRange(tree.Vertices);
+            undirectedTree.AddEdgeRange(tree.Edges);
+            foreach (var edge in tree.Edges)
+            {
+                undirectedTree.AddEdge(new CustomEdge(edge.Target, edge.Source));
+            }
+            return undirectedTree;
+        }
+
+        public void UpdateLayout()
+        {
+            LayoutAlgorithmType = "EfficientSugiyama";
+            LayoutAlgorithmType = "None";
+        }
+
+        public string LayoutAlgorithmType
+        {
+            get { return layoutAlgorithmType; }
+            set
+            {
+                layoutAlgorithmType = value;
+                NotifyPropertyChanged("LayoutAlgorithmType");
+            }
+        }
+
         public ViewModel()
         {
             Tree = new Tree();
-            //Add Layout Algorithm Types
-            //layoutAlgorithmTypes.Add("None");
-            //layoutAlgorithmTypes.Add("BoundedFR");
-            //layoutAlgorithmTypes.Add("Circular");
-            //layoutAlgorithmTypes.Add("CompoundFDP");
-            //layoutAlgorithmTypes.Add("EfficientSugiyama");
-            //layoutAlgorithmTypes.Add("FR");
-            //layoutAlgorithmTypes.Add("ISOM");
-            //layoutAlgorithmTypes.Add("KK");
-            //layoutAlgorithmTypes.Add("LinLog");
-            //layoutAlgorithmTypes.Add("Tree");
         }
 
         private void Tree_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -94,12 +122,14 @@ namespace GraphComponent
             {
                 tree.AddVertex(new CustomVertex(id));
             }
+            NotifyPropertyChanged("Tree");
             return status;
         }
 
         public void RemoveVertex(CustomVertex vertex)
         {
             tree.RemoveVertex(vertex);
+            NotifyPropertyChanged("Tree");
         }
 
         public CustomVertex GetVertex(int id)
@@ -119,12 +149,13 @@ namespace GraphComponent
         {
             CustomEdge newEdge = new CustomEdge(from, to);
             var res = tree.AddEdge(newEdge);
-            if (!res)
+            if (!res && Mode == TreeMode.DIRECTED)
             {
                 var edge = GetEdge(to, from);
                 if (edge != null) tree.RemoveEdge(edge);
                 res = tree.AddEdge(newEdge);
             }
+            NotifyPropertyChanged("Tree");
             return res ? EdgeStatus.SUCCESS : EdgeStatus.ALREADY_EXISTS;
         }
 
@@ -140,9 +171,14 @@ namespace GraphComponent
 
         public void RemoveEdge(CustomEdge edge)
         {
-            tree.RemoveEdge(edge);
+            if (!tree.RemoveEdge(edge) && Mode == TreeMode.UNDIRECTED)
+            {
+                CustomEdge reverseEdge;
+                tree.TryGetEdge(edge.Target, edge.Source, out reverseEdge);
+                tree.RemoveEdge(reverseEdge);
+            }
+            NotifyPropertyChanged("Tree");
         }
-
 
         public CustomEdge GetEdge(CustomVertex source, CustomVertex target)
         {
@@ -162,6 +198,7 @@ namespace GraphComponent
             VertexStatus status = CheckValidId(newId);
             if (status == VertexStatus.SUCCESS)
                 vertex.ID = newId;
+            NotifyPropertyChanged("Tree");
             return status;
         }
 
@@ -181,9 +218,23 @@ namespace GraphComponent
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged(String info)
+        private void NotifyPropertyChanged(string info)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
+        }
+
+        internal void SwitchMode()
+        {
+            if (Mode == TreeMode.DIRECTED)
+                Mode = TreeMode.UNDIRECTED;
+            else
+                Mode = TreeMode.DIRECTED;
+
+            var tmp = tree;
+            tree = new Tree();
+            tree.AddVertexRange(tmp.Vertices);
+            tree.AddEdgeRange(tmp.Edges);
+            Tree = tree;
         }
     }
 }

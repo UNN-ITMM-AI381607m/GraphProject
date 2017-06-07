@@ -67,7 +67,7 @@ namespace GraphComponent
 
         public override bool AddEdge(CustomEdge e)
         {
-            if (!AllowParallelEdges && Edges.Any(x => x.Source == e.Target && x.Target == e.Source))
+            if (ViewModel.mode == ViewModel.TreeMode.DIRECTED && Edges.Any(x => x.Source == e.Target && x.Target == e.Source))
                 return false;
 
             return base.AddEdge(e);

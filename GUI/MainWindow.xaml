@@ -6,7 +6,8 @@
         xmlns:zoom="clr-namespace:GraphSharp.Controls.Zoom;assembly=GraphSharp.Controls"
         xmlns:graph_component="clr-namespace:GraphComponent;assembly=GraphComponent"
         mc:Ignorable="d"
-        Title="Конструктор графов" Height="{Binding SystemParameters.PrimaryScreenHeight}" Width="{Binding SystemParameters.PrimaryScreenWidth}">
+        Title="Конструктор графов" Height="{Binding SystemParameters.PrimaryScreenHeight}" Width="{Binding SystemParameters.PrimaryScreenWidth}" 
+        MinHeight="700" MinWidth="700">
     <Window.CommandBindings>
         <CommandBinding Command="Open" Executed="OpenFile_OnClick"/>
         <CommandBinding Command="Save" Executed="SaveFile_OnClick"/>
@@ -87,7 +88,8 @@
                             <Separator Background="Transparent" Height="10"/>
                             <TextBlock Text="5. Длина графа" TextWrapping="WrapWithOverflow" Width="170"/>
                             <Button x:Name="GetLength" Content="Запустить" Click="GetLength_Click" Width="60"/>
-                            <TextBlock Text="6. Получить минимальную конфигурацию дерева" TextWrapping="WrapWithOverflow" Width="170"/>
+                            <Separator Background="Transparent" Height="10"/>
+                            <TextBlock Text="6. Найти оптимальный корень" TextWrapping="WrapWithOverflow" Width="170"/>
                             <Button x:Name="FindMinRoot" Content="Запустить" Click="MinRoot_Click" Width="60"/>
                         </StackPanel>
                     </Border>
@@ -108,14 +110,15 @@
                                 <Label Content="Задачи" FontSize="14" BorderBrush="{StaticResource GrayBrush}" BorderThickness="0 0 0 1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Background="{StaticResource GrayGrayGradientBrush}" Height="35"/>
                                 <Separator Background="Transparent" Height="10"></Separator>
                                 <TextBlock Text="1. Постройте граф по коду Прюфера" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
-                                <TextBlock x:Name="PruferCode" FontSize="15" TextWrapping="WrapWithOverflow"  Width="200"></TextBlock>
-                                <Button x:Name="GenCode" Content="Сгенерировать" Click="GenerateCode_OnClick" />
-                                <Button x:Name="CheckGraph" Content="Проверить" Click="CheckGraph_OnClick" />
-                                <TextBlock Text="2. Постройте код Прюфера по графу" TextWrapping="WrapWithOverflow" Width="170"></TextBlock>
-                                <Button x:Name="GenGraph" Content="Сгенерировать" Click="GenerateGraph_OnClick" />
+                                <TextBlock x:Name="PruferCode" FontSize="15" TextWrapping="WrapWithOverflow"  Width="200" TextAlignment="Center"
+                                           HorizontalAlignment="Center" Margin="10"/>
+                                 <Button x:Name="GenCode" Content="Сгенерировать" Click="GenerateCode_OnClick" HorizontalAlignment="Center" Width="100"/>
+                                <Button x:Name="CheckGraph" Content="Проверить" Click="CheckGraph_OnClick" HorizontalAlignment="Center" Width="100"/>
+                                <TextBlock Text="2. Постройте код Прюфера по графу" TextWrapping="WrapWithOverflow" Width="170" Margin="20"/>
+                                <Button x:Name="GenGraph" Content="Сгенерировать" Click="GenerateGraph_OnClick" Width="100" HorizontalAlignment="Center"/>
                                 <Label Content="Ответ:" Margin="10, 0"/>
                                 <TextBox x:Name="CheckPruferTextBox" Height="22" HorizontalAlignment="Center" Width="112"/>
-                                <Button x:Name="CheckCode" Content="Проверить" Click="CheckCode_OnClick" />
+                                <Button x:Name="CheckCode" Content="Проверить" Click="CheckCode_OnClick" HorizontalAlignment="Center" Width="100"/>
                             </StackPanel>
                         </Border>
                     </Grid>
@@ -158,6 +161,10 @@
                                         <Separator/>
                                         <Button Name="FindRoot" ToolTip="Найти корневой элемент" Click="FindRoot_Click">
                                             <Image Source="/GUI;component/Resources/Icons/search.ico" Stretch="Fill"/>
+                                        </Button>
+                                        <Separator/>
+                                        <Button Name="Switch" ToolTip="Сменить тип дерева" Click="Switch_Click">
+                                            <Image Source="/GUI;component/Resources/Icons/switch.ico" Stretch="Fill"/>
                                         </Button>
                                     </ToolBar>
                                 </ToolBarTray>
