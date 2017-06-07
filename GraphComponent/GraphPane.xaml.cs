@@ -37,10 +37,9 @@ namespace GraphComponent
             InitializeComponent();
         }
 
-        public Tree Tree
+        public ViewModel ViewModel
         {
-            get { return vm.GetWorkTree(); }
-            set { vm.Tree = value; }
+            get { return vm; }
         }
 
         public void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -129,7 +128,7 @@ namespace GraphComponent
 
         private void MenuItem_MarkAsRoot_Click(object sender, RoutedEventArgs e)
         {
-            if (ViewModel.mode == ViewModel.TreeMode.UNDIRECTED || !GraphBuilder.GraphBuilderStrategy.ValidateOrientedGraph(Tree))
+            if (ViewModel.Mode == ViewModel.TreeMode.UNDIRECTED || !GraphBuilder.GraphBuilderStrategy.ValidateOrientedGraph(vm.Tree))
             {
                 ShowMessage("Граф НЕ является ориентированным деревом", MessageBoxImage.Error);
                 return;
@@ -213,14 +212,14 @@ namespace GraphComponent
                  for (int i = 0; i < pp.Count; i++)
                     {
                         if (pp.Count == 0) break;
-                        if (pp.ElementAt<KeyValuePair<List<CustomVertex>, int>>(i).Value == current_min)
+                        if (pp.ElementAt(i).Value == current_min)
                         {
-                            for (int j = 0; j < pp.ElementAt<KeyValuePair<List<CustomVertex>, int>>(i).Key.Count; ++j)
-                                if (pp.ElementAt<KeyValuePair<List<CustomVertex>, int>>(i).Key[j].ID == 0)
-                            { pp.ElementAt<KeyValuePair<List<CustomVertex>, int>>(i).Key[j].ID = ++counter;
+                            for (int j = 0; j < pp.ElementAt(i).Key.Count; ++j)
+                                if (pp.ElementAt(i).Key[j].ID == 0)
+                            { pp.ElementAt(i).Key[j].ID = ++counter;
                         }
-                        pp.ElementAt<KeyValuePair<List<CustomVertex>, int>>(i).Key.Last().Color = "Red";
-                        pp.Remove(pp.ElementAt<KeyValuePair<List<CustomVertex>, int>>(i).Key);
+                        pp.ElementAt(i).Key.Last().Color = "Red";
+                        pp.Remove(pp.ElementAt(i).Key);
                             --pp_count;
                         break;
                         }

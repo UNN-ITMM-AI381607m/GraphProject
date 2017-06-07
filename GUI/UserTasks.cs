@@ -26,7 +26,7 @@ namespace GUI
             if (!HandleCheckNonOrientedTreeStatus())
                 return;
 
-            string checkcode = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Tree).ToArray());
+            string checkcode = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.ViewModel.Tree).ToArray());
             if (checkcode == PruferCode.Text.ToString())
                 ShowMessage("Граф соответствует коду Прюфера", MessageBoxImage.Asterisk);
             else
@@ -41,7 +41,7 @@ namespace GUI
             };
             if (popup.ShowDialog() == true)
             {
-                GraphView.Tree = GraphBuilderStrategy.GenerateGraph(popup.Result);
+                GraphView.ViewModel.Tree = GraphBuilderStrategy.GenerateGraph(popup.Result);
                 UpdateLayoutThroughViewModel();
             }
         }
@@ -51,7 +51,7 @@ namespace GUI
             if (!HandleCheckNonOrientedTreeStatus())
                 return;
 
-            string checkcode = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.Tree).ToArray());
+            string checkcode = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.ViewModel.Tree).ToArray());
             if (checkcode == CheckPruferTextBox.Text)
                 ShowMessage("Код Прюфера соответствует графу", MessageBoxImage.Asterisk);
             else

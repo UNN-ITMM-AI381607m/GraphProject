@@ -33,20 +33,7 @@ namespace GraphComponent
             SUCCESS
         }
 
-        public static TreeMode mode = TreeMode.UNDIRECTED;
-
-        public TreeMode Mode
-        {
-            get
-            {
-                return mode;
-            }
-            set
-            {
-                mode = value;
-                NotifyPropertyChanged("Mode");
-            }
-        }
+        public static TreeMode Mode = TreeMode.UNDIRECTED;
 
         private string layoutAlgorithmType;
         private Tree tree;
@@ -59,12 +46,11 @@ namespace GraphComponent
                 if (Mode == TreeMode.DIRECTED)
                     return tree;
                 else
-                    return MakeUndirected(tree);
+                    return GetUndirected(tree);
             }
             set
             {
                 tree = value;
-                tree.PropertyChanged += Tree_PropertyChanged;
                 NotifyPropertyChanged("Tree");
             }
         }
@@ -74,7 +60,7 @@ namespace GraphComponent
             return tree;
         }
 
-        private Tree MakeUndirected(Tree tree)
+        private Tree GetUndirected(Tree tree)
         {
             Tree undirectedTree = new Tree();
             undirectedTree.AddVertexRange(tree.Vertices);
@@ -105,14 +91,6 @@ namespace GraphComponent
         public ViewModel()
         {
             Tree = new Tree();
-        }
-
-        private void Tree_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Root" && tree.Root != null)
-            {
-                UpdateLayout();
-            }
         }
 
         public VertexStatus AddVertex(int id)
@@ -213,7 +191,15 @@ namespace GraphComponent
 
         public void SetRoot(CustomVertex newRoot)
         {
+            if (tree.Root != null)
+                tree.Root.IsRoot = false;
             tree.Root = newRoot;
+            if (newRoot != null)
+            {
+                tree.Root.IsRoot = true;
+                tree.ReconstructTree();
+                UpdateLayout();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -144,27 +144,27 @@
                                             </Style>
                                         </ToolBar.Resources>
                                         <Button Name="NewVertex" ToolTip="Создать новую вершину" Click="NewVertex_OnClick">
-                                            <Image Source="/GUI;component/Resources/Icons/new_vertex.ico" Stretch="Fill"/>
+                                            <Image Source="/GraphConstructor;component/Resources/Icons/new_vertex.ico" Stretch="Fill"/>
                                         </Button>
                                         <Separator/>
                                         <Button Name="NewEdge" ToolTip="Создать новое ребро" Click="NewEdge_OnClick">
-                                            <Image Source="/GUI;component/Resources/Icons/new_edge.ico" Stretch="Fill"/>
+                                            <Image Source="/GraphConstructor;component/Resources/Icons/new_edge.ico" Stretch="Fill"/>
                                         </Button>
                                         <Separator/>
                                         <Button Name="Refresh" ToolTip="Обновить" Click="Refresh_Click">
-                                            <Image Source="/GUI;component/Resources/Icons/refresh.ico" Stretch="Fill"/>
+                                            <Image Source="/GraphConstructor;component/Resources/Icons/refresh.ico" Stretch="Fill"/>
                                         </Button>
                                         <Separator/>
                                         <Button Name="CheckTree" ToolTip="Проверить является ли граф деревом" Click="CheckTree_Click">
-                                            <Image Source="/GUI;component/Resources/Icons/tree.ico" Stretch="Fill"/>
+                                            <Image Source="/GraphConstructor;component/Resources/Icons/tree.ico" Stretch="Fill"/>
                                         </Button>
                                         <Separator/>
                                         <Button Name="FindRoot" ToolTip="Найти корневой элемент" Click="FindRoot_Click">
-                                            <Image Source="/GUI;component/Resources/Icons/search.ico" Stretch="Fill"/>
+                                            <Image Source="/GraphConstructor;component/Resources/Icons/search.ico" Stretch="Fill"/>
                                         </Button>
                                         <Separator/>
                                         <Button Name="Switch" ToolTip="Сменить тип дерева" Click="Switch_Click">
-                                            <Image Source="/GUI;component/Resources/Icons/switch.ico" Stretch="Fill"/>
+                                            <Image Source="/GraphConstructor;component/Resources/Icons/switch.ico" Stretch="Fill"/>
                                         </Button>
                                     </ToolBar>
                                 </ToolBarTray>

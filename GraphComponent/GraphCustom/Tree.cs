@@ -15,31 +15,12 @@ namespace GraphComponent
         public Tree(bool allowParallelEdges = false) : base(allowParallelEdges) { }
         public Tree(bool allowParallelEdges, int vertexCapacity) : base(allowParallelEdges, vertexCapacity) { }
 
-        CustomVertex rootVertex;
-        public CustomVertex Root
-        {
-            get
-            {
-                return rootVertex;
-            }
-            set
-            {
-                if (rootVertex != null)
-                    rootVertex.IsRoot = false;
-                rootVertex = value;
-                if (rootVertex != null)
-                {
-                    rootVertex.IsRoot = true;
-                    ReconstructTree();
-                }
-                NotifyPropertyChanged("Root");
-            }
-        }
+        public CustomVertex Root;
 
-        void ReconstructTree()
+        public void ReconstructTree()
         {
             List<CustomVertex> visited = new List<CustomVertex>();
-            Visit(rootVertex, visited);
+            Visit(Root, visited);
         }
 
         void Visit(CustomVertex toVisit, List<CustomVertex> visited)
@@ -67,7 +48,7 @@ namespace GraphComponent
 
         public override bool AddEdge(CustomEdge e)
         {
-            if (ViewModel.mode == ViewModel.TreeMode.DIRECTED && Edges.Any(x => x.Source == e.Target && x.Target == e.Source))
+            if (ViewModel.Mode == ViewModel.TreeMode.DIRECTED && Edges.Any(x => x.Source == e.Target && x.Target == e.Source))
                 return false;
 
             return base.AddEdge(e);
@@ -79,15 +60,9 @@ namespace GraphComponent
             return base.RemoveVertex(v);
         }
 
-        public bool FindRoot()
+        public CustomVertex FindRoot()
         {
-            var root = TryFindRoot();
-
-            if (root == null)
-                return false;
-
-            Root = root;
-            return true;
+            return TryFindRoot();
         }
 
         CustomVertex TryFindRoot()
@@ -128,8 +103,8 @@ namespace GraphComponent
                     length += diff;
                 }
             };
-            if (rootVertex != null)
-                bfs.Compute(rootVertex);
+            if (Root != null)
+                bfs.Compute(Root);
             else
                 bfs.Compute(TryFindRoot());
 
