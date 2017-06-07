@@ -291,19 +291,29 @@ namespace GUI
             if (!InAquiredMode(ViewModel.TreeMode.DIRECTED))
                 return;
 
-            var minLength = GraphView.Tree.GetLength();
-            var minRoot = GraphView.Tree.Root;
-            foreach ( var v in GraphView.Tree.Vertices)
+            Tree tree = new Tree();
+            tree.AddVertexRange(GraphView.Tree.Vertices);
+            tree.AddEdgeRange(GraphView.Tree.Edges);
+
+            var minLength = tree.GetLength();
+            var minRoot = tree.Root;
+            if (minRoot == null)
             {
-                GraphView.Tree.Root = v;
+                tree.FindRoot();
+                minRoot = tree.Root;
+            }
+            foreach ( var v in tree.Vertices)
+            {
+                tree.Root = v;
                 //GraphView.DoNumerateStep();
-                if (GraphView.Tree.GetLength() < minLength)
+                if (tree.GetLength() < minLength)
                 {
-                    Thread.Sleep(10000);
-                    minLength = GraphView.Tree.GetLength();
-                    minRoot = GraphView.Tree.Root;
+                    //Thread.Sleep(10000);
+                    minLength = tree.GetLength();
+                    minRoot = tree.Root;
                 }
             }
+            GraphView.Tree = tree;
             GraphView.Tree.Root = minRoot;
             //GraphView.DoNumerateStep();
             InfoBar.Content = "Длина минимальной конфигурации: " + minLength;

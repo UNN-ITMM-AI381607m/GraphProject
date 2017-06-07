@@ -234,8 +234,6 @@ namespace GraphComponent
                     foreach (CustomVertex vv in verct)
                         vv.Color = "Black";
                 }
-                // vm.Tree = tre;
-                //  vm.UpdateLayout();
             }
         }
         //private void MenuItem_ChangeToRootForAll(object sender, RoutedEventArgs e)
