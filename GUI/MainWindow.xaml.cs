@@ -67,7 +67,7 @@ namespace GUI
 
         bool HandleCheckOrientedTreeStatus()
         {
-            if (!GraphBuilderStrategy.ValidateOrientedGraph(GraphView.ViewModel.Tree))
+            if (!GraphBuilderStrategy.ValidateOrientedGraph(GraphView.ViewModel.GetWorkTree()))
             {
                 ShowMessage("Граф НЕ является ориентированным деревом", MessageBoxImage.Error);
                 return false;
@@ -77,7 +77,7 @@ namespace GUI
 
         bool HandleCheckNonOrientedTreeStatus()
         {
-            if (!GraphBuilderStrategy.ValidateNonOrientedGraph(GraphView.ViewModel.Tree))
+            if (!GraphBuilderStrategy.ValidateNonOrientedGraph(GraphView.ViewModel.GetWorkTree()))
             {
                 ShowMessage("Граф НЕ является деревом", MessageBoxImage.Error);
                 return false;
@@ -107,7 +107,7 @@ namespace GUI
             };
             if (saveDialogFile.ShowDialog() == true)
             {
-                string a = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.ViewModel.Tree).ToArray());
+                string a = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.ViewModel.GetWorkTree()).ToArray());
                 if (a.Length == 0)
                 {
                     ShowMessage("Отсутствует граф для сохранения", MessageBoxImage.Error);
@@ -209,8 +209,8 @@ namespace GUI
             if (!HandleCheckNonOrientedTreeStatus())
                 return;
 
-            bool isEmpty = GraphView.ViewModel.Tree.IsVerticesEmpty;
-            InfoBar.Content = isEmpty ? "" : "Код Прюфера: " + string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.ViewModel.Tree).ToArray());
+            bool isEmpty = GraphView.ViewModel.GetWorkTree().IsVerticesEmpty;
+            InfoBar.Content = isEmpty ? "" : "Код Прюфера: " + string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.ViewModel.GetWorkTree()).ToArray());
         }
 
         private void Numerate_OnClick(object sender, RoutedEventArgs e)
@@ -218,7 +218,7 @@ namespace GUI
             if (!HandleCheckNonOrientedTreeStatus())
                 return;
 
-            var mapId = Numerator.GetIDMap(GraphView.ViewModel.Tree);
+            var mapId = Numerator.GetIDMap(GraphView.ViewModel.GetWorkTree());
             foreach (var pair in mapId)
             {
                 pair.Key.ID = pair.Value;
@@ -251,14 +251,14 @@ namespace GUI
         {
             if (ViewModel.Mode == ViewModel.TreeMode.DIRECTED)
             {
-                if (!GraphBuilderStrategy.ValidateOrientedGraph(GraphView.ViewModel.Tree))
+                if (!GraphBuilderStrategy.ValidateOrientedGraph(GraphView.ViewModel.GetWorkTree()))
                     ShowMessage("Граф НЕ является ориентированным деревом", MessageBoxImage.Information);
                 else 
                     ShowMessage("Граф является ориентированным деревом", MessageBoxImage.Information);
             }
             else
             {
-                if (!GraphBuilderStrategy.ValidateOrientedGraph(GraphView.ViewModel.Tree))
+                if (!GraphBuilderStrategy.ValidateOrientedGraph(GraphView.ViewModel.GetWorkTree()))
                     ShowMessage("Граф НЕ является неориентированным деревом", MessageBoxImage.Information);
                 else
                     ShowMessage("Граф является неориентированным деревом", MessageBoxImage.Information);
@@ -272,7 +272,7 @@ namespace GUI
 
             if (HandleCheckOrientedTreeStatus())
             {
-                GraphView.ViewModel.SetRoot(GraphView.ViewModel.Tree.FindRoot());
+                GraphView.ViewModel.SetRoot(GraphView.ViewModel.GetWorkTree().FindRoot());
             }
         }
 
@@ -281,8 +281,8 @@ namespace GUI
             if (!HandleCheckNonOrientedTreeStatus())
                 return;
 
-            int length = GraphView.ViewModel.Tree.GetLength();
-            int minLength = GraphView.ViewModel.Tree.GetLength(Numerator.GetIDMap(GraphView.ViewModel.Tree, true));
+            int length = GraphView.ViewModel.GetWorkTree().GetLength();
+            int minLength = GraphView.ViewModel.GetWorkTree().GetLength(Numerator.GetIDMap(GraphView.ViewModel.GetWorkTree(), true));
             InfoBar.Content = "Текущая длина: " + length + "  Минимальная длина: " + minLength;
         }
 
@@ -292,8 +292,8 @@ namespace GUI
                 return;
 
             Tree tree = new Tree();
-            tree.AddVertexRange(GraphView.ViewModel.Tree.Vertices);
-            tree.AddEdgeRange(GraphView.ViewModel.Tree.Edges);
+            tree.AddVertexRange(GraphView.ViewModel.GetWorkTree().Vertices);
+            tree.AddEdgeRange(GraphView.ViewModel.GetWorkTree().Edges);
 
             var minLength = tree.GetLength();
             var minRoot = tree.Root;
@@ -344,7 +344,7 @@ namespace GUI
                 return;
 
             if (!HandleCheckOrientedTreeStatus()
-                || (GraphView.ViewModel.Tree.Root == null && GraphView.ViewModel.Tree.FindRoot() == null))
+                || (GraphView.ViewModel.GetWorkTree().Root == null && GraphView.ViewModel.GetWorkTree().FindRoot() == null))
             {
                 return;
             }
