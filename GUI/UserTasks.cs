@@ -19,14 +19,15 @@ namespace GUI
             };
             if (popup.ShowDialog() == true)
                 PruferCode.Text = GraphBuilderStrategy.GeneratePruferCode(popup.Result);
+            CheckGraph.IsEnabled = true;
         }
 
         private void CheckGraph_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!HandleCheckNonOrientedTreeStatus())
+            if (!HandleCheckNonOrientedTreeStatus() || PruferCode.Text.Length == 0)
                 return;
 
-            string checkcode = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.ViewModel.Tree).ToArray());
+            string checkcode = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.ViewModel.GetWorkTree()).ToArray());
             if (checkcode == PruferCode.Text.ToString())
                 ShowMessage("Граф соответствует коду Прюфера", MessageBoxImage.Asterisk);
             else
@@ -44,14 +45,16 @@ namespace GUI
                 GraphView.ViewModel.Tree = GraphBuilderStrategy.GenerateGraph(popup.Result);
                 UpdateLayoutThroughViewModel();
             }
+            CheckPruferTextBox.IsEnabled = true;
+            CheckCode.IsEnabled = true;
         }
 
         private void CheckCode_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!HandleCheckNonOrientedTreeStatus())
+            if (!HandleCheckNonOrientedTreeStatus() || CheckPruferTextBox.Text.Length == 0)
                 return;
 
-            string checkcode = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.ViewModel.Tree).ToArray());
+            string checkcode = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.ViewModel.GetWorkTree()).ToArray());
             if (checkcode == CheckPruferTextBox.Text)
                 ShowMessage("Код Прюфера соответствует графу", MessageBoxImage.Asterisk);
             else

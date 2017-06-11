@@ -258,7 +258,7 @@ namespace GUI
             }
             else
             {
-                if (!GraphBuilderStrategy.ValidateOrientedGraph(GraphView.ViewModel.GetWorkTree()))
+                if (!GraphBuilderStrategy.ValidateNonOrientedGraph(GraphView.ViewModel.GetWorkTree()))
                     ShowMessage("Граф НЕ является неориентированным деревом", MessageBoxImage.Information);
                 else
                     ShowMessage("Граф является неориентированным деревом", MessageBoxImage.Information);
@@ -294,6 +294,7 @@ namespace GUI
             Tree tree = new Tree();
             tree.AddVertexRange(GraphView.ViewModel.GetWorkTree().Vertices);
             tree.AddEdgeRange(GraphView.ViewModel.GetWorkTree().Edges);
+            tree.Root = GraphView.ViewModel.GetWorkTree().Root;
 
             var minLength = tree.GetLength();
             var minRoot = tree.Root;
@@ -313,7 +314,6 @@ namespace GUI
                     minRoot = tree.Root;
                 }
             }
-            GraphView.ViewModel.Tree = tree;
             GraphView.ViewModel.SetRoot(minRoot);
             //GraphView.DoNumerateStep();
             InfoBar.Content = "Длина минимальной конфигурации: " + minLength;
@@ -343,12 +343,23 @@ namespace GUI
             if (!InAquiredMode(ViewModel.TreeMode.DIRECTED))
                 return;
 
-            if (!HandleCheckOrientedTreeStatus()
-                || (GraphView.ViewModel.GetWorkTree().Root == null && GraphView.ViewModel.GetWorkTree().FindRoot() == null))
+            if (!HandleCheckOrientedTreeStatus())
             {
                 return;
             }
-            GraphView.DoNumerateStep();
+
+            var root = GraphView.ViewModel.Tree.Root;
+            if (root == null)
+            {
+                root = GraphView.ViewModel.Tree.FindRoot();
+                GraphView.ViewModel.SetRoot(root);
+            }
+            if (root == null)
+            {
+                ShowMessage("Укажите корень", MessageBoxImage.Information);
+                return;
+            }
+            GraphView.DoNumerateStep(root);
         }
 
         private void Switch_Click(object sender, RoutedEventArgs e)

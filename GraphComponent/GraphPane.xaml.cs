@@ -203,7 +203,9 @@ namespace GraphComponent
             public void DoStep()
             {
                 foreach (CustomVertex vv in verct)
-                    vv.Color="Black";
+                {
+                    vv.ResetColor();
+                }
 
                 int current_min = int.MaxValue;
                 foreach (KeyValuePair<List<CustomVertex>, int> d in pp)
@@ -231,7 +233,7 @@ namespace GraphComponent
                 else
                 {
                     foreach (CustomVertex vv in verct)
-                        vv.Color = "Black";
+                        vv.ResetColor();
                 }
             }
         }
@@ -251,9 +253,9 @@ namespace GraphComponent
         //    step.DoStep();
         //}
 
-        public void DoNumerateStep()
+        public void DoNumerateStep(CustomVertex root)
         {
-            step = new Step(vm, vm.Tree.Root);
+            step = new Step(vm, root);
             step.DoStep();
         }
 

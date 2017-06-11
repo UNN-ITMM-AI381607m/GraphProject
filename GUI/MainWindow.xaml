@@ -113,12 +113,12 @@
                                 <TextBlock x:Name="PruferCode" FontSize="15" TextWrapping="WrapWithOverflow"  Width="200" TextAlignment="Center"
                                            HorizontalAlignment="Center" Margin="10"/>
                                  <Button x:Name="GenCode" Content="Сгенерировать" Click="GenerateCode_OnClick" HorizontalAlignment="Center" Width="100"/>
-                                <Button x:Name="CheckGraph" Content="Проверить" Click="CheckGraph_OnClick" HorizontalAlignment="Center" Width="100"/>
+                                <Button x:Name="CheckGraph" Content="Проверить" Click="CheckGraph_OnClick" HorizontalAlignment="Center" Width="100" IsEnabled="False"/>
                                 <TextBlock Text="2. Постройте код Прюфера по графу" TextWrapping="WrapWithOverflow" Width="170" Margin="20"/>
                                 <Button x:Name="GenGraph" Content="Сгенерировать" Click="GenerateGraph_OnClick" Width="100" HorizontalAlignment="Center"/>
                                 <Label Content="Ответ:" Margin="10, 0"/>
-                                <TextBox x:Name="CheckPruferTextBox" Height="22" HorizontalAlignment="Center" Width="112"/>
-                                <Button x:Name="CheckCode" Content="Проверить" Click="CheckCode_OnClick" HorizontalAlignment="Center" Width="100"/>
+                                <TextBox x:Name="CheckPruferTextBox" Height="22" HorizontalAlignment="Center" Width="112" IsEnabled="False"/>
+                                <Button x:Name="CheckCode" Content="Проверить" Click="CheckCode_OnClick" HorizontalAlignment="Center" Width="100" IsEnabled="False"/>
                             </StackPanel>
                         </Border>
                     </Grid>
