@@ -326,7 +326,17 @@ namespace GUI
 
         void ConstructByPrufer(string str)
         {
-            List<int> pruferCode = str.Split(' ', ',', ';').Select(int.Parse).ToList();
+            List<int> pruferCode;
+            try
+            {
+                pruferCode = str.Split(' ', ',', ';').Select(int.Parse).ToList();
+            }
+            catch
+            {
+                ShowMessage("Неверный формат", MessageBoxImage.Error);
+                return;
+            }
+
             if (!GraphBuilderStrategy.ValidateCode(pruferCode))
             {
                 ShowMessage("Неверный код Прюфера", MessageBoxImage.Error);
