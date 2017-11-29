@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using GraphComponent.GraphBuilder;
 using GraphComponent.SettingWindow;
 using GraphComponent.PopupWindow;
+using GraphComponent.GraphConverter;
 using GraphComponent;
 using System.Windows.Controls;
 using System;
@@ -101,22 +102,24 @@ namespace GUI
 
         private void SaveFile_OnClick(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
+            if (GraphView.ViewModel.GetWorkTree().IsVerticesEmpty)
+            {
+                ShowMessage("Отсутствует граф для сохранения", MessageBoxImage.Error);
+                return;
+            }
+
             SaveFileDialog saveDialogFile = new SaveFileDialog()
             {
-                Filter = "Text Files | *.txt"
+                Filter = GraphConverter.SupportedFilters.Values.Aggregate((cur, next) => cur + "|" + next)
             };
             if (saveDialogFile.ShowDialog() == true)
             {
-                string a = string.Join(" ", GraphBuilderStrategy.GraphToCode(GraphView.ViewModel.GetWorkTree()).ToArray());
-                if (a.Length == 0)
-                {
-                    ShowMessage("Отсутствует граф для сохранения", MessageBoxImage.Error);
-                    return;
-                }
+                string graphCode = GraphConverter.CodeGraphToString(GraphView.ViewModel.GetWorkTree(), 
+                    GraphConverter.SupportedFilters.ElementAt(saveDialogFile.FilterIndex - 1).Key);
                 try
                 {
                     StreamWriter file = new StreamWriter(saveDialogFile.FileName);
-                    file.WriteLine(a);
+                    file.WriteLine(graphCode);
                     file.Close();
                 }
                 catch
@@ -158,12 +161,13 @@ namespace GUI
 
         private void NewVertex_OnClick(object sender, RoutedEventArgs e)
         {
-            PopupWindow popup = new PopupWindow("Создать вершину", "Введите номер новой вершины: ", "Создать")
-            {
-                Owner = this
-            };
-            if (popup.ShowDialog() == true)
-                GraphView.AddNewVertex(popup.Result);
+            GraphView.AddNewVertex();
+            //PopupWindow popup = new PopupWindow("Создать вершину", "Введите номер новой вершины: ", "Создать")
+            //{
+            //    Owner = this
+            //};
+            //if (popup.ShowDialog() == true)
+            //    GraphView.AddNewVertex(popup.Result);
         }
 
         private void NewEdge_OnClick(object sender, RoutedEventArgs e)

@@ -54,6 +54,14 @@ namespace GraphComponent
             return base.AddEdge(e);
         }
 
+        public int GetMaxID()
+        {
+            if (IsVerticesEmpty)
+                return 0;
+
+            return Vertices.Max(x => x.ID);
+        }
+
         public override bool RemoveVertex(CustomVertex v)
         {
             v.Selected = false;

@@ -104,6 +104,12 @@ namespace GraphComponent
             return status;
         }
 
+        public VertexStatus AddVertex()
+        {
+            int newId = tree.GetMaxID() + 1;
+            return AddVertex(newId);
+        }
+
         public void RemoveVertex(CustomVertex vertex)
         {
             tree.RemoveVertex(vertex);

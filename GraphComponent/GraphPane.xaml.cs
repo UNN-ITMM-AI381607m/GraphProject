@@ -94,6 +94,11 @@ namespace GraphComponent
             HandleNewIdStatus(vm.AddVertex(number), number);
         }
 
+        public void AddNewVertex()
+        {
+            vm.AddVertex();
+        }
+
         public bool AddNewEdge(int id1, int id2)
         {
             var status = vm.AddEgde(id1, id2);
